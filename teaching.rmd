@@ -1,0 +1,40 @@
+---
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+# Courses
+
+###  Biometry for the Coastal Sciences
+
+This course addresses basic approaches to experimental design, statistical analysis, and presentation of quantitative information. The broad topic areas of this course are the use of frequency distributions in statistics, understanding the properties of the normal model and other frequently encountered distributions, quantitative comparisons of the means, regression and correlation analysis, and basic statistical decision making. This course will provide graduate level understanding of statistical approaches and how to apply them in scientific endeavor.  
+
+[Course Website](https://rtleaf.github.io/Biometry-COA-606/)
+
+###  Quantitative Fisheries Managment
+
+This course addresses basic and advanced quantitative approaches to methods of fishery assessment and fishery science. The objectives of this course are:  
+
+   * Provide an overview of the approach and process of fisheries management.  
+   * Introduce quantitative methods of fisheries assessment. 
+   * Expose students to current primary literature related to fisheries management. 
+   * Promote an interest and understanding of scientific research related to fisheries management, including critical thinking skills.
+
+###  R Programming Shortcourse
+
+This course is a first class in the R programming language focusing on basic syntax and plotting using base functions.
+
+[Course Website](https://rtleaf.github.io/Biometry-COA-606/)
+
+###  Professional Skills
+
+Course will include lectures, activities and workshops designed to improve scientific writing, grantsmanship, oral/poster presentation skills, and other aspects associated with professional development and scientific communication.
+
+###  Agent-based Modeling
+
+This course addresses basic approaches to initializing, executing and analyzing individual-based and agent-based models. This course is intended to provide students with an understanding of common modeling approaches and how to apply them correctly in the ecological and fishery sciences. The course uses the text: Agent-Based and Individual-Based Modeling: A Practical Introduction. 2011. Princeton University Press. 352 pages.

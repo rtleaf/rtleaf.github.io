@@ -1,0 +1,14 @@
+---
+output:
+  html_document:
+    toc: no
+---
+# 1 Data
+
+Data from the Leaf Lab that are made publicly available has migrated to an OpenDataSoft Data Management Portal (DPM).
+
+The DPM portal is designed to show interested users the scope of the available data (headers are public). Email Robert Leaf if you are interested in accessing these data after you have explored the meta data and headers.
+
+We strive to make our tax payer supported data open and available when possible. To access the data follow the link here:
+
+[OpenDataSoft portal](https://robertleaf.my.opendatasoft.com/explore/?sort=modified)

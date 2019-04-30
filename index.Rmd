@@ -1,0 +1,14 @@
+---
+output:
+  html_document:
+    toc: no
+---
+# Robert Leaf, PhD 
+
+![](http://gcrl.usm.edu/cv/leaf.robert/leaf.robert.photo.source.jpg)
+
+###  Biography
+Dr. Robert Leaf joined GCRL in September of 2012 and has expertise in quantitative methods and computer-intensive modeling approaches. The goals of these analyses are to understand population regulation and appropriate and effective conservation and management strategies. Dr. Leaf received his PhD in Fishery and Wildlife Sciences from the Virginia Polytechnic Institute and State University in 2010. There he studied how phenology of individuals in harvested populations were altered under size-selective fishing. As a post-doctoral researcher in NOAA’s “Fisheries and the Environment” program, Dr. Leaf examined how phytoplankton bloom phenology determined recruitment patterns in northeast Atlantic ground fishes. His current work involves assessment of fisheries in the Gulf of Mexico and worldwide
+
+###  Research Interests
+My research is concerned with understanding and modeling biological systems at two levels: individual life-history patterns and processes and population dynamics. At the population level I am interested in understanding the environmental drivers that influence recruitment success of commercially harvested fishes and invertebrates. I use simulations models to explore how alternative harvest strategies impact resilience and sustainability and describe how life-history patterns can be altered by size-selective harvest.

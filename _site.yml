@@ -1,0 +1,32 @@
+name: "Website for Robert Leaf, PhD USM SOSE"
+output_dir: "."
+navbar:
+  title: "Robert Leaf"
+  left:
+    - text: "Research and Apps"
+      href: research.html
+      icon: fa-paperclip      
+    - text: "Data"
+      href: data.html
+      icon: fa-database      
+    - text: "Teaching"
+      href: teaching.html
+      icon: fa-graduation-cap      
+    - text: "Leaf Lab"
+      href: leaf.lab.html
+      icon: fa-line-chart    
+  right:
+    - icon: fa-envelope
+      href: mailto:robert.leaf@usm.edu
+    - icon: fa-graduation-cap
+      href: https://scholar.google.com/citations?hl=en&user=psmasQUAAAAJ
+    - icon: fa-university
+      href: https://gcrl.usm.edu/cv/leaf.robert/cv.leaf.robert.php
+    - icon: fa-github
+      href: https://github.com/rtleaf
+    - icon: fa-paperclip
+      href: leaf_full_cv.html
+output:
+  html_document:
+    theme: united
+    highlight: textmate

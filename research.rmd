@@ -1,0 +1,84 @@
+---
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+# RShiny App development
+
+### Parameterization of Red Snapper Individual-Based Simulation Model
+
+To understand the feasiblity of performing large-scale tag-recapture in the Gulf of Mexico. To understand the challenges we distributed this survey to scientists and those knowledgable in Red Snapper ecology:
+
+Thanks very much for taking part in this effort to understand the ecology of Red Snapper. We are interested in how these dynamics impact our ability to determine the abundance of the stock in the nothern Gulf of Mexico. Below are a series of questions that when answered will allow us to better model population and individual dynamics of Red Snapper.
+
+We are modeling the movement dynamics of snapper with a spatial network and seek to understand how frequently and under what circumstances fish will move to another habitat (displace), habitat characteristics, and tagging and recapture dynamics
+
+In each of the fields below will be a series of sliders and buttons. Please interact with these to give your best estimates to the queries, based on your knowledge of Red Snapper. We understand that some of the queries may be difficult and indeed not known by the scientific community. We will be simulating the dynamics over a range of scenarios to capture this ambiguity - your thoughtful efforts will help us to understand the extent of current scientific knowledge and also understand areas where more research is needed.
+
+Associated with many of the queries will be a field where you report the amount of confidence you have in your estimate - these will be used as criteria to partially weight your response to those of your peers. At the end of the page will be a download button so that your answers can be submitted to our team.
+
+[Parameterization of Red Snapper Individual-Based Simulation Model](https://robe.shinyapps.io/SurveyRedSnapper02/)
+
+### Trophic Webs of the Gulf of Mexico
+
+This application was developed for the work of Oshima and Leaf 2018. We collected diet studies from the northern Gulf of Mexico and conducted network and simulation analyses to evaluate the structure and robustness of the trophic dynamics. This app allows the user to select either a predator or prey, the diet metric used to report the interactions and the taxonomic level the nodes are shown at. Note that prey were identified to varrying taxonomic levels depending on the studies. If you do not see a network displayed or get an error, try selecting a different diet metric. The diet metrics reported for a selected predator or prey can be seen in the data table.
+
+[Diet Network in the Gulf of Mexico](https://megumi-oshima.shinyapps.io/diet/)
+
+### Student Judging Algorithm and Analysis
+
+Shiny application for aggregating judges scores. csv files are generated and then synthesized in .RMD reports for students. Student Summary Report for Presentation is then distributed and includes 1. Student Score, 2. Evaluation Criteria and Weights, and 3. Your Performance in each of the Evaluation Criteria.
+
+[Student Judging](https://robe.shinyapps.io/judge/)
+
+# Current and Past Research Projects
+
+### Escapement Rate of Red Drum
+
+This objective of this research effort is to estimate mortality components and escapement rate of Red Drum stock in Mississippi. This project consists of determinations of instantaneous natural mortality rate, evaluation of overall and year-specific instantaneous total mortality rates, and calculation of the overall and year-specific instantaneous fishing mortality rates of Red Drum in Mississippi. Mortality estimates are then used to calculate an escapement rate. Alternative natural mortality estimations and fishery recruitment criteria are also evaluated to elucidate the impact of model misspecification and how these decisions affect the escapement rate.
+
+### Age and Growth of Red Drum
+
+The objective of this research effort is to evaluate the length-at-age and weight-at-length relationships of Red Drum. Sex-specific length-at-age and sex-specific weight-at-length relationships are quantified using multiple candidate models to determine the best supported model. Sex-specific relationships were examined for significant differences in male and female Red Drum.
+
+### Reproductive Biology of Red Drum
+
+The objective of this research effort is to use the most accurate and current methods available to determine the reproductive characteristics of Red Drum, including (1) the spawning season, (2) the sex-specific age and length at maturity, and (3) the spawning interval.
+
+### Detecting Residency and Emigration of Red Drum
+
+The objective of this research effort is to use tissue specific carbon (δ13C) and nitrogen (δ13N) isotope composition to determine ontogenetic movement of Red Drum through coastal and marine systems. Differences in stable isotope composition across year age classes with respect to reproductive phase and location of catch will help better determine ontogenetic movement of Red Drum between estuarine and marine systems.
+
+### Size and Age Distribution of Gulf Menhaden
+
+The objective of this research effort is to use the Gulf of Mexico states’ monthly fishery independent data collection efforts to understand temporal and spatial dynamics of the Gulf Menhaden fishery. Length and weight data are examined for individuals collected by state agencies in Texas, Louisiana, Mississippi, and Alabama. Age of Gulf Menhaden is determined blindly using whole, polished otoliths and scale samples. This work will also be used to form recommendations for methodology improvements to enhance ageing precision.
+
+### Network Analysis of Trophic Dynamics in the Northern Gulf of Mexico
+
+The objectives of this research effort are to create a trophic network for the northern Gulf of Mexico using historical literature. Network analysis techniques are used to test the resilience of the trophic dynamics to perturbations. We also will use these techniques to examine how predator feeding effort may be reallocated among other prey when prey items are reduced. This work will provide and understanding of the complex trophic dynamics in the Gulf and highlight the cascading effects of perturbations in the system.
+
+### Heirarchical Bayesian Surplus Production Model for Blue Crab
+
+The objectives of this research effort are to develop a heirarchical Bayesian surplus production model in the northern Gulf of Mexico to assist with stock assessments of Blue Crab. Currently, inshore Blue Crab are assessed and managed at a state level, however, there is evidence that there is only one stock. This model model uses indices of abundance and catch data from different basins or states across the Gulf to estimate a total abundance of Blue Crab in the northern Gulf of Mexico. The heirarchical Bayesian framework is flexible, allows easy incorporation of multiple data sets, and allows for the direct estimation of missing data or errors. The sensitivity of the analysis is tested to the exclusion of each index of abundance.
+
+### Age and Growth Characteristics of Atlantic Chub Mackerel 
+
+The objective of this research effort is to describe age and growth characteristics of Atlantic Chub Mackerel from the coastal Mid-Atlantic and New England region of the United States. Age estimates from both whole and sectioned otoliths are evaluated to determine which method results in highest precision. Otolith-derived age estimates are then used to evaluate the length-at-age relationship using a suite of non-linear growth models. The weight-at-length relationship is modeled using a power function. Median growth parameter estimates of Atlantic Chub Mackerel from the northwest Atlantic are compared with mean parameter estimates reported from other regions in the Atlantic and Mediterranean.
+
+### Reproductive Dynamics of Atlantic Chub Mackerel 
+
+The objective of this research effort is to describe elements of the reproductive biology of Atlantic Chub Mackerel in the northwest Atlantic. Histological techniques are used to determine sex and length- and age-specific sexual maturity. The approximate spawning season is identified using histological indicators and evidence of spawning from analysis of historical data on larval fish collections and commercial catch. These data will be used to inform the effective management of Atlantic Chub Mackerel stock.
+
+
+### Evaluating Enhancement Strategies for Spotted Seatrout (Cynoscion nebulosus)
+
+The objective of this research effort is to use a simulation-based analysis to evaluate the efficacy of stock enhancement for Spotted Seatrout in the north-central Gulf of Mexico. An operating model is developed to represent the biological characteristics of the stocks and attributes of the associated recreational fisheries. The results from this work will provide insight into the magnitude of effort needed to enhance Spotted Seatrout stocks and the associated costs.
+
+### Management Strategy Evaluation for Vermilion Snapper 
+
+The objectives of this research effort are to develop a management strategy evaluation for Vermilion Snapper in the northern Gulf of Mexico. A suite of operating models will be used to represent the true underlying population dynamics of the stock and the major uncertainties associated with that stock, such as stock-recruit relationship. The operating models will be used to test a set of proposed management strategies and performance statistics will be used to evaluate how well or poorly the stock responded to each strategy. This methodology can be used to evaluate trade-offs of different management regulations and how variable the outcome may be prior to implementing any regulations. It will provide a tool for informing future management and identifying areas where more research effort and improved data would enhance assessment efforts.
