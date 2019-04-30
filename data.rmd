@@ -3,7 +3,7 @@ output:
   html_document:
     toc: no
 ---
-# 1 Data
+# Data
 
 Data from the Leaf Lab that are made publicly available has migrated to an OpenDataSoft Data Management Portal (DPM).
 
