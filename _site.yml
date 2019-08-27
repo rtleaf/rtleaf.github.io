@@ -1,0 +1,28 @@
+name: "Robert Leaf Div. Coastal Sciences, SOSE, USM"
+output_dir: "."
+navbar:
+  title: "Robert Leaf"
+  left:
+    - text: "Teaching"
+      href: teaching.html
+    - text: "Research"
+      href: research.html
+    - text: "Data"
+      href: data.html
+    - text: "Leaf Laboratory"
+      href: leaf.lab.html 
+  right:
+    - icon: fa-envelope
+      href: mailto:robert.leaf@usm.edu
+    - icon: fa-graduation-cap
+      href: https://scholar.google.com/citations?hl=en&user=psmasQUAAAAJ
+    - icon: fa-university
+      href: https://gcrl.usm.edu/cv/leaf.robert/cv.leaf.robert.php
+    - icon: fa-github
+      href: https://github.com/rtleaf
+    - icon: fa-paperclip
+      href: leaf_full_cv.html
+output:
+  html_document:
+    theme: united
+    highlight: textmate
