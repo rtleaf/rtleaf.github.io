@@ -1,0 +1,3595 @@
+---
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+
+# 1 Linear Regression
+
+### 1.1 Linear Regression
+
+Linear regression with one predictor
+
+Assess the fit of a regression model
+
++ Total sum of squares
++ Model sum of squares
++ Residual sum of squares
++ R^2^
+
+Test for model significance - F test
+
+Interpret a regression model
+
+### 1.2 What is Regression?
+
+A way of predicting the value of one variable from another.
++ It is a hypothetical model of the relationship between two variables.
++ The model used is a linear one.
++ Therefore, we describe the relationship using the equation of a straight line.
+
+### 1.3 Assumptions of Simple Linear Regression
+
+For each value of x, Y are randomly sampled and independent.
+
+For any value of X in the pop'l there exists a normal distribution of Y values
+
+There is homogeneity of variances in the population. ie. the variance of the normal distribut. of Y values in pop'l are equal for all of values of x.
+
+The relationship of x and y is linear.
+
+X is measured without error
+
+### 1.4 Describing a Straight Line
+
+$Y_i=b_0 + b_iX_i + \varepsilon_i$
+
+b~i~
+
++ Regression coefficient for the predictor
++ Gradient (slope) of the regression line
++ Direction/strength of relationship
+
+b~0~
+
++ Intercept (value of Y when X = 0)
++ Point at which the regression line crosses the Y-axis (ordinate)
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+par(mfrow = c(1,1), mar = c(4,4,2,4)) # This tells R to put 1 row, 2 columns
+x <- c(0,4,5,8,11,14)
+y <- c(7,19,22,31,40,49)
+plot(x,y, main = "(b) An example of a linear equation", xlab = "Variable x (arbitrary units)", ylab = "Variable y (arbitrary units)", xlim = c(0,20), ylim = c(0,60), type = 'l', pch=16, xaxt = "n", yaxt = "n",lwd = 2)
+segments(x0 = 5, y0 = 22, x1 = 11, y1 = 22)
+segments(x0 = 11, y0 = 22, x1 = 11, y1 = 40)
+par(new=T)
+box()
+#needs formulas and labels of points
+
+```
+
+*Figure 1.4.1*
+
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+par(mfrow = c(1,1), mar = c(4,4,2,4)) # This tells R to put 1 row, 2 columns
+x <- c(0,4,5,8,11,14,16)
+y <- c(7,19,22,31,40,49,55)
+plot(x,y, main = "(b) An example of a linear equation", xlab = "Variable x (arbitrary units)", ylab = "Variable y (arbitrary units)", xlim = c(0,20), ylim = c(0,60), type = 'b', pch=16)
+segments(x0 = 0, y0 = 31, x1 = 8, y1 = 31, lty = 2)
+segments(x0 = 8, y0 = 0, x1 = 8, y1 = 31, lty = 2)
+segments(x0 = 11, y0 = 40, x1 = 14, y1 = 40, lty = 2)
+segments(x0 = 14, y0 = 49, x1 = 14, y1 = 40, lty = 2)
+par(new=T)
+box()
+#needs formulas and labels of points
+
+```
+
+*Figure 1.4.2*
+
+<Br>
+
+### 1.5 Intercepts and Gradients
+
+$Y_i=b_0 + b_iX_i + \varepsilon_i$
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x1 <- c(0,3,8,12,15)
+y1 <- c(0.71,1.97,4.07,5.75,7.01)
+x2 <- c(0,3,8,12,16)
+y2 <- c(0.71,1.52,2.87,3.95,5.03)
+x3 <- c(0,3,8,12,17)
+y3 <- c(0.71,0.59,0.39,0.23,0.03)
+
+plot(x1, y1, xlim = c(0,18), ylim = c(0,8), pch = 16, type = 'l', xlab = "X", ylab = "Y")
+lines(x2, y2, xlim = c(0,18), ylim = c(0,8), pch = 16, type = 'l', xlab = "X", ylab = "Y")
+lines(x3, y3, xlim = c(0,18), ylim = c(0,8), pch = 16, type = 'l', xlab = "X", ylab = "Y")
+#Equations needed on lines
+```
+
+*Figure 1.5.1*
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x1 <- c(0,2,4,6,8,10,12)
+y1 <- c(70,75,80,85,90,95,100)
+x2 <- c(0,2,4,6,8,10,12)
+y2 <- c(40,45,50,55,60,65,70)
+x3 <- c(0,2,4,6,8,10,12)
+y3 <- c(25,30,35,40,45,50,55)
+
+plot(x1, y1, xlim = c(0,12), ylim = c(0,100), pch = 16, type = 'l', xlab = "Predictor", ylab = "Outcome", xaxt = "n")
+lines(x2, y2, xlim = c(0,12), ylim = c(0,100), pch = 16, type = 'l', xlab = "Predictor", ylab = "Outcome", xaxt = "n")
+lines(x3, y3, xlim = c(0,12), ylim = c(0,100), pch = 16, type = 'l', xlab = "Predictor", ylab = "Outcome", xaxt = "n")
+
+```
+
+*Figure 1.5.2*
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(198,240,260,280,310,300,325,345,350,400)
+y <- c(55,65,56,65,64,80,75,73,85,84)
+
+xhat <- seq(200,450, length.out = 100)
+yhat <- 29.68 + .134*xhat
+plot(x, y, pch = 16)
+lines(xhat, yhat)
+```
+
+*Figure 1.5.3*
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(-1.1,-0.6,-0.2,0,0.2,0.4,0.7,0.9,1.7)
+y <- c(-0.5,-1.3,-0.3,0.8,-0.5,0.3,0.1,1.4,1.3)
+
+fit <- lm(y~x)
+coeff. <- summary(fit)$coefficients
+plot(x, y, pch = 16)
+abline(coeff.[1,1], coeff.[2,1])
+#Needs cross look 
+```
+
+*Figure 1.5.4*
+
+<Br>
+
+### 1.6 The Method of Least Squares
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(2,3,4,6,7,8,10,11,14,15,17,18,20,21,23)
+y <- c(5,10,7,11,20,13,15,30,27,37,35,30,32,35,40)
+
+plot(x, y, xlim = c(0,25), ylim = c(0,45), pch = 1, xlab = "Size of Spider", ylab = "Anxiety (GSR)")
+segments(x0 = 0, y0 = 3, x1 = 23, y1 = 41)
+
+```
+
+*Figure 1.6.1*
+
+<Br>
+
++ This figure shows a scatterplot of some data with a line representing the general trend. The vertical lines (dotted) represent the differences (or residuals) between the line and the actual data 
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(2,3,4,6,7,8,10,11,14,15,17,18,20,21,23)
+y <- c(5,10,7,11,20,13,15,30,27,37,35,30,32,35,40)
+
+plot(x, y, xlim = c(0,25), ylim = c(0,45), pch = 1, xlab = "Size of Spider", ylab = "Anxiety (GSR)")
+segments(x0 = 0, y0 = 3, x1 = 23, y1 = 41)
+
+```
+
+*Figure 1.6.1*
+
+<Br>
+
+$SS=\Sigma(X-\bar{X})^2$
+
+<Br>
+
+### 1.7 Minimize SS
+
+<Br>
+
+<Center>
+$RSS(\beta)=\sum_{i=1}^{N}(Y_i - \hat{y})^2=\sum_{i=1}^{N}(Y_i - \beta^Tx_i)^2$
+</center>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x1 <- c(0,3,8,12,15)
+y1 <- c(0.71,1.97,4.07,5.75,7.01)
+x2 <- c(0,3,8,12,16)
+y2 <- c(0.71,1.52,2.87,3.95,5.03)
+x3 <- c(0,3,8,12,17)
+y3 <- c(0.71,0.59,0.39,0.23,0.03)
+
+plot(x1, y1, xlim = c(0,18), ylim = c(0,8), pch = 16, type = 'l', xlab = "X", ylab = "Y")
+lines(x2, y2, xlim = c(0,18), ylim = c(0,8), pch = 16, type = 'l', xlab = "X", ylab = "Y")
+lines(x3, y3, xlim = c(0,18), ylim = c(0,8), pch = 16, type = 'l', xlab = "X", ylab = "Y")
+#Equations needed on lines
+```
+
+*Figure 1.7.1*
+
+<Br>
+
+|   |x~i~ Shelf Space|Y~i~ Spice Sales|$x_i-\bar{x}$|$y_i-\bar{y}$|$(x_i-\bar{x})(y_i-\bar{y})$|$(x_i-\bar{x})^2$|
+|---|---|---|---|--- |--- |---|
+|   |340|71 |40 | 1  |40  |1600 |
+|   |230|65 |-70| -5 |350 |4900 |
+|   |405|83 |105| 13 |1365|11025|
+|   |325|74 |25 | 4  |100 |625  |
+|   |280|67 |-20| -3 |60  |400  |
+|   |195|56 |-105|-14|1470|11025|
+|   |265|57 |-35|-13 |455 |1225 |
+|   |300|78 | 0 | 8  |0   |0    |
+|   |350|84 | 50|-14 |700 |2500 |
+|   |310|65 |10 | -5 |-50 |100  |
+|Sums|3000|700| 0 | 0 |4490 |33400 |
+|   |$\bar{x}=300.0$|$\bar{y}=70.0$|   |   |   |   |
+
+*Table 1.7.1: \ Sample calculations for obtaining the slope $b$ and intercept $a$ of the best-fitting regression line using the definitional formuals*
+
+<Br>
+
+$b=\frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{\sum(x_i - \bar{x})^2}=\frac{4490}{33400}=.1344$
+
+$a=\bar{y}-h\bar{x}=70.0-(.1344)(300)=29.68$
+
+$y^1=a+bx$
+
+$y^1=29.68+.1344x$
+
+### 1.8 How Good Is the Model?
+
+The regression line is a model based on the data.
+
++ We need some way of testing how well the model fits the observed data.
++ How?
+
+### 1.9 Sums of Squares
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+par(mfrow = c(2,2), mar = c(4,4,1,4)) # This tells R to put 1 row, 2 columns
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+segments(x0 = 1, y0 = 2, x1 = 1, y1 = 10, lty = 2)
+segments(x0 = 2, y0 = 8, x1 = 2, y1 = 10, lty = 2)
+segments(x0 = 3, y0 = 5, x1 = 3, y1 = 10, lty = 2)
+segments(x0 = 4, y0 = 8, x1 = 4, y1 = 10, lty = 2)
+segments(x0 = 5, y0 = 12, x1 = 5, y1 = 10, lty = 2)
+segments(x0 = 6, y0 = 11, x1 = 6, y1 = 10, lty = 2)
+segments(x0 = 7, y0 = 18, x1 = 7, y1 = 10, lty = 2)
+segments(x0 = 8, y0 = 15, x1 = 8, y1 = 10, lty = 2)
+abline(h = 10)
+box()
+
+
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+par(new=T)
+abline(h = 10)
+segments(x0 = 1, y0 = 3, x1 = 8, y1 = 17)
+segments(x0 = 1, y0 = 2, x1 = 1, y1 = 3, lty = 2)
+segments(x0 = 2, y0 = 5, x1 = 2, y1 = 8, lty = 2)
+segments(x0 = 3, y0 = 5, x1 = 3, y1 = 7, lty = 2)
+segments(x0 = 4, y0 = 8, x1 = 4, y1 = 9, lty = 2)
+segments(x0 = 5, y0 = 12, x1 = 5, y1 = 11, lty = 2)
+segments(x0 = 6, y0 = 11, x1 = 6, y1 = 13, lty = 2)
+segments(x0 = 7, y0 = 18, x1 = 7, y1 = 15, lty = 2)
+segments(x0 = 8, y0 = 15, x1 = 8, y1 = 16, lty = 2)
+box()
+
+
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+par(new=T)
+abline(h = 10)
+segments(x0 = 1, y0 = 3, x1 = 8, y1 = 17)
+segments(x0 = 1, y0 = 3, x1 = 1, y1 = 10, lty = 2)
+segments(x0 = 2, y0 = 5, x1 = 2, y1 = 10, lty = 2)
+segments(x0 = 3, y0 = 7, x1 = 3, y1 = 10, lty = 2)
+segments(x0 = 4, y0 = 9, x1 = 4, y1 = 10, lty = 2)
+segments(x0 = 5, y0 = 10, x1 = 5, y1 = 11, lty = 2)
+segments(x0 = 6, y0 = 10, x1 = 6, y1 = 13, lty = 2)
+segments(x0 = 7, y0 = 10, x1 = 7, y1 = 15, lty = 2)
+segments(x0 = 8, y0 = 10, x1 = 8, y1 = 17, lty = 2)
+box()
+#Arrow and word boxes
+```
+
+*Figure 1.9.1*
+
+<Br>
+
++ Diagram showing from where the regression sums of squares derive
+
+<Br>
+
+### 1.10 Total SS (SS~T~)
+
+SST
+
++ Total variability (variability between scores and the mean).
+
+TSS is the sum of the squared residuals when the most basic model is applied to the data. 
+
+How good is the mean as a model to the observed data?
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+par(mfrow = c(1,1), mar = c(4,4,1,4)) # This tells R to put 1 row, 2 columns
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+par(new=T)
+abline(h = 10)
+segments(x0 = 1, y0 = 2, x1 = 1, y1 = 10, lty = 2)
+segments(x0 = 2, y0 = 8, x1 = 2, y1 = 10, lty = 2)
+segments(x0 = 3, y0 = 5, x1 = 3, y1 = 10, lty = 2)
+segments(x0 = 4, y0 = 8, x1 = 4, y1 = 10, lty = 2)
+segments(x0 = 5, y0 = 12, x1 = 5, y1 = 10, lty = 2)
+segments(x0 = 6, y0 = 11, x1 = 6, y1 = 10, lty = 2)
+segments(x0 = 7, y0 = 18, x1 = 7, y1 = 10, lty = 2)
+segments(x0 = 8, y0 = 15, x1 = 8, y1 = 10, lty = 2)
+box()
+
+
+```
+
+*Figure 1.10.1*
+
+<Br>
+
+total SS $=\sum(Y_i - \bar{Y})^2$
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+par(mfrow = c(1,1), mar = c(4,4,1,4)) # This tells R to put 1 row, 2 columns
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+par(new=T)
+abline(h = 10)
+segments(x0 = 1, y0 = 2, x1 = 1, y1 = 10, lty = 2)
+segments(x0 = 2, y0 = 8, x1 = 2, y1 = 10, lty = 2)
+segments(x0 = 3, y0 = 5, x1 = 3, y1 = 10, lty = 2)
+segments(x0 = 4, y0 = 8, x1 = 4, y1 = 10, lty = 2)
+segments(x0 = 5, y0 = 12, x1 = 5, y1 = 10, lty = 2)
+segments(x0 = 6, y0 = 11, x1 = 6, y1 = 10, lty = 2)
+segments(x0 = 7, y0 = 18, x1 = 7, y1 = 10, lty = 2)
+segments(x0 = 8, y0 = 15, x1 = 8, y1 = 10, lty = 2)
+box()
+#needs dotted lines
+
+```
+
+*Figure 1.10.1: \ SS~T~ uses the differences between the observed data and the mean value of Y*
+
+<Br>
+
+### 1.11 Residual SS or Error SS (SS~R~)
+
+SS~R~
+
++ Residual/error variability (variability between the regression model and the actual data).
+
+Difference between the observed data and the model
+
+This represents the degree of inaccuracy when fitting the best fit model to the data.
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+par(new=T)
+abline(h = 10)
+segments(x0 = 1, y0 = 3, x1 = 8, y1 = 17)
+segments(x0 = 1, y0 = 2, x1 = 1, y1 = 3, lty = 2)
+segments(x0 = 2, y0 = 5, x1 = 2, y1 = 8, lty = 2)
+segments(x0 = 3, y0 = 5, x1 = 3, y1 = 7, lty = 2)
+segments(x0 = 4, y0 = 8, x1 = 4, y1 = 9, lty = 2)
+segments(x0 = 5, y0 = 12, x1 = 5, y1 = 11, lty = 2)
+segments(x0 = 6, y0 = 11, x1 = 6, y1 = 13, lty = 2)
+segments(x0 = 7, y0 = 18, x1 = 7, y1 = 15, lty = 2)
+segments(x0 = 8, y0 = 15, x1 = 8, y1 = 16, lty = 2)
+box()
+```
+
+*Figure 1.11.1*
+
+<Br>
+
+### 1.12 Residual SS
+
+SS~R~
+
++ Residual/error variability (variability between the regression model and the actual data).
+
+residual SS $=\sum(Y_i - \hat{Y})^2$
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+par(new=T)
+abline(h = 10)
+segments(x0 = 1, y0 = 3, x1 = 8, y1 = 17)
+segments(x0 = 1, y0 = 2, x1 = 1, y1 = 3, lty = 2)
+segments(x0 = 2, y0 = 5, x1 = 2, y1 = 8, lty = 2)
+segments(x0 = 3, y0 = 5, x1 = 3, y1 = 7, lty = 2)
+segments(x0 = 4, y0 = 8, x1 = 4, y1 = 9, lty = 2)
+segments(x0 = 5, y0 = 12, x1 = 5, y1 = 11, lty = 2)
+segments(x0 = 6, y0 = 11, x1 = 6, y1 = 13, lty = 2)
+segments(x0 = 7, y0 = 18, x1 = 7, y1 = 15, lty = 2)
+segments(x0 = 8, y0 = 15, x1 = 8, y1 = 16, lty = 2)
+box()
+```
+
+*Figure 1.11.1*
+
+<Br>
+
++ SS~R~ uses the differences between the observed data and the regression line
+
+### 1.13 Model SS or Regression SS (SS~M~)
+
+SS~M~ 
+
++ Model variability (difference in variability between the model and the mean).
+
+This is the improvement we get from fitting the model to the data relative to the null model.
+
+regression SS $=\sum(\hat{Y}_i - \bar{Y})^2$
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+par(new=T)
+abline(h = 10)
+segments(x0 = 1, y0 = 3, x1 = 8, y1 = 17)
+segments(x0 = 1, y0 = 3, x1 = 1, y1 = 10, lty = 2)
+segments(x0 = 2, y0 = 5, x1 = 2, y1 = 10, lty = 2)
+segments(x0 = 3, y0 = 7, x1 = 3, y1 = 10, lty = 2)
+segments(x0 = 4, y0 = 9, x1 = 4, y1 = 10, lty = 2)
+segments(x0 = 5, y0 = 10, x1 = 5, y1 = 11, lty = 2)
+segments(x0 = 6, y0 = 10, x1 = 6, y1 = 13, lty = 2)
+segments(x0 = 7, y0 = 10, x1 = 7, y1 = 15, lty = 2)
+segments(x0 = 8, y0 = 10, x1 = 8, y1 = 17, lty = 2)
+box()
+#needs dotted lines
+
+```
+
+*Figure 1.13.1*
+
+<Br>
+
+### 1.14 SST = SSR + SSM
+
+How do we get large SSM?
+
+What happens if the SSM is large?
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+par(new=T)
+abline(h = 10)
+segments(x0 = 1, y0 = 3, x1 = 8, y1 = 17)
+segments(x0 = 1, y0 = 3, x1 = 1, y1 = 10, lty = 2)
+segments(x0 = 2, y0 = 5, x1 = 2, y1 = 10, lty = 2)
+segments(x0 = 3, y0 = 7, x1 = 3, y1 = 10, lty = 2)
+segments(x0 = 4, y0 = 9, x1 = 4, y1 = 10, lty = 2)
+segments(x0 = 5, y0 = 10, x1 = 5, y1 = 11, lty = 2)
+segments(x0 = 6, y0 = 10, x1 = 6, y1 = 13, lty = 2)
+segments(x0 = 7, y0 = 10, x1 = 7, y1 = 15, lty = 2)
+segments(x0 = 8, y0 = 10, x1 = 8, y1 = 17, lty = 2)
+box()
+#needs dotted lines
+
+```
+
+*Figure 1.13.1*
+
+<Br>
+
+Regression model is much different from using the mean as the outcome, therefore regression model improves the outcome.
+
+So, we can calculate the proportion of improvement due to the model.
+
+SSM/SST, percentage of variation explained by the model.
+
+### 1.15 Testing the Model: ANOVA
+
+If the model results in better prediction than using the mean, then we expect SS~M~ to be much greater than SS~R~
+
+SST = SSM + SSR
+
+### 1.16 Evaluating the Quality of the Model: R^2^
+
+R^2^
+
++ The proportion of variance accounted for by the regression model.
++ The Pearson Correlation Coefficient Squared
+
+$R^2=\frac{SS_M}{SS_T}$
+
+### 1.17 SS for Model Testing
+
+A second use of the sum of squares values is to test the model.
+
+Testing $H_0:\beta = -0$ against $H_A:\beta\ne0$ 
+
+Evaluate the amount of systematic variance (regression/model) divided by the amount of unsystematic (residual) variance.
+
+Note: The magnitude of the sum of squares is dependent on the number of observations
+
+Testing $H_0:\beta = -0$ against $H_A:\beta\ne0$
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+y <- runif(200, 4,6)
+x <- runif(200, 1,10)
+plot(x, y, pch = 20, xlim = c(0,12), ylim = c(0,10))
+points(x = c(1,4,6,8,10), y = c(4,4.5,5,5.5,6), pch = 10,col="darkred")
+```
+
+*Figure 1.17.1*
+
+<Br>
+
+F test - "termed variance ratio test"
+
+1. Calculate quantities "mean squares"
+
+2. Use the SSM and SSR
+
+3. Divide the SSM and SSR by their 	respective degrees of freedom (DF).
+
++ DF for SSM
+      + The number of parameters in the model - 1
++ DF for SSR 
+      + number of obs - number of parameters in the model.
+
+### 1.18 Degrees of Freedom
+
+Given a statistic (mean, var) and sample size of a population.
+
+DF are the number of terms that are independent, such that when any of the other terms are known, the value can be estimated.
+
+### 1.19 Testing the Model: ANOVA
+
+Mean squared error
+
++ They can be expressed as averages, divided by DF terms.
++ These are called mean squares, MS.
++ MS~M~ = SS~M~/DF~M~
++ MS~R~ = SS~R~/DF~R~
+
+F test "termed variance ratio test"
+
+$F=\frac{MS_M}{MS_R}$
+
+<Br>
+
+|Age (days) (X)|Wing Length (cm) (Y)|
+|---   |--- |
+|3.0   |1.4 |
+|4.0   |1.5 |
+|5.0   |2.2 |
+|6.0   |2.4 |
+|8.0   |3.1 |
+|9.0   |3.2 |
+|10.0  |3.2 |
+|11.0  |3.9 |
+|12.0  |4.1 |
+|14.0  |4.7 |
+|15.0  |4.5 |
+|16.0  |5.2 |
+|17.0  |5.0 |
+
+$n=13$
+
+*Table 1.19.1: \ Wing Lengths of 13 Sparrows of Various Ages*
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(3,4,5,6,8,9,10,11,12,14,15,16,17)
+y <- c(1.4,1.5,2.2,2.4,3.1,3.2,3.2,3.9,4.1,4.7,4.5,5.2,5.0)
+plot(x,y, main = "", xlab = "Age. X. in days", ylab = "Wave length. Y. in cm", xlim = c(1,18), ylim = c(1,6), pch=16)
+segments(x0 = 3, y0 = 1.5, x1 = 17, y1 = 5.2)
+
+```
+
+*Figure 1.19.1: \ Sparrow wing length as a function of age. The Data are from table 1.19.1*
+
+<Br>
+
+$b=\frac{\sum xy}{\sum x^2}$
+
+$\alpha=\bar{Y}-\beta\bar{X}$
+
+### 1.20 Worked Example
+
+TSS
+
++ 19.656923
+
+Model SS
+
++ 19.132214
+
+
+|Source of Variation|Sum of Squares (SS)|DF|Mean Squares (MS)|
+|---|---|---|---|
+|Total $[Y_i-\bar{Y}]$|$\sum y^2$|$n-1$|   |
+|Linear regression $[\hat{Y}_i-\bar{Y}]$]|$\frac{(\sum xy)^2}{\sum x^2}$|1|$\frac{\mbox{regression SS}}{\mbox{regression DF}}$|
+|Residual $[Y_i-\hat{Y}]$|total SS - regression SS|$n-2$|$\frac{\mbox{residual SS}}{\mbox{residual DF}}$|
+
+*Table 1.20.1: \ Summary of the Calculations for testing $H_0:\beta=0$ against $H_A:\beta\ne0$ by an Analysis of Varience*
+
+<Br>
+
++ DF for Regression (model DF) is 1 in simple linear regression, It is the number of parameters - 1
++ Residual DF (Error DF) is equal n - 2
+
+<Br>
+
+|Source of Varience|SS|DF|MS|
+|---|---|---|---|
+|Total|19.656923|12|   |
+|Linear Regression|19.132214|1|19.132214|
+|Residual|0.524709|11|0.047701|
+
+*Table 1.20.2: \ worked example*
+
+<Br>
+
+$F=\frac{19.132214}{0.047701}=401.1$
+
+$F_{0.05(1),1.11} = 4.84$
+
+Therefore, reject H~0~
+
++ P<<0.0005 \: [P = 0.00000000053]
+
+### 1.21 Regression: An Example
+
+A record company boss was interested in predicting record sales from advertising.
+
+Data
+
++ 200 different album releases
+
+Outcome variable:
+
++ Sales (CDs and downloads) in the week after release
+
+Predictor variable:
+
++ The amount (in units of ?1000) spent promoting the record before release. 
+
+### 1.22 Output of a Simple Regression 
+
+In R:
+
+|Coefficients:|Estimate|Std. Error|t value|Pr(>|t|)|
+|---        |---      |---|---|---|
+|(intercept)|1.341e+02|7.537e+00|17.799|<2e-16 ***|
+|Adverts    |9.612e-02|9.632e-03|9.979 |<2e-16 ***|
+
+*Table 1.22.1: \ summary (albumSales.1)*
+
+<Br> 
+
++ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
++ Residual standard error: 65.99 on 198 degrees of freedom
++ Multiple R-squared: 0.3346, Adjusted R-squared: 0.3313 
++ F-statistic: 99.59 on 1 and 198 DF,  p-value: < 2.2e-16
+
+### 1.23 Using the Model
+
+<Br>
+
+\begin{align}
+Record \: Sales_i&=b_0+b_1Advertising \: Budget_i\\
+
+&=134.14+(0.09612\times Advertising \: Budget_i)
+\end{align}
+
+<Br>
+<Br>
+
+Record Sales~i~ = 134.14 + (0.09612 x Advertising Budget~i~)
+
+= 134.14 + (0.09612 x 100)
+
+= 143.75
+
+<Br>
+
+# 2 Multiple Linear Regression
+
+### 2.1 Multiple Linear Regression
+
+Simple linear regression is used to 
+
++ describe and 
++ predict the linear relationship (using a strait line).
+
+Given that we have collected several values of Y (dependent) and X (independent) variables
+
+The unknown parameters can be calculated.
+
+Model is fit by minimizing the sum of squared differences between the line and the actual data points - method of least squares.
+
+We still use our base equation:
+
+$outcome_i=(model)+error_i$
+
+But this time the model it is a bit more complicated. 
+
+When we add predictors, we add a coefficient. 
+
+So each predictor has its own coefficient and the outcome variable is predicted from a combination of all variables multiplied by their respective coefficients plus a residual term.
+
+### 2.2 Multiple Predictors
+
+Y is the outcome variable, b~1~ is the coefficient of X1, b~n~ is the coefficient of X~n~
+
+Seek to find a linear combinations of predictors that correlate maximally with the outcome variable.
+
+$Y_i=(b_0 + b_1X_{1i}+b_2X_{2i}+\ldots+b_nX_{ni})+\varepsilon_i$
+
+### 2.3 Album Sales Model
+
+From our record sales data we know that advertising accounts for 33% of the variation in album sales
+
+Therefore a large proportion of variation remains unexplained.
+
+Lets bring a new predictor variable into the mix: 
+
++ How many times the song was played on the radio during the week prior to its release. 
+
+### 2.4 Multiple Predictors Model
+
+Incorporate "airplay"
+
+So we have a model with three parameters and two slope coefficients. Because there are two predictors, so we can view the model in two dimensions:
+
+$Album \:Sales_i=(b_0+b_1advertising \: budget_i+b_2 airplay_i)+\varepsilon_i$
+
+<Br>
+
+### 2.5 Regression "Plane"
+
+``````{r, results='hide',message=FALSE, echo=FALSE}
+#install.packages("scatterplot3d")
+library(scatterplot3d)
+library(MASS)
+mu <- c(250,35,1000)
+stddev <- c(100, 35, 500)
+
+corMat <- matrix(c(1, 0.78, 0.63,
+                   0.78, 1, 0.27,
+                   0.63, 0.27, 1),
+                 ncol = 3)
+covMat <- stddev %*% t(stddev) * corMat
+covMat
+out <- as.data.frame(mvrnorm(n = 212, mu = mu, Sigma = covMat, empirical = FALSE))
+
+out$V1.s <- (out$V1 - min(out$V1)) #*1000+10 #x
+out$V2.s <- (out$V2 - min(out$V2))/10+45 #y
+out$V3.s <- (out$V3 - min(out$V3)) #*200+30 #z
+
+plot3d <- scatterplot3d(out$V2.s, out$V3.s, out$V1.s, pch = 16, xlab = "No. of Plays on Radio 1 per Week", ylab = "Album Sales (Thousands)", zlab = "Advertising Budget (Thousands of Pounds)", angle = 55)
+my.lm <- lm(V1.s ~ V2.s + V3.s, data = out)
+plot3d$plane3d(my.lm, lty.box = "solid")
+
+
+```
+
+
+*Figure 2.5.1*
+
+<Br>
+
+### 2.6 Multiple Linear Regression
+
+|Cities               |Y  |X~1~|X~2~|X~3~|X~4~|X~5~ |X~6~|
+|---                  |---|--- |--- |--- |--- |---  |--- |
+|Pheonix              |10 |70.3|213 |582 |6.0 |7.05 |36  |
+|Little Rock          |13 |61.0|91  |132 |8.2 |48.52|100 | 
+|San Francisco        |12 |56.7|453 |716 |8.7 |20.66|67  |
+|Denver               |17 |51.9|454 |515 |9.0 |12.95|86  |
+|Hartford             |56 |49.1|412 |158 |9.0 |43.37|127 |
+|Wilmington           |36 |54.0|80  |80  |9.0 |40.25|114 |
+|Washington           |29 |57.3|434 |757 |9.3 |38.89|111 |
+|Jacksonville         |14 |68.4|136 |529 |8.8 |54.57|116 |
+|Miami                |10 |75.5|207 |335 |9.0 |59.80|128 |
+|Atlanta              |24 |61.5|368 |497 |9.1 |48.34|115 |
+|Chicago              |110|50.6|3344|3369|10.4|34.44|122 |
+|Indianapolis         |28 |52.3|361 |746 |9.7 |38.74|121 |
+|Des Moines           |17 |49.0|104 |201 |11.2|30.85|103 |
+|Wichita              |8  |56.6|125 |277 |12.7|30.58|82  |
+|Louisville           |30 |55.6|291 |593 |8.3 |43.11|123 |
+|New Orleans          |9  |68.3|204 |361 |8.4 |56.77|113 |
+|Baltimore            |47 |55.0|625 |905 |9.6 |41.31|111 |
+|Detroit              |35 |49.9|1064|1513|10.1|30.96|129 |
+|Minneapolis- St. Paul|29 |43.5|699 |744 |10.6|25.94|137 |
+|Kansas City          |14 |54.5|381 |507 |10.0|37.00|99  |
+|St. Louis            |56 |55.9|775 |622 |9.5 |35.89|105 |
+|Omaha                |14 |51.5|181 |347 |10.9|30.18|98  |
+|Alburquerque         |11 |56.8|46  |244 |8.9 |7.77 |58  |
+|Albany               |46 |47.6|44  |116 |8.8 |33.36|135 |
+|Buffalo              |11 |47.1|391 |463 |12.4|36.11|166 |
+|Cincinnati           |23 |54.0|462 |453 |7.1 |39.04|132 | 
+
+*Table 2.6.1: \ Air pollution in 41 U.S. cities associatied with six environmental vairables*
+
+<Br>
+
+### 2.7 Model Interpretation
+
+We regress SO~2~ content in the air on average temperature X~1~ and the number of manufacturing enterprises, X~2~
+
+$\bar{y} = 77.231 + 1.0480X_1 + 0.02431X_2$
+
+A one unit change in X2 results in a 0.02431 increase in Y
+
+A one unit change in X1 results in a 1.048 increase in Y
+
+### 2.8 Test of Null Hypothesis
+
+We can analyze the null hypothesis that all of the regression coefficients are equal to zero using an ANOVA analysis 
+
++ analogous to that of the simple linear regression.
+
+### 2.9 Significance Testing
+
+In general, a significant F value will be associated with the rejection of the null hypothesis for some regression coefficients. 
+
++ Sometimes it is possible to have a significant F without significant regression coefficients - this situation occurs when there is multicollinearity.
++ This happens when X1 and X2 (for example) are highly correlated. 
+
+Singularity is an extreme amount of multicollinearity: there is perfect correlation between two or more variables.
+
+### 2.10 Multicollinearity
+
+Result in untrustworthy coefficients - serves to increase the variance of the estimate of the mean coefficient value.
+
+Limits the magnitude of the coefficient of determination - 
+
++ Example: inclusion of one predictor results in R2 = 0.80. 
++ When you add a highly correlated variable, the variance it accounts for is already described by the first variable - it does not account for unique variance. 
++ So we only get a slight increase in our R value.
+
+Importance of predictors - Difficult to discern which predictor is the most important
+
+### 2.11 Partitioning of sum of squares
+
+When we have serval predictors, the partitioning of sum of squares is the same as in the single variable case: 
+
++ SST is calculated as the difference between the values of Y observed and the mean value of the outcome variable
++ SSR diff between the values of Y predicted by model and the observed values.
++ SSM represents the diff. between the value of Y predicted by the model and the mean model value.
+
+### 2.12 Evaluation of Model Fit
+
+R^2^ - to evaluate how well the model fits the data.
+
+### 2.13 Determination of Predictors to Include?
+
+One of the most widespread ways is to use "stepwise" methods, you specify a direction either forward or backward.
+
+Forward style:
+
++ Initial model with only the constant b0 is made
++ Add single predictor that best predicts the outcome by selecting the one with the greatest correlation with the outcome
++ If fit is improved, then the predictor is retained
++ Repeat
+
+Backward selection. 
+
++ As above but remove coefficients one at a time.
+
+Computer intensive - simultaneous backward and forward.
+
+In these approaches parsimony is generally ignored.
+
+### 2.14 Model Design Considerations
+
+Predictor variables must be quantitative (continuous, unbounded, interval data) or categorical.
+
+Predictors should have non-zero variance.
+
+Predictors should not be highly correlated.
+
+Predictors should not be correlated with external variables.
+
++ Avoid proxy variables and make direct and explicit relationships
+
+### 2.15 Model Design Considerations 2
+
+It is desirable to employ a regression that is parsimonious - as few as necessary but as many as needed.
+
+What strategies are available to get the best regression:
+
++ Fit all possible subsets - choose the one resulting in the lowest coefficient of determination.
++ Forward, backward, or "both" variable selection.
++ Use an independent inclusion criteria.
+
+### 2.16 Mallow's CP
+
+Mallow's CP is a technique for model selection in regression (Mallows 1973).
+
+The C~p~ statistic is defined as a criteria to assess fits when models with different numbers of parameters are being compared.
+
+$C_p=\frac{RSS(p)}{\sigma^2}-N+2_p$
+
+If model(p) is correct, then C~p~ will tend to be close to or smaller than p. 
+
+Therefore, a simple plot of C~p~ versus p can be used to decide amongst models.
+
+In case of ordinary linear regression, Mallow's method is based on estimating the mean squared error (MSE).
+
+# 3 Comparing Two Means
+
+### 3.1 Comparing Two Means
+
+t-tests:
+
++ Independent
++ Dependent (aka paired, matched)
+
+Rationale for the tests
+
++ Assumptions
+
+t-tests as a GLM
+
+Interpretation
+
+Reporting results
+
+Robust methods
+
+Two-sample hypotheses
+
+A common situation is the comparison of the means of two populations 
+
+Two sample t-test for the two tailed hypothesis:
+
++ Data are the times (in minutes) that it takes blood to clot in experimental samples given two different drugs
++ The question is: is the population of mean blood clotting times administered with drug B the same as the population mean for blood-clotting times of specimens given drug G.
+
+### 3.2 Experiments
+
+The simplest form of experiment that can be done is an experiment with only one independent variable that is manipulated. 
+
++ More often than not, the manipulation of the independent variable involves having an experimental condition and a control.
++ In this example we compare outcome under two different drugs.
++ E.g., Is the movie Scream 2 scarier than the original Scream? 
+      + Measure the level of anxiety of two groups of randomly selected theatre goers and compare them.
+
+These are the situations can be analysed with a t-test
+
+### 3.3 t-Test
+
+If the two samples came from two normally distributed populations and the variances of the populations are equal we can use a two sample t-test.
+
+Independent t-test
+
++ Null hypothesis: mu~1~ = mu~2~.
+
+Also useful in significance testing using confidence intervals.
+
++ Testing the significance of Pearson's correlation coefficient
++ Testing the significance of b in regression.
+
+### 3.4 Testing the Significance of b in Regression
+
+Picture 5 (copy and pasted from R?)
+
+### 3.5 Rationale for the t-test 1
+
+Two samples of data are collected and the sample means calculated. 
+
++ These means might differ by either a little or a lot.
+
+If the samples come from the same population, then we expect their means to be roughly equal. 
+
++ Although it is possible (even likely) for their means to differ by chance alone, we would expect large differences between sample means to occur very infrequently.
+
+### 3.6 Rationale for the t-test 2
+
+We compare:
+
++ 1. the difference between the sample means that we collected  
++ 2. the difference between the sample means that we would expect to obtain if there were no effect (i.e. if the null hypothesis were true). 
++ We use the standard error as a gauge of the variability between sample means. 
+
+### 3.7 Rationale for the t-test 3
+
+If the difference between the samples we have collected is larger than what we would expect based on the standard error then we can infer one of two things:
+
++ There is no effect and sample means in our population fluctuate a lot (sampling error).
+      + By chance, collected two samples that are atypical of the population from which they came.
++ The two samples come from different populations but are typical of their respective parent population. 
+      + In this scenario, the difference between samples represents a genuine difference between the samples (and so the null hypothesis is incorrect).
+
+We are trying to infer - did the samples come from the same population!
+
+### 3.8 Rationale for the t-test 4
+
+If the observed difference between the sample means is large:
+
++ The more confident we become that the second explanation is correct (i.e. that the null hypothesis should be rejected).
+
+### 3.9 Rationale for the t-test 5
+
+<Br>
+
+$t=\frac{\mbox{Obeserved difference between sample means - expected difference between population means (if null hypothesis is true)}}{\mbox{Estimated of the standard error of the difference between two sample means}}$
+
+<Br>
+
+### 3.10 Example
+
+Is arachnophobia (fear of spiders) specific to real spiders or is a picture enough?
+
+Participants
+
++ 24 arachnophobic individuals
+
+Manipulation
+
++ 12 participants were exposed to a real spider
++ 12 were exposed to a picture of the same spider
+
+Outcome
+
++ Anxiety
+
+### 3.11 The t-test as a GLM - "All statistical procedures are basically the same"
+
+Outcome~i~ = (model) + error~i~
+
+Consider an experiment where Groups were exposed to a "Picture of a Spider" and an "Actual Spider"
+
+The response variable is the level of Anxiety
+
+Outcome~i~ = (model) + error~i~
+
+\begin{aligned}
+A_i&=b_0+b_1G_i+\varepsilon_i\\
+
+Anxiety_i+&=b_0+b_1group_i+\varepsilon_i
+\end{aligned}
+
+<Br>
+
+The independent variable has only two values "group 1" and "group 2" ie. The "real" and "picture" groups.
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+
+df. <- data.frame(Group = c(rep("Picture", 25), rep("Real Spider", 25)), Anxiety = c(runif(25,25,55),runif(25,30,65)))
+head(df.)
+boxplot(Anxiety~Group, data = df.)
+
+```
+
+*Figure 3.11.1*
+
+<Br>
+
+### 3.12 Picture Group
+
+We can code the "dummy" variable 
+
+The group variable = 0
+ 
+Intercept = mean of baseline group
+
+\begin{aligned}
+\bar{X}_{Picture}&=b_0+(b_1\times0)\\
+
+b_0&=\bar{X}_{Picture}\\
+
+b_0&=40
+\end{aligned}
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+
+df. <- data.frame(Group = c(rep("Picture", 25), rep("Real Spider", 25)), Anxiety = c(runif(25,25,55),runif(25,30,65)))
+head(df.)
+boxplot(Anxiety~Group, data = df.)
+
+```
+
+*Figure 3.12.1*
+
+<Br>
+
+### 3.13 Real Spider Group
+
+The group variable = 1
+
+b~1~ = Difference between means
+
+\begin{aligned}
+\bar{X}_{Real}&=b_0+(b_1\times1)\\
+
+\bar{X}_{Real}&=\bar{X}_{Picture}+b_1\\
+
+b_1&=\bar{X}_{Real}-\bar{X}_{Picture}\\
+
+&=47-40\\
+
+&=7
+\end{aligned}
+
+<Br>
+
+````{r, results='hide',message=FALSE, echo=FALSE}
+
+df. <- data.frame(Group = c(rep("Picture", 25), rep("Real Spider", 25)), Anxiety = c(runif(25,25,55),runif(25,30,65)))
+head(df.)
+boxplot(Anxiety~Group, data = df.)
+
+```
+
+*Figure 3.13.1*
+
+<Br>
+
+### 3.14 Output from a Regression
+
+Picture (copy and pasted from R?)
+
+### 3.15 The Independent t-test 1
+
+$t=\frac{\bar{X}_1-\bar{X}_2}{\sqrt{\frac{S^2_p}{n_1}+\frac{S^2_p}{n_2}}}$
+
+### 3.16 The Independent t-test 2
+
+$t=\frac{\bar{X}_1-\bar{X}_2}{\sqrt{\frac{S^2_p}{n_1}+\frac{S^2_p}{n_2}}}$
+
+The numerator is the difference between sample means
+
+Denominator is the standard error of the difference between the sample means
+
++ a measure of the variability of the data within the two samples.
+
+### 3.17 The Independent t-test 3
+
+$S^2_p=\frac{(n_1-1)S^2_1+(n_2-1)S^2_2}{n_1+n_2-2}$
+
+$S^2_p=\frac{SS_1+SS_2}{v_1+v_2}$
+
+Where v~1~ and v~2~ are the degrees of freedom, v~1~ = n~1~ - 1 and v~2~ = n~2~ -1
+
+The test value is compared to the critical value at a given ??
+
+$t_\alpha(2),(v_1+v_2)$
+  
+  + Need to set Alpha vaule
+  + (2): One or two-tailed test?
+  + v~1~ = n~1~ - 1 and v~2~ = n~2~ - 1
+
+### 3.18 Zar Example
+
+<Br>
+
+$H_0: \mu_1 = \mu_2$
+$H_A: \mu_1\ne\mu_2$
+
+|Given drug B|Given drug G|
+|---|---|
+|8.8|9.9|
+|8.4|9.0|
+|7.9|11.1|
+|8.7|9.6|
+|9.1|8.7|
+|9.6|10.4|
+|   |9.5|
+|------|
+|$n_1=6$|$n_2=7$|
+|$\nu_1=5$|$\nu_2=6$|
+|$\bar{X}_1=$ 8.75 min | $\bar{X}_2=$ 9.74 min|
+|SS~1~ = 1.6950 min^2^ | \ SS~2~ = 4.0171 min^2^|
+
+*Table 3.18.1: \ Zar example*
+
+<Br>
+
+$S^2_p=\frac{SS_1+SS_2}{v_1+v_2}=\frac{1.6950+4.0171}{5+6}=\frac{5.7121}{11}=0.5193 \: \mbox{min}^2$
+
+<Br>
+
+\begin{aligned}
+s_{\bar{X}-\bar{X}_2}&=\sqrt{\frac{S^2_p}{n_1}+\frac{S^2_p}{n_2}}=\sqrt{\frac{0.5193}{6}+\frac{0.5193}{7}}=\sqrt{0.0866+0.0742}\\
+
+&=\sqrt{0.1608}=0.40 \: \mbox{min}
+\end{aligned}
+
+<Br>
+
+$t=\frac{\bar{X}_1-\bar{X}_2}{s_{\bar{X}_1-\bar{X}_2}}$
+
+<Br>
+
+### 3.19 Zar Example Determine test value
+
+$t=\frac{\bar{X}_1-\bar{X}_2}{s_{\bar{X}_1-\bar{X}_2}}=\frac{8.75-9.74}{0.40}=\frac{-0.99}{0.40}=-2.475$
+
+$t_{0.05(2),v}=t_{0.05(2),11}=2.201$
+
++ Determine critical value
+
+Therefore, reject H~0~
+
++ $0.02<P(|t|\ge2.175)<0.05 \: \: [P=0.031]$
+
+### 3.20 Confidence Limits for Population Means These are based on the t-distribution
+
+In practical applications, we replace the population standard deviation sigma by S, the standard deviation of the sample.
+
+However, this substitution changes the coverage probability 1 - alpha. 
+
+Fortunately, there is a simple adjustment that allows us to maintain the desired coverage level 1- alpha.
+
+t-distribution critical value t. 
+
+The resulting confidence interval is the primary result of this section. 
+
+### 3.21 Confidence Limits for Population Means
+
+  t - Confidence Interval: When the population standard deviation $\sigma$ is not known, an interval estimate for the population average $\mu$ with confidence level 1-$\alpha$ is given by: $\bar{X}\pm t(\frac{S}{\sqrt{n}})$
+
+t is the critical value determined by the t-distirbution
+
+There is a close relationship between confidence intervals and significance tests. 
+
+Specifically, if a statistic is significantly different from 0 at the 0.05 level, then the 95% confidence interval will not contain 0. 
+
+All values in the confidence interval are plausible values for the parameter
+
+Values outside the interval are rejected as plausible values for the parameter. 
+
+### 3.22 When Assumptions are Broken
+
+t-test
+
++ Mann-Whitney test
+
+Robust tests
+
++ Bootstrapping
++ Trimmed means
+
+### 3.23 Mann-Whitney "U" Test
+
+Do not require estimation of mu and sigma.
+
+No assumptions about distributions.
+
+RANKS of data.
+
+Two sample rank test
+
++ Rank from highest to lowest, the greatest value in either group is given a one, second given a two..
+
+$U=n_1n_2+\frac{n_1(n_1+1)}{2}-R_1$
+
++ n~1~ and n~2~ are the number of observation sin samples 1 and 2. 
++ R~1~ is the sum of the ranks in sample 1 
+
+H~0~: Male and female students are the same height.
+H~A~: Male and female students are not the same height.
+
+$\alpha=0.05$
+
+<Br>
+
+|Height of males|Height of females|Ranks of male heights|Ranks of female heights|
+|---|---|---|---|
+|193 cm |178 cm |1   |6   |
+|188   |173   |2   |8   |
+|185   |168   |3   |10   |
+|183   |165   |4   |11   |
+|180   |163   |5   |12   |
+|175   |   |7   |   |
+|170   |   |9   |   |
+|---|
+|$n_1=7$|$n_2=5$|$R_1=31$|$R_2=47$|
+
+*Table 3.23.1: \ Heights of male and female students* 
+
+<Br>
+
+$U=n_1n_2+\frac{n_1(n_1+1)}{2}-R_1$
+
+$(7)(5)+\frac{(7)(8)}{2}-31$
+
+$35+28-31$
+
+$32$
+
+<Br>
+
+$U^1=n_1n_2-U$
+
+$(7)(5)-32$
+
+$=3$
+
+<Br>
+
+$U_{0.05(2),5,7}=30$
+
+As 32>30, H~0~ is rejected.
+
+Therefore, we conclude that height is different for male and female students. 
+
+<Br>
+
+# 4 Logistic Regression
+
+### 4.1 Logistic Regression
+
+When and why do we use logistic regression?
+
++ Binary
++ Multinomial
+
+Theory behind logistic regression
+
+Interpreting logistic regression
+
+### 4.2 When and Why?
+
+To predict an outcome variable that is categorical from one or more categorical or continuous predictor variables.
+
+Used because having a categorical  outcome variable violates the assumption of linearity in normal regression.
+
+### 4.3 We will focus on regression with one predictor
+
+P(Y)=$\frac{1}{1+e^{-(b_0+b_1X_1+\varepsilon_i)}}$
+
+Outcome
+
++ We predict the probability of the outcome occurring
+
+b~0~ and b~1~
+
++ Can be thought of in much the same way as multiple regression
++ Note the normal regression equation forms part of the logistic regression equation
+
+### 4.4 Assessing the Model
+
+log - likelihood $=\sum^N_{i=1}[\Upsilon_iln(P(\Upsilon_i))+(1-\Upsilon_1)ln(1-P(\Upsilon_i))]$
+
+The log-likelihood statistic
+
++ Analogous to the residual sum of squares in multiple regression
++ It is an indicator of how much unexplained information there is after the model has been fitted.
++ Large values indicate poorly fitting statistical models.
+
+### 4.5 Assessing Changes in Models
+
+It's possible to calculate a log-likelihood for different models and to compare these models by looking at the difference between their log-likelihoods.
+
+$\chi^2=2[LL(new)-LL(baseline)]$
+
+$(df=k_{new}-k_{baseline})$
+
+### 4.6 Assessing Predictors: The Odds Ratio
+
+$\mbox{odss ratio}=\frac{\mbox{odds after a unit change in the predictor}}{\mbox{odds before a unit change in the predictor}}$
+
+Indicates the change in odds resulting from a unit change in the predictor.
+
+### 4.7 Things That Can Go Wrong
+
+Assumptions from linear regression:
+
++ Linearity
++ Independence of errors
++ Multicollinearity - we will spend time on this in multiple linear regression.
+
+### 4.8 Complete Separation
+
+When the outcome variable can be perfectly predicted.
+
++ E.g. predicting whether someone is a burglar, your teenage son or your cat based on weight.
++ Weight is a perfect predictor of cat/burglar unless you have a very fat cat indeed!
+
+```{r echo=FALSE, warning=FALSE}
+par(mfrow = c(1,2))
+
+weight <- c(rnorm(25, 50,10), rnorm(25,70,10))
+p <- c(rep(0,25),rep(1,25))
+
+g=glm(p~weight,family=binomial) # run a logistic regression model (in this case, generalized linear model with logit link). see ?glm
+plot(weight, p, pch = 24, ylab = "Probability of Outcome", xlab = "Weight (kg)")
+curve(predict(g,data.frame(weight=x),type="resp"),add=TRUE) # draws a curve based on prediction from logistic regression model
+
+points(weight,fitted(g),pch=20) 
+
+
+weight <- c(rnorm(25, 10,2), rnorm(25,50,5))
+w2 <- c(rnorm(25, 5, 2), rnorm(25, 50, 15))
+p <- c(rep(0,25),rep(1,25))
+
+g=glm(p~weight,family=binomial)
+g2=glm(p~w2,family=binomial)
+
+
+plot(weight, p, pch = 24, xlab = "Weight (kg)", ylab = "Probability of Outcome")
+points(w2, p, pch = 16)
+curve(predict(g,data.frame(weight=x),type="resp"),add=TRUE) 
+curve(predict(g2,data.frame(w2=x),type="resp"),add=TRUE, lty = 2) 
+
+
+```
+
+
+
+*Figure 4.8.1*
+
+<Br>
+
+### 4.9 Over Dispersion
+
+Over dispersion is where the variance is larger than expected from the model.
+
+This can be caused by violating the assumption of independence.
+
+This problem makes the standard errors too small! 
+
+### 4.10 An Example
+
+Predictors of a treatment intervention.
+
+Participants
+
++ 113 adults with a medical problem
+
+Outcome:
+
++ Cured (1) or not cured (0).
+
+Predictors:
+
++ Intervention: intervention or no treatment.
+
+<Br>
+
+# 5 Comparing Several Means: One-Way ANOVA
+
+### 5.1 Comparing Several Means: ANOVA
+
+Understand the basic principles of ANOVA
+
++ Why it is done?
++ What it tells us?
+
+Theory of one-way independent ANOVA
+
+Following up an ANOVA:
+
++ Planned contrasts/comparisons
+      + Choosing contrasts
+      + Coding contrasts
++ Post hoc tests
+
+### 5.2 When and Why?
+
+When we want to compare means we can use a t-test. This test has limitations:
+
++ You can compare only 2 means: often we would like to compare means from 3 or more groups.
++ It can be used only with one predictor/independent variable.
+
+ANOVA
+
++ Compares several means.
++ Can be used when you have manipulated more than one independent variable.
++ It is an extension of regression (the general linear model).
+
+### 5.3 ANOVA
+
+$H_0: \mu_1=\mu_2=\mu_3$
+
+Fisher: British statistician and geneticists. Introduced this analysis 
+
+Let us assume that we test four different feeds and want to see if the body weights in pigs changes using the different feeds.
+
+We are going to test the effect of one factor - feed type. The analysis is termed a one-factor test or one-way ANOVA.
+
+A population of pigs is assigned, at random to each of the four treatments. To be specific there are four treatment levels.
+
+Parametric test
+
+### 5.4 Why Not Use Lots of t-Tests?
+
+If we want to compare several means why don't we compare pairs of means with t-tests?
+
++ Can't look at several independent variables
++ Inflates the Type I error rate
++ Type one error rate = 1 - 0.95^n^
+
+### 5.5 What Does ANOVA Tell Us?
+
+Null hypothesis:
+
++ Like a t-test, ANOVA tests the null hypothesis that the means are the same.
+
+Experimental hypothesis:
+
++ The means differ.
+
+ANOVA is an omnibus test
+
++ It test for an overall difference between groups.
++ It tells us that the group means are different.
++ It doesn't tell us exactly which means differ.
+
+$H_0: \mu_1=\mu_2=\mu_3=\mu_4$
+
+H~A~: The mean weights of pigs on the four diets are not all equal 
+
+If H~0~ is rejected, there is al least one difference among the four means.
+
+### 5.6 ANOVA as Regression
+
+$\mbox{outcome}_i = (\mbox{model})+\mbox{error}_i$
+
+$\mbox{libido}_i=b_0+b_2\mbox{high}_i+b_1\mbox{low}_i+\varepsilon_i$
+
+<Br>
+
+|Group|Dummy variable 1 (High)|Dummy variable 2 (Low)|
+|---|---|---|
+|Placebo|0|0|
+|Low dose viagra|0|1|
+|High dose viagra|1|0|
+
+*Table 5.6.1: \ Dummy coding for the three-group experimental design*
+
+<Br>
+
+### 5.7 Placebo Group
+
+$\mbox{libido}_i=b_0+b_2\mbox{high}_i+b_1\mbox{low}_i+\varepsilon_i$
+
+$\mbox{libido}_i=b_0+(b_2\times 0)+(b_1\times 0)$
+
+$\mbox{libido}_i=b_0$
+
+$\bar{X}_{placebo}=b_0$
+
+<Br>
+
+### 5.8 High Dose Group
+
+$\mbox{libido}_i=b_0+b_2\mbox{high}_i+b_1\mbox{low}_i+\varepsilon_i$
+
+$\mbox{libido}_i=b_0+(b_2\times 1)+(b_1\times 0)$
+
+$\mbox{libido}_i=b_0+b_2$
+
+$\bar{X}_{high}= \bar{X}_{placebo}+b_2$
+
+$b_2=\bar{X}_{high}-\bar{X}_{placebo}$
+
+<Br>
+
+### 5.9 Low Dose Group
+
+$\mbox{libido}_i=b_0+b_2\mbox{high}_i+b_1\mbox{low}_i+\varepsilon_i$
+
+$\mbox{libido}_i=b_0+(b_2\times 0)+(b_1\times 1)$
+
+$\mbox{libido}_i=b_0+b_1$
+
+$\bar{X}_{low}=\bar{X}_{placebo}+b_1$
+
+$b_1=\bar{X}_{low}-\bar{X}_{placebo}$
+
+<Br>
+
+### 5.10 Output from Regression
+
+|Coefficients:|Estimate|Std. Error|t value|Pr(>|t|)|
+|---|---|---|---|---|
+|(intercept)   |2.2000   |0.6272   |3.508   |0.00432 **|
+|dummy 1       |2.8000   |0.8869   |3.157   |0.00827 **|
+|dummy 2       |1.0000   |0.8869   |1.127   |0.28158   |
+
+Signif. Codes: \ 0 '***' 0.001 '**' 0.01 '*' 0.05'.' 0.1 '' 1
+
+<Br>
+
+*Table 5.10.1: \ Output from Regression*
+
+<Br>
+
++ residual standard error: \ 1.402 on 12 degrees of freedom. 
++ Multiple R-squared: \ 0.4604, Adjusted R-squared: \ 0.3704
++ F-statistic: \ 5.119 on 2 and 12 DF, p-value: \ 0.02469
+
+<Br>
+
+### 5.11 Experiments vs. Correlation
+
+ANOVA in regression:
+
++ Used to assess whether the regression model is good at predicting an outcome.
+
+ANOVA in experiments:
+
++ Used to see whether experimental manipulations lead to differences in performance on an outcome.
+      + By manipulating a predictor variable can we cause (and therefore predict) a change in behavior?
+
+Same question is of interest in regression and experimental maniupulations:
+
++ In experiments we systematically manipulate the predictor, in regression we don't.
+
+### 5.12 Theory of ANOVA
+
+We calculate how much variability there is between scores
+
++ Total sum of squares (SS~T~).
+
+We then calculate how much of this variability can be explained by the model we fit to the data
+
++ How much variability is due to the experimental manipulation, model sum of squares (SS~M~)
+
+And how much cannot be explained
+
++ How much variability is due to individual differences in performance, residual sum of squares (SS~R~). 
+
+We compare the amount of variability explained by the model (experiment), to the error in the model (individual differences)
+
++ This ratio is called the F-ratio.
+
+If the model explains a lot more variability than it can't explain, then the experimental manipulation has had a significant effect on the outcome.
+
+Figure 62
+
+If the experiment is successful, then the model will explain more variance than it can't
+
++ SS~M~ will be greater than SS~R~
+
+### 5.13 ANOVA by Hand
+
+Testing the effects of Viagra on libido using three groups:
+
++ Placebo (sugar pill)
++ Low dose viagra
++ High dose viagra
+
+The outcome/dependent variable (DV) was an objective measure of libido.
+
+### 5.14 The Data
+
+|   |Placebo|Low Dose|High Dose|
+|---|---|---|---|
+|   |3  |5   |7 |
+|   |2  |2   |4 |
+|   |1  |4   |5 |
+|   |1  |2   |3 |
+|   |4  |3   |6 |
+|$\bar{X}$|2.20|3.20|5.00|
+|s   |1.30|1.30|1.58|
+|s^2^|1.70|1.70|2.50|
+
+Grand Mean = 3.467, Grand SD = 1.767, Grand Variance = 3.124
+
+*Table 5.14.1: \ Viagra data*
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(1,2,3,4,5)
+y <- c(3,2,1,1,4)
+plot(x,y, main = "", xlab = "Participant", ylab = "Libido", xlim = c(0,16), ylim = c(0,8), pch=16)
+abline(h = 3.5)
+segments(x0 = 1, y0 = 2.2, x1 = 5, y1 = 2.2)
+segments(x0 = 1, y0 = 2.2, x1 = 1, y1 = 3, lty = 2)
+segments(x0 = 2, y0 = 2.2, x1 = 2, y1 = 2, lty = 2)
+segments(x0 = 3, y0 = 2.2, x1 = 3, y1 = 1, lty = 2)
+segments(x0 = 4, y0 = 2.2, x1 = 4, y1 = 1, lty = 2)
+segments(x0 = 5, y0 = 2.2, x1 = 5, y1 = 4, lty = 2)
+
+x <- c(6,7,8,9,10)
+y <- c(5,2,4,2,3)
+points(x,y, main = "", xlab = "Participant", ylab = "Libido", xlim = c(0,16), ylim = c(0,8), pch=17)
+segments(x0 = 6, y0 = 3.2, x1 = 10, y1 = 3.2)
+segments(x0 = 6, y0 = 5, x1 = 6, y1 = 3.2, lty = 2)
+segments(x0 = 7, y0 = 2, x1 = 7, y1 = 3.2, lty = 2)
+segments(x0 = 8, y0 = 4, x1 = 8, y1 = 3.2, lty = 2)
+segments(x0 = 9, y0 = 2, x1 = 9, y1 = 3.2, lty = 2)
+segments(x0 = 10, y0 = 3, x1 = 10, y1 = 3.2, lty = 2)
+
+x <- c(11,12,13,14,15)
+y <- c(7,4,5,3,6)
+points(x,y, main = "", xlab = "Participant", ylab = "Libido", xlim = c(0,16), ylim = c(0,8), pch=15)
+segments(x0 = 11, y0 = 5, x1 = 15, y1 = 5)
+segments(x0 = 11, y0 = 7, x1 = 11, y1 = 5, lty = 2)
+segments(x0 = 12, y0 = 4, x1 = 12, y1 = 5, lty = 2)
+segments(x0 = 14, y0 = 3, x1 = 14, y1 = 5, lty = 2)
+segments(x0 = 15, y0 = 6, x1 = 15, y1 = 5, lty = 2)
+
+arrows(x0 = 5.5, y0 = 2.2, x1 = 5.5, y1 = 3.2)
+arrows(x0 = 10.5, y0 = 2.2, x1 = 10.5, y1 = 5)
+
+legend("bottomright", legend = c("Placebo", "Low Dose", "Low Dose"), pch = c(16,17,15), lty = 1)
+```
+
+*Figure 5.14.1*
+
+<Br>
+
+### 5.15 Step 1: Calculate SS~T~
+
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+par(mfrow = c(1,1), mar = c(4,4,1,4)) # This tells R to put 1 row, 2 columns
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+par(new=T)
+abline(h = 10)
+segments(x0 = 1, y0 = 2, x1 = 1, y1 = 10, lty = 2)
+segments(x0 = 2, y0 = 8, x1 = 2, y1 = 10, lty = 2)
+segments(x0 = 3, y0 = 5, x1 = 3, y1 = 10, lty = 2)
+segments(x0 = 4, y0 = 8, x1 = 4, y1 = 10, lty = 2)
+segments(x0 = 5, y0 = 12, x1 = 5, y1 = 10, lty = 2)
+segments(x0 = 6, y0 = 11, x1 = 6, y1 = 10, lty = 2)
+segments(x0 = 7, y0 = 18, x1 = 7, y1 = 10, lty = 2)
+segments(x0 = 8, y0 = 15, x1 = 8, y1 = 10, lty = 2)
+box()
+
+
+```
+
+*Figure 5.15.1: \ SS~T~ uses the differences between the observed data and the mean valiu of Y. Where the mean is the grand mean* 
+
+<Br>
+      
+### 5.16 Total Sum of Squares (SS~T~)
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(1,2,3,4,5)
+y <- c(3,2,1,1,4)
+plot(x,y, main = "", xlab = "Participant", ylab = "Libido", xlim = c(0,16), ylim = c(0,8), pch=16)
+abline(h = 3.5)
+segments(x0 = 1, y0 = 2.2, x1 = 5, y1 = 2.2)
+segments(x0 = 1, y0 = 2.2, x1 = 1, y1 = 3, lty = 2)
+segments(x0 = 2, y0 = 2.2, x1 = 2, y1 = 2, lty = 2)
+segments(x0 = 3, y0 = 2.2, x1 = 3, y1 = 1, lty = 2)
+segments(x0 = 4, y0 = 2.2, x1 = 4, y1 = 1, lty = 2)
+segments(x0 = 5, y0 = 2.2, x1 = 5, y1 = 4, lty = 2)
+
+x <- c(6,7,8,9,10)
+y <- c(5,2,4,2,3)
+points(x,y, main = "", xlab = "Participant", ylab = "Libido", xlim = c(0,16), ylim = c(0,8), pch=17)
+segments(x0 = 6, y0 = 3.2, x1 = 10, y1 = 3.2)
+segments(x0 = 6, y0 = 5, x1 = 6, y1 = 3.2, lty = 2)
+segments(x0 = 7, y0 = 2, x1 = 7, y1 = 3.2, lty = 2)
+segments(x0 = 8, y0 = 4, x1 = 8, y1 = 3.2, lty = 2)
+segments(x0 = 9, y0 = 2, x1 = 9, y1 = 3.2, lty = 2)
+segments(x0 = 10, y0 = 3, x1 = 10, y1 = 3.2, lty = 2)
+
+x <- c(11,12,13,14,15)
+y <- c(7,4,5,3,6)
+points(x,y, main = "", xlab = "Participant", ylab = "Libido", xlim = c(0,16), ylim = c(0,8), pch=15)
+segments(x0 = 11, y0 = 5, x1 = 15, y1 = 5)
+segments(x0 = 11, y0 = 7, x1 = 11, y1 = 5, lty = 2)
+segments(x0 = 12, y0 = 4, x1 = 12, y1 = 5, lty = 2)
+segments(x0 = 14, y0 = 3, x1 = 14, y1 = 5, lty = 2)
+segments(x0 = 15, y0 = 6, x1 = 15, y1 = 5, lty = 2)
+
+
+legend("bottomright", legend = c("Placebo", "Low Dose", "Low Dose"), pch = c(16,17,15), lty = 1)
+```
+
+*Figure 5.16.1*
+
+<Br>
+
+|   |Placebo|Low Dose|High Dose|
+|---|---|---|---|
+|   |3  |5   |7 |
+|   |2  |2   |4 |
+|   |1  |4   |5 |
+|   |1  |2   |3 |
+|   |4  |3   |6 |
+|$\bar{X}$|2.20|3.20|5.00|
+|s   |1.30|1.30|1.58|
+|s^2^|1.70|1.70|2.50|
+
+Grand Mean = 3.467, Grand SD = 1.767, Grand Variance = 3.124
+
+<Br>
+
+*Table 5.14.1: \ Viagra data*
+
+<Br>
+
+SS~T~ = sum((observed - Grand mena)^2^)
+
+SS~T~ =S^2^(N-1) 
+
+### 5.17 Degrees of Freedom
+
+Degrees of freedom (df) are the number of values that are free to vary.
+
+In general, the df are one less than the number of values used to calculate the SS.
+
+DF~Total~ =  N - 1 
+
+### 5.18 Model Sum of Squares (SS~M~)
+
+Difference between the model estimate and the mean (or "Grand Mean")
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(2,8,5,8,12,11,18,15)
+plot(x,y, main = "", xlab = "x", ylab = "y", xlim = c(1,8), ylim = c(1,18), pch=1)
+par(new=T)
+abline(h = 10)
+segments(x0 = 1, y0 = 3, x1 = 8, y1 = 17)
+segments(x0 = 1, y0 = 3, x1 = 1, y1 = 10, lty = 2)
+segments(x0 = 2, y0 = 5, x1 = 2, y1 = 10, lty = 2)
+segments(x0 = 3, y0 = 7, x1 = 3, y1 = 10, lty = 2)
+segments(x0 = 4, y0 = 9, x1 = 4, y1 = 10, lty = 2)
+segments(x0 = 5, y0 = 10, x1 = 5, y1 = 11, lty = 2)
+segments(x0 = 6, y0 = 10, x1 = 6, y1 = 13, lty = 2)
+segments(x0 = 7, y0 = 10, x1 = 7, y1 = 15, lty = 2)
+segments(x0 = 8, y0 = 10, x1 = 8, y1 = 17, lty = 2)
+box()
+```
+
+*Figure 5.18.1*
+
+<Br>
+
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(1,2,3,4,5)
+y <- c(3,2,1,1,4)
+plot(x,y, main = "", xlab = "", ylab = "", xlim = c(0,16), ylim = c(0,8), pch=16)
+abline(h = 3.5)
+segments(x0 = 1, y0 = 2.2, x1 = 5, y1 = 2.2)
+segments(x0 = 1, y0 = 2.2, x1 = 1, y1 = 3.5)
+segments(x0 = 2, y0 = 2.2, x1 = 2, y1 = 3.5)
+segments(x0 = 3, y0 = 2.2, x1 = 3, y1 = 3.5)
+segments(x0 = 4, y0 = 2.2, x1 = 4, y1 = 3.5)
+segments(x0 = 5, y0 = 2.2, x1 = 5, y1 = 3.5)
+
+x <- c(6,7,8,9,10)
+y <- c(5,2,4,2,3)
+points(x,y, pch=17)
+segments(x0 = 6, y0 = 3.2, x1 = 10, y1 = 3.2)
+segments(x0 = 6, y0 = 3.5, x1 = 6, y1 = 3.2)
+segments(x0 = 7, y0 = 3.5, x1 = 7, y1 = 3.2)
+segments(x0 = 8, y0 = 3.5, x1 = 8, y1 = 3.2)
+segments(x0 = 9, y0 = 3.5, x1 = 9, y1 = 3.2)
+segments(x0 = 10, y0 = 3.5, x1 = 10, y1 = 3.2)
+
+x <- c(11,12,13,14,15)
+y <- c(7,4,5,3,6)
+points(x,y, pch=15)
+segments(x0 = 11, y0 = 5, x1 = 15, y1 = 5)
+segments(x0 = 11, y0 = 3.5, x1 = 11, y1 = 5)
+segments(x0 = 12, y0 = 3.5, x1 = 12, y1 = 5)
+segments(x0 = 13, y0 = 3.5, x1 = 13, y1 = 5)
+segments(x0 = 14, y0 = 3.5, x1 = 14, y1 = 5)
+segments(x0 = 15, y0 = 3.5, x1 = 15, y1 = 5)
+
+```
+
+*Figure 5.18.2*
+
+<Br>
+
+### 5.19 Step 2: Calculate SS~M~
+
+<center>
+$SS_M=\sum n_i(\bar{x}_i - \bar{x}_{grand})^2$
+
+to 
+</center>
+
+\begin{aligned}
+SS_M&=5(2.2-3.467)^2+5(3.2-3.467)^2+5(5.0-3.467)^2\\
+
+&=5(-1.267)^2+5(-0.267)^2+5(1.533)^2\\
+
+&=8.025+0.355+11.755\\
+
+&=20.135
+\end{aligned}
+
+<Br>
+
+### 5.20 Model Degrees of Freedom
+
+How many values did we use to calculate SS~M~?
+
++ We used the 3 means.
+
+$df_M=k-1=3-1=2$
+
+### 5.21 Residual Sum of Squares (SS~R~)
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+x <- c(1,2,3,4,5)
+y <- c(3,2,1,1,4)
+plot(x,y, main = "", xlab = "", ylab = "", xlim = c(0,16), ylim = c(0,8), pch=16)
+abline(h = 3.5)
+segments(x0 = 1, y0 = 2.2, x1 = 5, y1 = 2.2)
+segments(x0 = 1, y0 = 2.2, x1 = 1, y1 = 3)
+segments(x0 = 2, y0 = 2.2, x1 = 2, y1 = 2)
+segments(x0 = 3, y0 = 2.2, x1 = 3, y1 = 1)
+segments(x0 = 4, y0 = 2.2, x1 = 4, y1 = 1)
+segments(x0 = 5, y0 = 2.2, x1 = 5, y1 = 4)
+
+x <- c(6,7,8,9,10)
+y <- c(5,2,4,2,3)
+points(x,y, pch=17)
+segments(x0 = 6, y0 = 3.2, x1 = 10, y1 = 3.2)
+segments(x0 = 6, y0 = 5, x1 = 6, y1 = 3.2)
+segments(x0 = 7, y0 = 2, x1 = 7, y1 = 3.2)
+segments(x0 = 8, y0 = 4, x1 = 8, y1 = 3.2)
+segments(x0 = 9, y0 = 2, x1 = 9, y1 = 3.2)
+segments(x0 = 10, y0 = 3, x1 = 10, y1 = 3.2)
+
+x <- c(11,12,13,14,15)
+y <- c(7,4,5,3,6)
+points(x,y, pch=15)
+segments(x0 = 11, y0 = 5, x1 = 15, y1 = 5)
+segments(x0 = 11, y0 = 7, x1 = 11, y1 = 5)
+segments(x0 = 12, y0 = 4, x1 = 12, y1 = 5)
+segments(x0 = 14, y0 = 3, x1 = 14, y1 = 5)
+segments(x0 = 15, y0 = 6, x1 = 15, y1 = 5)
+
+#needs df values
+
+```
+
+*Figure 5.21.1* 
+
+<Br>
+
+### 5.22 Step 3: Calculate SS~R~
+
+<center>
+$SS_R=\mbox{sum}([x_i-\bar{x}_i]^2)$
+</center>
+
+\begin{aligned}
+SS_R&=S^2_{group1}(n_1-1)+S^2_{group2}(n_2-1)+S^2_{group3}(n_3-1)\\
+
+&=1.70(5-1)+1.70(5-1)+2.5(5-1)\\
+
+&=(1.70\times4)+(1.70\times4)+(2.50\times4)\\
+
+&=6.8+6.8+10\\
+
+&=23.60
+\end{aligned}
+
+### 5.23 Residual Degrees of Freedom
+
+How many values did we use to calculate SS~R~?
+
++ We used the 5 scores for each of the SS for each group.
+
+\begin{aligned}
+df_R&=df_{group1}+df_{group2}+df_{group3} \\
+
+&=(n_1-1)+(n_2-1)+(n_3-1) \\  
+
+&=(5-1)+(5-1)+(5-1) \\
+
+&=12
+\end{aligned}
+
+### 5.24 Double Check
+
+$SS_T=SS_R+SS_M$
+
+$43.74=20.14+23.60$
+
+<Br>
+
+$DF_T=DF_R+DF_M$
+
+$14=2+12$
+
+<Br>
+
+### 5.25 Step 4: Calculate the Mean Squared Error
+
+$MS_M=\frac{SS_M}{df_M}=\frac{20.135}{2}=10.067$
+
+$MS_R=\frac{SS_R}[df_R]=\frac{23.60}{12}=1.967$
+
+<Br>
+
+### 5.26 Step 5: Calculate the F-Ratio
+
+$F=\frac{MS_M}{MS_R}$
+
+$F=\frac{MS_M}{MS_R}=\frac{10.067}{1.967}=5.12$
+
+<Br>
+
+### 5.27 Step 6: Construct a Summary Table
+
+|Source|SS|df|MS|F|
+|---|---|---|---|---|
+|Model|20.14|2|10.067|5.12*|
+|Residual|23.60|12|1.967|   |
+|Total|43.74|14|   |   |
+
+*Table 5.27.1: \ Summary table*
+
+<Br>
+
+### 5.28 Multiple-Comparison Tests
+
+The anova that you examined is used to test the hypothesis that there is no difference in the sample means among k treatment levels
+
+However we cannot conclude, after doing the test, which of the mean values are different from one-another.
+
+### 5.29 Tukey Test
+
+Tukey test - balanced, orthogonal designs
+
+Step one: is to arrange and number all five sample means in order of increasing magnitude
+
+Calculate the pairwise difference in sample means.
+
+We use a t-test "analog" to calculate a q-statistic
+
+S^2^ is the error mean sqare by anova computation
+
+n is the of data in each of groups B and A
+
+Remember this is a completely balanced design.
+
+$SE=\sqrt{\frac{s^2}{n}}$
+
+<Br>
+
+$q=\frac{\bar{X}_B-\bar{X}_A}{SE}$
+
+Start with the largest mean, vs. the smallest mean. Then when the first largest mean has been compared with increasingly large second means, use the second largest mean.
+
+If the null hypothesis is accepted between two means then all other means within that range cannot be different.
+
+<Br>
+
+# 6 Categorical Data Aims
+
+### 6.1 Categorical Data 
+
+Contingency tables
+
+chi-square test
+
+Sometimes we have data consisting of the frequency of cases falling into unique categories
+
+Examples:
+
++ Number of people voting for different politicians
++ Numbers of students who pass or fail their degree in different subject areas
++ Number of patients or waiting list controls who are 'free from diagnosis' (or not) following a treatment
+
+### 6.2 An Example: Dancing Cats and Dogs
+
+Analysing two or more categorical variables
+
++ The mean of a categorical variable is meaningless
+      + The numeric values you attach to different categories are arbitrary
+      + The mean of those numeric values will depend on how many members each category has.
++ Therefore, we analyse frequencies
+
+An example
+
++ Can animals be trained to line-dance with different rewards?
++ Participants: 200 cats
++ Training
+      + The animal was trained using either food or affection, not both)
++ Dance
+      + The animal either learnt to line-dance or it did not
++ Outcome:
+      + The number of animals (frequency) that could dance or not in each reward condition
++ We can tabulate these frequencies in a contingency table
+
+### 6.3 A Contingency Table
+
+| Training  |
+|---|---|---|---|---|
+|   |   |Food as Reward|Affection as Reward|Total|
+|Could they dance?|Yes|28|48|76|
+|Could they dance?|No |10|114|124|
+|   |Total|38|162|200|
+
+*Table 6.3.1: \ A Contingency Table*
+
+<Br>
+
+### 6.4 Pearson's Chi-Square Test
+
+Use to see whether there's a relationship between two categorical variables
+
++ Compares the frequencies you observe in certain categories to the frequencies you might expect to get in those categories by chance.
+
+The equation:
+
+$\chi^2=\sum\frac{(observed_{ij}-Model_{ij})^2}{Model_{ij}}$
+
++ "i" represents the rows in the contingency table and "j" represents the columns.
++ The observed data are the frequencies the contingency table
+      
+The 'model' is based on 'expected frequencies'.
+
++ Calculated for each of the cells in the contingency table.
++ n is the total number of observations (in this case 200).
+
+$Model_{ij}=E_{ij}=\frac{Row \: Total_i\times Column \: Total_j}{n}$
+
+Test statistic
+
++ Checked against a distribution with (r ??? 1)(c ??? 1) degrees of freedom.
++ If significant then there is a significant association between the categorical variables in the population.
+
+### 6.5 A Contingency Table
+
+| Training  |
+|---|---|---|---|---|
+|   |   |Food as Reward|Affection as Reward|Total|
+|Could they dance?|Yes|28|48|76|
+|Could they dance?|No |10|114|124|
+|   |Total|38|162|200|
+
+*Table 6.3.1: \ A Contingency Table*
+
+<Br>
+<Br>
+
+$Model_{Food, Yes}=\frac{RT_{Yes}\times CT_{Food}}{n}=\frac{76\times 38}{200}=14.44$
+
+$Model_{Food, No}=\frac{RT_{No}\times CT_{Food}}{n}=\frac{124\times 38}{200}=23.56$
+
+$Model_{Affection, Yes}=\frac{RT_{Yes}\times CT_{Affection}}{n}=\frac{76\times 162}{200}=61.56$
+
+$Model_{Affection, No}=\frac{RT_{No}\times CT_{Affection}}{n}=\frac{124\times 162}{200}=100.44$
+
+<Br>
+<Br>
+
+\begin{aligned}
+\chi^2&=\frac{(28-14.44)^2}{14.44}+\frac{(10-23.56)^2}{23.56}+\frac{(48-61.56)^2}{61.56}+\frac{(114-100.44)^2}{100.44}\\
+
+&=\frac{(13.56)^2}{14.44}+\frac{(-13.56)^2}{23.56}+\frac{(-13.568)^2}{61.56}+\frac{(13.56)^2}{100.44}\\
+
+&=12.73+7.80+2.99+1.83\\
+
+&=25.35
+\end{aligned}
+
+<Br>
+
+### 6.6 Interpreting Chi-Square
+
+The test statistic gives an 'overall' result.
+
+We can break this result down using standardized residuals.
+
+There are two important things about these standardized residuals:
+
++ Standardized residuals have a direct relationship with the test statistic (they are a standardized version of the difference between observed and expected frequencies).
++ These standardized are z-scores (e.g. if the value lies outside of the range between -1.96 and +1.96 then it is significant at p < .05).
+
+Effect Size
+
++ The odds ratio can be used as an effect size measure.
+
+### 6.7 Important Points
+
+The chi-square test has two important assumptions:
+
++ Independence:
+      + Each person, item or entity contributes to only one cell of the contingency table.
++ The expected frequencies should be greater than 5.
+      + In larger contingency tables up to 20% of expected frequencies can be below 5, but there a loss of statistical power.
+      + Even in larger contingency tables no expected frequencies should be below 1.
+
+Proportionately small differences in cell frequencies can result in statistically significant associations between variables if the sample is large enough
+
++ Look at row and column percentages to interpret effects.
+
+Running the Analysis using R 
+
+For raw data, the function takes the basic form:
+
++ CrossTable(predictor, outcome, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SAS"/"SPSS")
+
+And for a contingency table:
+
++ CrossTable(contingencyTable, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SAS"/"SPSS")
+
+To run the chi-square test on our cat data, we could execute
+
++ CrossTable(catsData$Training, catsData$Dance, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+
+On the raw scores (i.e., the catsData dataframe), or
+
++ CrossTable(catsTable, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+
+### 6.8 Output from the CrossTable() Function 
+
+|CatsData$Training|Yes|No|Row Total|
+|---|---|---|---|
+|Food as reward |28   |10   |38   |
+|   |14.440   |23.560 |   |
+|   |12.734   |7.804  |   |
+|   |73.684%  |26.316%|19.000%   |
+|   |36.842%  |8.065% |   |
+|   |14.000%  |5.000% |   |
+|   |3.568   |-2.794   |   |
+|Affection as Reward   |48   |114   |162   |
+|   |61.560   |100.440   |   |
+|   |2.987   |1.831   |   |
+|   |29.630%   |70.370%   |81.000%   |
+|   |63.159%   |91.935%   |   |
+|   |24.000%   |57.000%   |   |
+|   |-1.728   |1.353   |   |
+|Colomn Total   |76   |124   |200   |
+|   |38.000%   |62.000%   |   |
+
+*Table 6.8.1: \ CatsData$Dance*
+
+<Br>
+
+#### Statistics for all table factors 
+
+Pearson's Chi-squared test
+
+ + Chi^2 = 25.35569, d.f. = 1, p = 4.767434e-07
+ + Pearson's Chi-squared test with Yates' continuity correction 
+
+### 6.9 The Odds Ratio
+
+\begin{aligned}
+\mbox{Odds}_{\mbox{dancing after food}}&=\frac{\mbox{Number that had food and danced}}{\mbox{Number that had food but didn't dance}}\\
+
+&=\frac{28}{10}\\
+
+&=2.8
+\end{aligned}
+
+
+\begin{aligned}
+\mbox{Odds}_{\mbox{dancing after affection}}&=\frac{\mbox{Number that had affection and danced}}{\mbox{Number that had affection but didn't dance}}\\
+
+&=\frac{48}{114}\\
+
+&=0.421
+\end{aligned}
+
+
+\begin{aligned}
+\mbox{Odds Ratio}&=\frac{\mbox{Odds}_{\mbox{dancing after food}}}{\mbox{Odds}_{\mbox{dancing after affection}}}\\
+
+&=\frac{2.8}{0.421}\\
+
+&=6.65
+\end{aligned}
+
+### 6.10 Interpretation
+
+There was a significant association between the type of training and whether or not cats would dance $\chi^2$(1) = 25.36, p < .001. This seems to represent the fact that, based on the odds ratio, the odds of cats dancing were 6.58 (2.84, 16.43) times higher if they were trained with food than if trained with affection.
+
+### 6.11 Loglinear Analysis
+
+When?
+
++ To look for associations between three or more categorical variables
+
+Example: dancing dogs
+
++ Same example as before but with data from 70 dogs.
++ Animal
+      + Dog or cat
++ Training
+      + Food as reward or affection as reward
++ Dance
+      + Did they dance or not?
++ Outcome:
+      + Frequency of animals 
+      
+### 6.12 Theory
+
+Our model has three predictors and their associated interactions:
+
++ Animal, Training, Dance, Animal ? Training, Animal ? Dance, Dance ? Training, Animal ? Training ? Dance
+
+Such a linear model can be expressed as:
+
+$\mbox{Outcome}_i=(b_0+b_1A+b_2B+b_3C+b_4AB+b_5AC+b_6BC+b_7ABC)+\varepsilon_i$
+
+A loglinear Model can also be expressed like this, but the outcome is a log value:
+
+$\mbox{ln}(O_{ijk}=(b_0+b_1A_i+b_2B_j+b_3C_k+b_4AB_{ij}+b_5AC_{ik}+b_6BC_{jk}+b_7ABC_{ijk})+\mbox{ln}(\varepsilon_{ijk})$
+
+### 6.13 Dippold et al. 2017
+
+Recapture of Cobia
+
+Evaluated by using a loglinear model to infer trends in seasonal and spatial distribution. 
+
+Loglinear models are an extension of the chi-square test and are used to determine associations between categorical variables (Knoke and Burke, 1980).
+
+A saturated loglinear model(with recapture zone and recapture month as the main effects) and a 2-way interaction term were constructed.
+
+Used to evaluate the association between month of recaptureand recapture zone. 
+
+Model:
+
+$\mbox{log}(u_{ij})=\lambda^{zone}+\lambda^{month}+\lambda^{zone\times month}$
+
++ Where $\mbox{log}(u_{ij})=$ the expected counts in each zone - month combination; and $\lambda$= the main effect of each predictor variable. 
+
+# 7 Two-Way Independent ANOVA
+
+### 7.1 Two-Way Independent ANOVA
+
+Rationale of factorial ANOVA
+
+Partitioning variance
+
+Interaction effects
+
++ Interaction graphs
++ Interpretation
+
+### 7.2 What is Two-Way Independent ANOVA?
+
+Two independent variables
+
++ Two-way = 2 Independent variables
++ Three-way = 3 Independent variables
+
+Several independent variables is known as a factorial design.
+
+### 7.3 Benefit of Factorial Designs
+
+We can look at how variables interact.
+
+Interactions
+
++ Show how the effects that one IV might depend on the effects of another
++ Are often more interesting than main effects.
+
+Examples
+
++ Interaction between hangover and lecture topic on sleeping during lectures.
+      + A hangover might have more effect on sleepiness during a stats lecture than during a clinical one.
+      
+### 7.4 An Example
+
+Field (2009): Testing the effects of the pH of soil and amount of sunlight exposure (full or partial) on plant height:
+
++ IV 1 (pH): 6, 7, 8
++ IV 2 (Sun): full, partial
+
+Dependent variable (DV) was the height of the plant at the end of the experiment.
+
+Data for the plant height (cm) 
+
+<Br>
+
+|pH |6|6|7|7|8|8|
+|---     |---   |---   |---   |---   |---   |---   |
+|Sun     |Full  |Partial  |Full |Partial  |Full |Partial  |
+|        |65    |50    |70    |45    |55    |30    |
+|        |70    |55    |65    |60    |65    |30    |
+|        |60    |80    |60    |85    |70    |30    |
+|        |60    |65    |70    |65    |55    |55    |
+|        |60    |70    |65    |70    |55    |35    |
+|        |55    |75    |60    |70    |60    |20    |
+|        |60    |75    |60    |80    |50    |45    |
+|        |55    |65    |50    |60    |50    |40    |
+|Total   |485   |535   |500   |535   |460   |285   |
+|Mean    |60.625|66.875|62.50 |66.875|57.50 |35.625|
+|Variance|24.55 |106.70|42.86 |156.70|50.00 |117.41|
+
+*Table 7.4.1: \ Data for the plant height* 
+
+<Br>
+
+
+```{r echo=FALSE, warning=FALSE}
+
+x <- c(50,25,75,10,25,50)
+y = c(90,60,60,20,20,20)
+Labs <- c(expression(atop("SS"[t], "Variance between all scores")), expression(atop(textstyle("SS"[M]), atop(textstyle("Variance explained by the"),textstyle("experimental manipulations")))), expression(atop("SS"[R], "Error Variance")), expression(atop(textstyle("SS"[A]), atop(textstyle("Effect of"), textstyle("pH")))), expression(atop(textstyle("SS"[B]), atop(textstyle("Effect of"), textstyle("sunlight")))), expression(atop(textstyle("SS"[A*B]), atop(textstyle("Effect of"), textstyle("interaction")))))
+par(mar = rep(0,4), oma = rep(0,4))
+plot(x,y, yaxt = 'n', xaxt = 'n', ylab = "", xlab = "", ylim = c(0,100), xlim = c(0,100), pch = 26, bty = "n")
+text(x,y, labels = Labs)
+arrows(x0 = 50, y0 = 80, x1 = 30, y1 = 70, lwd = 2)
+arrows(x0 = 50, y0 = 80, x1 = 73, y1 = 70, lwd = 2)
+arrows(x0 = 25, y0 = 50, x1 = 14, y1 = 27, lwd = 2)
+arrows(x0 = 25, y0 = 50, x1 = 25, y1 = 30, lwd = 2)
+arrows(x0 = 25, y0 = 50, x1 = 45, y1 = 27, lwd = 2)
+```
+
+*Figure 7.4.1*
+
+<Br>
+
+### 7.5 Step 1: Calculate SS~T~
+
+|SS~T~|
+|---|---|---|---|---|---|
+|65   |50   |70   |45   |55   |30   |
+|50   |55   |65   |60   |65   |30   |
+|70   |80   |60   |85   |70   |30   |
+|45   |65   |70   |65   |55   |55   |
+|55   |70   |65   |70   |55   |35   |
+|30   |75   |60   |70   |60   |20   |
+|70   |75   |60   |80   |50   |45   |
+|55   |65   |50   |60   |50   |40   |
+
+*Table 7.5.1: \ Calculate SS~T~*
+
+<Br>
+
+\begin{aligned}
+Grand \: Mean = 58.33
+\end{aligned}
+
+<Br>
+
+\begin{aligned}
+SS_T&=s^2_{\mbox{grand}}(N-1)\\
+
+&=190.78(48-1)\\
+
+&=8966.66
+\end{aligned}
+
+<Br>
+
+### 7.6 Step 2: Calculate SS~M~
+
+$\mbox{SS}_\mbox{M}=\sum n_i(\bar{X}-\bar{X}_{grand})^2$
+
+\begin{aligned}
+\mbox{SS}_\mbox{M}&=8(60.625-58.33)^2+8(66.875-58.33)^2+8(62.5-58.33)^2+8(66.875-58.33)^2+8(57.5-58.33)^2+8(35.625-58.33)^2\\
+
+&=8(2.295)^2+8(8.545)^2+8(4.17)^2+8(8.545)^2+8(-0.83)^2+8(-22.705)^2\\
+
+&=42.1362+584.1362+139.1112+584.1362+5.5112+4124.1362\\
+
+&=5479.167
+\end{aligned}
+
+<Br>
+
+### 7.7 Factorial Design
+
+|   |   |Toy Color|
+|---|---    |---     |---|
+|   |       |Blue (1)|Pink (2)|
+|   |Boy (1)|7   |2   |
+|   |       |6   |3   |
+|   |       |5   |4   |
+|Sex|   |   |   |
+|   |Girl (2)|4  |12   |
+|   |        |5  |10   |
+|   |        |6  |11   |
+
+*Table 7.7.1: \ Toy color for boys and girls*
+
+<Br>
+
+$\mbox{SS}_\mbox{M}=\sum_i(\bar{X}-\bar{X}_{Grand})n$
+
+<Br>
+
+### 7.8 Step 2a: Calculate SS~A~
+
+|SS~A~|   |   |
+|---|---|---|
+|60 |70   |55   |
+|70 |65   |65   |
+|60 |60   |70   |
+|60 |70   |55   |
+|60 |65   |55   |
+|55 |60   |60   |
+|60 |60   |50   |
+|55 |50   |50   |
+
+Mean Female: 60.21
+
+*Table 7.8.1: \ A~1~: \ Female*
+
+<Br>
+
+|SS~A~   |   |   |
+|---|---|---|
+|50   |45   |30   |
+|55   |60   |30   |
+|80   |85   |30   |
+|65   |65   |55   |
+|70   |70   |35   |
+|75   |70   |20   |
+|75   |80   |45   |
+|65   |60   |40   |
+
+Mean Male: 56.46
+
+*Table 7.8.2: \ A~2~: \ Male* 
+
+<Br>
+
+$\mbox{SS}_\mbox{A}=\sum^k_1(\bar{X}_k-\bar{X}_{Grand})n_k$
+
++ Where k is the number of levels of factor A
+
+<Br>
+
+|SS~A~|   |   |
+|---|---|---|
+|60 |70   |55   |
+|70 |65   |65   |
+|60 |60   |70   |
+|60 |70   |55   |
+|60 |65   |55   |
+|55 |60   |60   |
+|60 |60   |50   |
+|55 |50   |50   |
+
+Mean Female = 60.21
+
+*Table 7.8.1: \ A~1~: \ Female*
+
+<Br>
+
+|SS~A~   |   |   |
+|---|---|---|
+|50   |45   |30   |
+|55   |60   |30   |
+|80   |85   |30   |
+|65   |65   |55   |
+|70   |70   |35   |
+|75   |70   |20   |
+|75   |80   |45   |
+|65   |60   |40   |
+
+Mean Male = 56.46
+
+*Table 7.8.2: \ A~2~: \ Male* 
+
+<Br>
+
+\begin{aligned}
+\mbox{SS}_\mbox{Gender}&=24(60.21-58.33)^2+24(56.46-58.33)^2\\
+
+&=24(1.88)^2+24(-1.87)^2\\
+
+&=84.8256+83.9256\\
+
+&=168.75
+\end{aligned}
+
+<Br>
+
+### 7.9 Step 2b: Calculate SS~B~
+
+
+$\mbox{SS}_\mbox{B}=\sum^k_1(\bar{X}_k-\bar{X}_{Grand})n_k$
+
++ Where k is the number of levels of factor B
+
+<Br>
+
+|SS~B~|   |
+|---|---|
+|65   |50   |
+|70   |55   |
+|60   |80   |
+|60   |65   |
+|60   |70   |
+|55   |75   |
+|60   |75   |
+|55   |65   |
+
+Mean None = 63.75
+
+*Table 7.9.1: \ B~1~: \ None*
+
+<Br>
+
+|SS~B~   |   |
+|---|---|
+|70   |45   |
+|65   |60   |
+|60   |85   |
+|70   |65   |
+|65   |70   |
+|60   |70   |
+|60   |80   |
+|50   |60   |
+
+Mean 2 Pints = 64.6875
+
+*Table 7.9.2: \ B~2~: \ 2 Pints*
+
+<Br>
+
+|SS~B~   |   |
+|---|---|
+|55   |30   |
+|65   |30   |
+|70   |30   |
+|55   |55   |
+|55   |35   |
+|60   |20   |
+|50   |45   |
+|50   |40   |
+
+Mean 4 Pints = 46.5625
+
+*Table 7.9.3: \ B~3~: \ 4 Pints*
+
+<Br>
+
+\begin{aligned}
+\mbox{SS}_\mbox{pH}&=16(63.75-25.33)^2+16(64.6875-58.33)^2+16(46.5625-58.33)^2\\
+
+&=16(5.42)^2+16(6.3575)^2+16(-11.7675)^2\\
+
+&=470.0224+646.6849+2215.5849\\
+
+&=3332.292
+\end{aligned}
+
+
+```{r echo=FALSE, warning=FALSE}
+
+x <- c(50,25,50,75)
+y = c(90,50,50,50)
+Labs <- c(expression(atop(textstyle("SS"[M]), atop(textstyle("Variance explained by the"),textstyle("experimental manipulations")))), expression(atop(textstyle("SS"[A]), atop(textstyle("Effect of"), textstyle("pH")))), expression(atop(textstyle("SS"[B]), atop(textstyle("Effect of"), textstyle("sunlight")))), expression(atop(textstyle("SS"[A*B]), atop(textstyle("Effect of"), textstyle("interaction")))))
+par(mar = rep(0,4), oma = rep(0,4))
+plot(x,y, yaxt = 'n', xaxt = 'n', ylab = "", xlab = "", ylim = c(0,100), xlim = c(0,100), pch = 26, bty = "n")
+text(x,y, labels = Labs)
+arrows(x0 = 50, y0 = 80, x1 = 30, y1 = 60, lwd = 2)
+arrows(x0 = 50, y0 = 80, x1 = 50, y1 = 60, lwd = 2)
+arrows(x0 = 50, y0 = 80, x1 = 70, y1 = 60, lwd = 2)
+
+```
+
+*Figure 7.9.1*
+
+<Br>
+
+### 7.10 Step 2c: Calculate SS~(AxB)~
+
+<Br>
+
+\begin{aligned}
+\mbox{SS}_{\mbox{A}{\times}\mbox{B}}&=\mbox{SS}_\mbox{M}-\mbox{SS}_\mbox{A}-\mbox{SS}_\mbox{B}\\
+
+&=5479.167-168.75-3332.292\\
+
+&=1978.125
+\end{aligned}
+
+<Br>
+
+### 7.11 Step 3: Calculate SS~R~
+
+The residual sum of squares is calculated in the same way as for one-way ANOVA 
+
+Represents individual differences in performance or the variance that can't be explained by factors that were systematically manipulated.
+
+We saw in one-way ANOVA that the value is calculated by taking the squared error between each data point and its corresponding group mean. 
+
+So, we use the individual variances of each group and multiply them by one less than the number of people within the group (n). 
+
+We have the individual group variances: there were eight people in each group (therefore, n = 8).
+
+The degrees of freedom for each group will be one less than the number of scores per group (i.e. 7). Therefore, if we add the sums of squares for each group, we get a total of 6 X 7 = 42.
+
+<Br>
+
+$\mbox{SS}_\mbox{R}=s^2_{group1}(n_1-1)+s^2_{group2}(n_2-1)+s^2_{group3}(n_3-1)+s^2_{group \: n}(n_n-1)$
+
+<Br>
+
+\begin{aligned}
+\mbox{SS}_\mbox{R}&=s^2_{group1}(n_1-1)+s^2_{group2}(n_2-1)+s^2_{group3}(n_3-1)+s^2_{group4}(n_4-1)+s^2_{group5}(n_5-1)+s^2_{group6}(n_6-1)\\
+
+&=(24.55\times7)+(106.7\times7)+(42.86\times7)+(156.7\times7)+(50\times7)+(117.41\times7)\\
+
+&=171.85+746.9+300+1096.9+350+821.87\\
+
+&=3487.52
+\end{aligned}
+
+<Br>
+
+### 7.12 Interpreting Factorial ANOVA 
+
+|Response      |Attractiveness   |   |   |   |
+|---           |---   |--- |---|---|
+|              |Sum Sq|Df  |F value  |Pr(>F)   |
+|(Intercept)   |16333 |1   |1967.0251|< 2.2e-16   |
+|Sunlight        |169   |1   |2.0323   |0.1614   |
+|pH       |3332  |2   |20.0654  |7.649e-07   |
+|Gender:pH|1978  |2   |11.9113  |7.987e-05   |
+|residuals     |3488  |42  |         |   |
+
+*Table 7.12.1: \ Response to Attractiveness* 
+
+<Br>
+
+### 7.13 Interpretation: Main Effect pH
+
+
+```{r, echo = F}
+
+ph <- data.frame(pH = c(6,7,8), mu = c(60.625,62.5,46.5625), sd = c(4.419417, 3.093592, 14.34326))
+barCenters <- barplot(ph$mu, names.arg=ph$pH, col="gray", las=1, ylim=c(0,80), xlab = "pH", ylab = "Plant Height (cm)")
+arrows(barCenters, ph$mu + ph$sd, barCenters, ph$mu - ph$sd, angle = 90, code = 3)
+```
+
+*Figure 7.13.1*
+
+<Br>
+
++ There was a significant main effect of the amount of pH in the soil on the height of the plant, 
++ F(2, 42) = 20.07, p <  .001.
+
+### 7.14 Interpretation: Main Effect 
+
+```{r, echo=F}
+sun <- data.frame(sun = c("Full", "Partial"), mu = c(60.20833, 56.45833), sd = c( 2.525907, 18.0422))
+barCenters <- barplot(sun$mu, names.arg=sun$sun, col="gray", las=1, ylim=c(0,80), xlab = "Sunlight Exposure", ylab = "Plant Height (cm)")
+arrows(barCenters, sun$mu + sun$sd, barCenters, sun$mu - sun$sd, angle = 90, code = 3)
+
+```
+
+*Figure 7.13.2*
+
++ There was a non-significant main effect of sunlight exposure on the plant height, F(1, 42) = 2.03, p = .161.
+
+### 7.15 Interpretation: Interaction
+
+```{r, echo = F}
+df <- data.frame(ph = rep(seq(6,8),each=2), sun = c(rep(c("Full", "Partial"), 3)), mean = c(60.625,66.875,62.50, 66.875,57.50, 35.625))
+
+
+plot(x = unique(df$ph), y = df$mean[which(df$sun == "Full")], type = "l", xlab = "pH", ylab = "Plant Height (cm)", ylim = c(30,70))
+lines(x = unique(df$ph), y = df$mean[which(df$sun == "Partial")], type = "l", lty = 2)
+legend("topright", legend = c("Full Sunlight", "Partial Sulight"), lty = c(1,2), bty = "n")
+```
+
+*Figure 7.13.3*
+
++ There was a significant interaction between the amount of pH in the soil and the amount of sunlight exposure, on the height of the plant, F(2, 42) = 11.91, p < .001.
++ Non-parallel lines indicate such an interaction: For low pH full and partial sunlight, scores do not change much. 
++ At a high pH, partial sunlight scores plummet but full sunlight scores remain fairly high. So, the interaction is caused by a difference between sunlight exposure in the height of plants.
+
+<Br>
+
+# 8 ANOVA Part II 
+
+### 8.1 Comparison of Means Test
+
+Multi-factorial ANOVA as a linear model
+
+Hypotheses being tested
+
+Interaction effects
+
+Post-hoc tests
+
+Non-parametric 
+
+### 8.2 Factorial ANOVA as Regression
+
+
+|pH |6|6|7|7|8|8|
+|---     |---   |---   |---   |---   |---   |---   |
+|Sunlight  |Full|Partial  |Full|Partial  |Full|Partial  |
+|        |65    |50    |70    |45    |55    |30    |
+|        |70    |55    |65    |60    |65    |30    |
+|        |60    |80    |60    |85    |70    |30    |
+|        |60    |65    |70    |65    |55    |55    |
+|        |60    |70    |65    |70    |55    |35    |
+|        |55    |75    |60    |70    |60    |20    |
+|        |60    |75    |60    |80    |50    |45    |
+|        |55    |65    |50    |60    |50    |40    |
+|Total   |485   |535   |500   |535   |460   |285   |
+|Mean    |60.625|66.875|62.50 |66.875|57.50 |35.625|
+|Variance|24.55 |106.70|42.86 |156.70|50.00 |117.41|
+
+*Table 8.2.1: \ data for plant height growth*
+
+<Br>
+
+$outcome_i = (\mbox{model})+\mbox{error}_i$
+
+$plant height_i=(b_0+b_{1}\mbox{Sunlight}_i+b_2\mbox{pH}_i)+\varepsilon_i$
+
+$plant height_i=(b_0+b_1A_i+b_2B_i+b_3AB_i)+\varepsilon_i$
+
+$plant height_i=(b_0+b_1Sunlight_i+b_2pH_i+b_3interaction_i)+\varepsilon_i$
+
+<Br>
+
+How do we code the interaction term?
+
+Multiply the variables
+
+A x B
+
+|Sunlight|pH|Dummy (Sunlight)|Dummy (pH)|Interaction|Mean|
+|---|---|---|---|---|---|
+|Partial   |6   |0   |0   |0   |66.875   |
+|Partial   |8|0   |1   |0   |35.625   |
+|Full   |6   |1   |0   |0   |60.625   |
+|Full   |8|1   |1   |1   |57.500   |
+
+*Table 8.2.2: \ pH affects on Sunlight* 
+
+<Br>
+
+$plant height_i=(b_0+b_1Sunlight_i+b_2pH_i+b_3interaction_i)+\varepsilon_i$
+
+<Br>
+
+\begin{aligned}
+\bar{X}_{partial,6}&=b_0+(b_1\times0)+(b_2\times0)+(b_3\times0)\\
+
+b_0&=\bar{X}_{partial,6}\\
+
+b_0&=66.875
+\end{aligned}
+
+<Br>
+
+|Sunlight|pH|Dummy (Sunlight)|Dummy (pH)|Interaction|Mean|
+|---|---|---|---|---|---|
+|Partial   |6   |0   |0   |0   |66.875   |
+|Partial   |8|0   |1   |0   |35.625   |
+|Full   |6   |1   |0   |0   |60.625   |
+|Full   |8|1   |1   |1   |57.500   |
+
+*Table 8.2.2: \ pH affects on Sunlight* 
+
+<Br>
+
+$\bar{X}_{Full,6}=b_0+(b_1\times1)+(b_2\times0)+(b_3\times0)$
+
+$\bar{X}_{Full,6}=b_0+b_1$
+
+$\bar{X}_{Full,6}=\bar{X}_{partial,6}+b_1$
+
+$b_1=\bar{X}_{Full,6}-\bar{X}_{partial,6}$
+
+$b_1=60.625-66.875$
+
+$b_1=-6.25$
+
+<Br>
+
+|Sunlight|pH|Dummy (Sunlight)|Dummy (pH)|Interaction|Mean|
+|---|---|---|---|---|---|
+|Partial   |6   |0   |0   |0   |66.875   |
+|Partial   |8|0   |1   |0   |35.625   |
+|Full   |6   |1   |0   |0   |60.625   |
+|Full   |8|1   |1   |1   |57.500   |
+
+*Table 8.2.2: \ pH affects on Sunlight* 
+
+<Br>
+
+$\bar{X}_{partial,4 \: pH}=b_0+(b_1\times0)+(b_2\times1)+(b_3\times0)$
+
+$\bar{X}_{partial,4 \: pH}=b_0+b_2$
+
+$\bar{X}_{partial,4 \: pH}=\bar{X}_{partial,6}+b_2$
+
+$b_2=\bar{X}_{partial,4 \: pH}-\bar{X}_{partial,6}$
+
+<Br>
+
+|Sunlight|pH|Dummy (Sunlight)|Dummy (pH)|Interaction|Mean|
+|---|---|---|---|---|---|
+|Partial   |6   |0   |0   |0   |66.875   |
+|Partial   |8|0   |1   |0   |35.625   |
+|Full   |6   |1   |0   |0   |60.625   |
+|Full   |8|1   |1   |1   |57.500   |
+
+*Table 8.2.2: \ pH affects on Sunlight* 
+
+<Br>
+
+$\bar{X}_{Full,4 \: pH}=b_0+(b_1\times1)+(b_2\times1)+(b_3\times1)$
+
+$\bar{X}_{Full,4 \: pH}=b_0+b_1+b_2+b_3$
+
+$\bar{X}_{Full,4 \: pH}=\bar{X}_{partial,6}+(\bar{X}_{Full,6}-\bar{X}_{partial,6})+(\bar{X}_{partial,4 \: pH}-\bar{X}_{partial,6})+b_3$
+
+$\bar{X}_{Full,4 \: pH}=\bar{X}_{Full,6}+\bar{X}_{partial,4 \: pH}-\bar{X}_{partial,6}+b_3$
+
+$b_3=\bar{X}_{partial,6}-\bar{X}_{Full,6}+\bar{X}_{Full,4 \: pH}-\bar{X}_{partial,4 \: pH}$
+
+$b_3=66.875-60.625+57.500-35.625$
+
+$b_3=28.125$
+
+<Br>
+
+### 8.3 Two-Factor Analysis of Variance Hypotheses Being Tested
+
+Simultaneous analysis of two factors and measurement of mean response
+
+Case. 1: equal replication
+
+Terminology:
+
+One factor termed A and one factor termed B
+
+We use this notation a number of levels in A
+
+b is the number of levels in B
+
+Researchers have sought to examine the effects of various types of music on agitation levels in patients in early and middle stages of Alzheimer's disease. 
+
+Patients were selected based on their form of Alzheimer's disease. Three forms of music were tested: easy listening, Mozart, and piano interludes. The response variable agitation level was scored.
+
+What is (are) the null hypothesis(ese) being tested?
+
+<Br>
+
+|Group|Piano Interlude|Mozart|Easy Listening|
+|---|---|---|---|
+|Early Stage ALzheimer's |21   |9   |29   |
+|                        |24   |12   |26   |
+|                        |22   |10   |30   |
+|                        |18   |5   |24   |
+|                        |20   |9   |26   |
+|Middle Stage Alzheimer's|22   |14   |15   |
+|                        |20   |18   |18   |
+|                        |25   |11   |20   |
+|                        |18   |9   |13   |
+|                        |20   |13   |19   |
+
+*Table 8.3.1: \ Musical effects on different stages of Alheimer's*
+
+<Br>
+
+Plot these data (means) on a single figure such that cell-level means can be evaluated.
+
+|Group|Piano Interlude|Mozart|Easy Listening|
+|---|---|---|---|
+|Early Stage ALzheimer's |21   |9   |29   |
+|                        |24   |12   |26   |
+|                        |22   |10   |30   |
+|                        |18   |5   |24   |
+|                        |20   |9   |26   |
+|Middle Stage Alzheimer's|22   |14   |15   |
+|                        |20   |18   |18   |
+|                        |25   |11   |20   |
+|                        |18   |9   |13   |
+|                        |20   |13   |19   |
+
+*Table 8.3.1: \ Musical effects on different stages of Alheimer's*
+
+<Br>
+
+### 8.4 Three-Factor Analysis of Variance Hypotheses Being Tested
+
+Evaluate respiratory rate of crabs (ml O2 hr-1) 
+
+Factors: 
+
++ Sex
++ Species
++ Temperature
+
+|Species 1|   |   |   |   |   |
+|---|---|---|---|---|---|
+|Low Temp   |   |Med Temp   |   |High Temp   |   |
+|Male   |Female   |Male   |Female   |Male  |Female   |
+|1.9   |1.8   |2.3   |2.4   |2.9   |3.0   |
+|1.8   |1.7   |2.1   |2.7   |2.8   |3.1   |
+|1.6   |1.4   |2.0   |2.4   |3.4   |3.0   |
+|1.4   |1.5   |2.6   |2.6   |3.2   |2.7   |
+
+*Table 8.4.1: \ Respiratory rate of male and females crabs species 1 at three temperatures*
+
+<Br>
+
+|Species 2|   |   |   |   |   |
+|---|---|---|---|---|---|
+|Low Temp   |   |Med Temp   |   |High Temp   |   |
+|Male   |Female   |Male   |Female   |Male  |Female   |
+|2.1   |2.3   |2.4   |2.0   |3.6   |3.1   |
+|2.0   |2.0   |2.6   |2.3   |3.1   |3.0   |
+|1.8   |1.9   |2.7   |2.1   |3.4   |2.8   |
+|2.2   |1.7   |2.3   |2.4   |3.2   |3.2   |
+
+*Table 8.4.2: \ Respiratory rate of male and females crabs species 2 at three temperatures*
+
+<Br>
+
+|Species 3|   |   |   |   |   |
+|---|---|---|---|---|---|
+|Low Temp   |   |Med Temp   |   |High Temp   |   |
+|Male   |Female   |Male   |Female   |Male  |Female   |
+|1.1   |1.4   |2.0   |2.4   |2.9   |3.2   |
+|1.2   |1.0   |2.1   |2.6   |2.8   |2.9   |
+|1.0   |1.3   |1.9   |2.3   |3.0   |2.8   |
+|1.4   |1.2   |2.2   |2.2   |3.1   |2.9   |
+
+*Table 8.4.3: \ Respiratory rate of male and females crabs species 3 at three temperatures*
+
+<Br>
+
+#### Multiway Factorial ANOVA Hypotheses Being Tested
+
+|Popcorn|Oil Amt.|Batch|Yeild|
+|---|---|---|---|
+|Plain  |Little   |Large   |8.2   |
+|Gourmet|Little   |Large   |8.6   |
+|Plain  |Lots   |Large   |10.4   |
+|Gourmet|Lots   |Large   |9.2   |
+|Plain  |Little   |Small   |9.9   |
+|Gourmet|Little   |Small   |12.1   |
+|Plain  |Lots   |Small   |10.6   |
+|Gourmet|Lots   |Small   |18.0   |
+|Plain  |Little   |Large   |8.8   |
+|Gourmet|Little   |Large   |8.2   |
+|Plain  |Lots   |Large   |8.8   |
+|Gourmet|Lots   |Large   |9.8   |
+|Plain  |Little   |Small   |10.1   |
+|Gourmet|Little   |Small   |15.9   |
+|Plain  |Lots   |Small   |7.4   |
+|Gourmet|Lots   |Small   |16.0   |
+
+*Table 8.4.4: \ Popcorn yield*
+
+<Br>
+
+
+### 8.5 Three-Factor Analysis of Variance Hypotheses Being Tested
+
+Three factor ANOVA:
+
++ H~O~: Yield is the same in all three Batch sizes
++ H~O~ : Yield is the same in all three Oil amounts
++ H~O~ : Yield is the same in all three Popcorn types
++ H~O~ : The mean yield is the same for all levels of batch, independent of oil amount (Batch X Oil)
++ H~O~ : The mean yield is the same for all levels of Oil amount, independent of popcorn type (Oil X Type)
++ H~O~ : The mean yield is the same for all levels of batch, independent of popcorn type (Batch X Type)
++ H~O~ : Differences in mean Yield among the batch, oil amount, and popcorn type are independent of the other factors
+      + (Batch X Type X Oil)
+      
+<Br>      
+
+|   |Df   |Sum Sq   |Mean Sq   |F value   |Pr(>F)   |
+|---|---|---|---|---|---| 
+|popcorn type                      |1   |3.062   |3.062   |0.1731   |0.6883   |
+|oil amount                        |1   |0.062   |0.062   |0.0035   |0.9541   |
+|batch size                        |1   |52.562   |52.562   |2.9717   |0.1230   |
+|popcorn type:oil amount           |1   |27.562   |27.562   |1.5583   |0.2472   |
+|popcorn type:batch size           |1   |14.062   |14.062   |0.7951   |0.3986   |
+|oil amount:batch size             |1   |0.063   |0.063    |0.0035   |0.9541   |
+|popcorn type:oil amount:batch size|1   |1.563   |1.563    |0.0883   |0.7739   |
+|Residuals                         |8   |141.500   |17.687   |   |   |
+
+*Table 8.5.1: \ Response: \ Yeild*
+
+<Br>
+
+### 8.6 Interaction Effects
+
+Experiment: we are interested in oxygen consumption of two species of limpets in different concentration of seawater.
+
++ Factor A is the species of limpet (levels, a)
++ Factor B is the concentration of SW as a function of maximum salinity - 100, 75, and 50 % (levels, b)
+
+|Completed anova   |   |   |   |
+|---|---|---|---|
+|Source of variation|df|SS|MS|
+|Species   |1  |16.6380   |16.638 ns   |
+|salinities|2  |10.3566   |5.178 ns   |
+|Sp X Sal  |2  |194.8907  |97.445 **   |
+|Error     |42 |401.5213  |9.560   |
+|Total     |47 |623.4066  |   |
+
+*Table 8.6.1: \ Respiratory rate of limpets (ml 0~2~ hr^-1^)*
+
+<Br>
+
+
+When the two factors are identified as A and B, the interaction is identified as the A X B interaction.
+
+Variability not accounted for by A and B alone.
+
+Interaction: The effect of one factor in the presence of a particular level of another factor.
+
+There is an interaction between two factors if the effect of one factor depends on the levels of the second factor. 
+
+|   |Species   |Species   |   |
+|---|---|---|---|
+|Seawater Concentration|A. scabra|A. digitalis|Mean|
+|100%   |10.56   |7.43   |9.00   |
+|75%   |7.89   |7.34   |10.11   |
+|50%   |12.17   |12.33   |9.76   |
+|Mean   |10.21   |9.03   |9.62   |
+
+*Table 8.6.2: \ Respiratory rate of limpets (ml O~2~ hr^-1^)*
+
+<Br>
+
+```{r, results='hide',message=FALSE, echo=FALSE}
+scabra <- c(12.17,7.89,10.56)
+digitalis <- c(12.33,7.34,7.43)
+
+plot(x = c(50,75,100), y = scabra, xlim = c(0,100), type = "l", xlab = "% Seawater", ylim = c(0,12.5), ylab = expression(paste(mu,"l", O[2],"/mg dry body wt/min at ", 22^o, "C" )))
+lines(x = c(50,75,100), y = digitalis, lty = 2)
+legend("topleft", legend = c("A. scabra", "A. digitalis"), lty = c(1,2), bty ="n")
+```
+
+
+*Figure 8.6.1*
+
+<Br>
+
+The response to salinity differs between the two species
+
+At 75% salinity A. scabra consumes the least oxygen and A. digitalis consumes the most. 
+
+Therefore a simple statement about the species response to salinity is not clear; all we can really say is:
+
+The pattern of response to changes in salinity differed in the two species.
+
+The difference among levels of one factor is not constant at all levels of the second factor
+
+"It is generally not useful to speak of an individual factor effect - even if its F is significant - if there is a significant interaction effect" - Zar
+
+<Br>
+
+### 8.7 Post-hoc Tests
+
+Tukey test - balanced, orthogonal designs
+
++ Step one: is to arrange and number all five sample means in order of increasing magnitude
++ Calculate the pairwise difference in sample means.
+
+We use a t-test "analog" to calculate a q-statistic
+
+Scheffe's test
+
+Examine multiple contrasts:
+
++ ideas is to compare combinations of samples to each other instead of the comparison among individual k levels.
+
+Compare the mean outflow volume of four different rivers: 5 vs 1,2,3,4
+
+$H_0:\mu_2/3+\mu_4/3+\mu_3/3-\mu_5=0$
+
+$H_0:(\mu_2+\mu_4+\mu_3)/3=\mu_5$
+
+$c_2=\frac{1}{3}, \: c_4=\frac{1}{3}, \: c_3=\frac{1}{3}, \: and \: c_5=-1$
+
+<Br>
+
+Alternatives multiple contrasts:
+
+$H_0:(\mu_1+\mu_5)/2-(\mu_2+\mu_4+\mu_3)/3=0$
+
+$H_0:\mu_1-(\mu_2+\mu_4+\mu_3)/3$
+
+<Br>
+
+Test Statistic:
+
+$s=\frac{|\sum c_i\bar{X}_i|}{SE}$
+
++ Where
+
+$SE=\sqrt{s^2(\sum \frac{c^2_i}{n_i})}$
+
++ and the critical value of the test is
+
+$S_{\alpha}=\sqrt{(k-1)F_{\alpha(1),k-1,N-k}}$
+
+<Br>
+
+### 8.8 Non-Parametric Tests
+
+Violations of the assumptions
+
+We assume equality of variance - ANOVA is a robust test.
+
+Robust to unbalanced design.
+
+How to deal with outliers:  
+
++ use in analysis if they are valid data. 
+
+Test of normality: Shapiro Wilks
+
+Test of equality of variance: Bartletts test.
+
+Nonparametric analysis of variance.
+
+If k > 2
+
+Kruskal-Wallis test - analysis of variance by rank
+
+Power increases with sample size.
+
+If k = 2 the Kruskal-Wallis is equivalent to the Mann-Whitney test.
+
+$H=\frac{12}{N(N+1)}\sum ^k_{i=1}\frac{R^2_i}{n_i}-3(N+1)$
+
+If there are tied ranks
+
++ H needs to be corrected using a correction factor C.
+
+$C=1-\frac{\sum t}{N^3-N}$
+
+$H_c=\frac{H}{C}$
+
+$\sum t=\sum (t^3_i-t_i)$
+
++ t~i~  is the number of tied ranks.
+
+A limnologist obtained eight containers of water from each of four ponds. The pH of each water sample was measured. The data are arranged in ascending order within each pond. (One of the containers from pond 3 was lost, so n~3~ = 7, instead of 8; but the test procedure does not require equal numbers of data in each group.) The rank of each datum is shown parenthetically. 
+
++ H~0~: pH is the same in all four ponds. 
++ H~A~: pH is not the same in all four ponds.
+
+<Br>
+
+|Pond 1|Pond 2|Pond 3|Pond 4|
+|---|---|---|---|
+|7.68 (1)   |7.71 (6*)    |7.74 (13.5*)|7.71 (6*)  |
+|7.69 (2)   |7.73 (10)    |7.75 (16)   |7.71 (6*)  |
+|7.70 (3.5*)|7.74 (13.5*) |7.77 (18)   |7.74 (13.5)|
+|7.70 (3.5*)|7.74 (13.5*) |7.78 (20*)  |7.79 (22)  |
+|7.72 (8)   |7.78 (20*)   |7.80 (23.5*)|7.81 (26*)   |
+|7.73 (10*) |7.78 (20*)   |7.81 (26*)  |7.85 (29)   |
+|7.73 (10*) |7.80(23.5*)  |7.84 (28)   |7.87 (30)   |
+|7.76 (17)  |7.81 (26*)   |            |7.91 (31)   |
+
+|n~1~ =8    |n~2~ =8   |n~3~ =7   |n~4~ =8   |
+|---|---|---|---|
+|R~1~ =55   |R~2~ =132.5   |R~3~ =145   |R~4~ =163.5   |
+
+*tied ranks
+
+*Table 8.8.1: \ pH of 4 ponds*
+
+<Br>
+
+\begin{aligned}
+H&=\frac{12}{N(N+1)}\sum ^k_{i=1}\frac{R^2_i}{n_i}-3(N+1)\\
+
+&=\frac{12}{32(32)}[\frac{55^2}{8}+\frac{132.5^2}{8}+\frac{145^2}{7}+\frac{163.5^2}{8}]-3(32)\\
+
+&=11.876
+\end{aligned}
+
+<Br>
+
+|Pond 1|Pond 2|Pond 3|Pond 4|
+|---|---|---|---|
+|7.68 (1)   |7.71 (6*)    |7.74 (13.5*)|7.71 (6*)  |
+|7.69 (2)   |7.73 (10)    |7.75 (16)   |7.71 (6*)  |
+|7.70 (3.5*)|7.74 (13.5*) |7.77 (18)   |7.74 (13.5)|
+|7.70 (3.5*)|7.74 (13.5*) |7.78 (20*)  |7.79 (22)  |
+|7.72 (8)   |7.78 (20*)   |7.80 (23.5*)|7.81 (26*)   |
+|7.73 (10*) |7.78 (20*)   |7.81 (26*)  |7.85 (29)   |
+|7.73 (10*) |7.80(23.5*)  |7.84 (28)   |7.87 (30)   |
+|7.76 (17)  |7.81 (26*)   |            |7.91 (31)   |
+
+|n~1~ =8    |n~2~ =8   |n~3~ =7   |n~4~ =8   |
+|---|---|---|---|
+|R~1~ =55   |R~2~ =132.5   |R~3~ =145   |R~4~ =163.5   |
+
+*tied ranks
+
+*Table 8.8.1: \ pH of 4 ponds*
+
+<Br>
+
+\begin{aligned}
+\sum t&=\sum (t^3_i-t_i)\\
+
+&=(2^3-2)+(3^3-3)+(3^3-3)+(4^3-4)+(3^3-3)+(2^3-2)+(3^3-)\\
+
+&=168
+\end{aligned}
+
+<Br>
+
+|Pond 1|Pond 2|Pond 3|Pond 4|
+|---|---|---|---|
+|7.68 (1)   |7.71 (6*)    |7.74 (13.5*)|7.71 (6*)  |
+|7.69 (2)   |7.73 (10)    |7.75 (16)   |7.71 (6*)  |
+|7.70 (3.5*)|7.74 (13.5*) |7.77 (18)   |7.74 (13.5)|
+|7.70 (3.5*)|7.74 (13.5*) |7.78 (20*)  |7.79 (22)  |
+|7.72 (8)   |7.78 (20*)   |7.80 (23.5*)|7.81 (26*)   |
+|7.73 (10*) |7.78 (20*)   |7.81 (26*)  |7.85 (29)   |
+|7.73 (10*) |7.80(23.5*)  |7.84 (28)   |7.87 (30)   |
+|7.76 (17)  |7.81 (26*)   |            |7.91 (31)   |
+
+|n~1~ =8    |n~2~ =8   |n~3~ =7   |n~4~ =8   |
+|---|---|---|---|
+|R~1~ =55   |R~2~ =132.5   |R~3~ =145   |R~4~ =163.5   |
+
+*tied ranks
+
+*Table 8.8.1: \ pH of 4 ponds*
+
+<Br>
+
+\begin{aligned}
+\sum t&=\sum (t^3_i-t_i)\\
+
+&=(2^3-2)+(3^3-3)+(3^3-3)+(4^3-4)+(3^3-3)+(2^3-2)+(3^3-)\\
+
+&=168
+\end{aligned}
+
+<Br>
+
+$C=1-\frac{\sum t}{N^3-N}=1-\frac{168}{31^3-31}=1-\frac{168}{29760}=0.9944$
+
+$H_c=\frac{H}{C}=\frac{11.876}{0.9944}=11.943$
+
+$\nu=k-1=3$
+
+<Br>
+
+$F=\frac{(N-k)H_c}{(k-1)(N-1-H_c)}=\frac{(31-4)(11.943)}{(4-1)(31-1-11.943)}=5.95$
+
+$F_{0.05(1),3,26}=2.98$
+
+Reject H~0~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

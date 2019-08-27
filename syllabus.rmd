@@ -1,0 +1,98 @@
+---
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r, include=FALSE}
+options(tinytex.verbose = TRUE)
+syl.comp <- read.csv("Syllabus Components.csv")
+```
+
+# `r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Title")])`
+
+Date: `r format(Sys.time(), '%d %B %Y')`
+
+Instructor: `r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Instructor")])`
+
+Office: `r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Office")])`
+
+Office Hours: `r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Office Hours")])`
+
+Email: `r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Email")])`
+
+Course Meeting Day and Time: `r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Course Meeting Days")])`, `r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Course Meeting Time")])`
+
+## Course Description and Objectives
+This course addresses basic approaches to experimental design, statistical analysis, and presentation of quantitative information. The broad topic areas of this course are the use of frequency distributions in statistics, understanding the properties of the normal model and other frequently encountered distributions, quantitative comparisons of the means, regression and correlation analysis, and basic statistical decision making. This course will provide graduate level understanding of statistical approaches and how to apply them in scientific endeavor.
+
+## At the conclusion of this course: 
+
+By the end of this course, you will be able to:
+
+*	Define what comprises the field of statistical analysis.
+*	What is mean by random samples and random sampling and understand how this is critical for description and inference.
+*	Explain the differences and connections between variables, statistics, and parameters.
+*	Define a cumulative density function and a probability density function and describe several common distributional families (e.g., normal, binomial, chi-square).
+*	Understand and be familiar with the applications of:
+*	Frequency distributions
+*	Power analysis
+*	Summary statistics as a tool for describing data
+*	Means comparison techniques for testing hypotheses
+*	ANOVA comparison techniques for testing hypothesis
+*	Linear regression techniques for describing relationships between random variables.
+*	Make appropriate decisions as a part of a statistical data analysis.
+
+## Course Materials
+`r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Course Materials 1")])`
+
+`r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Course Materials 2")])`
+
+`r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Course Materials 3")])`
+
+## Additional materials will be uploaded periodically and are available here:
+
+https://smttt-my.sharepoint.com/:f:/r/personal/w906282_usm_edu/Documents/Biometry%20COA%20606?csf=1&e=JyXi9H
+
+## Course Workload Statement
+`r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Course Workload Statement")])`
+
+## Course Evaluation
+```{r, echo=FALSE, message=FALSE}
+gs.scale <- read.csv("Grading Scale.csv")
+names(gs.scale) <- c("Percentage", "Letter Grade")
+knitr::kable(gs.scale)
+```
+
+## Grading scale
+```{r, echo=FALSE, message=FALSE}
+course.eval <- read.csv("Course Evaluation.csv")
+names(course.eval) <- c("Evaluation type",	"Number",	"Points per item",	"Total points")
+knitr::kable(course.eval)
+```
+
+## Academic Support Resources
+`r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Academic Support Resources")])`
+
+## Mental Well-Being Statement
+`r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Mental Well-Being Statement")])`
+
+## Nondiscrimination Statement
+`r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Nondiscrimination Statement")])`
+
+## Confidentiality and Mandatory Reporting
+`r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Confidentiality and Mandatory Reporting")])`
+
+## Course Scheduling
+```{r, echo=FALSE, message=FALSE}
+gs.scale <- read.csv("course_scheduling.csv")
+names(gs.scale) <- c("Date", "Section", "Activity", "Reading and Notes")
+knitr::kable(gs.scale)
+```
+
+## Academic Integrity
+`r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Academic Integrity")])`
+
+`r paste0(syl.comp$VAR2[which(syl.comp$VAR1 == "Academic Integrity 2")])`
+

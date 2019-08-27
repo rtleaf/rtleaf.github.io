@@ -1,0 +1,556 @@
+---
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+  word_document:
+    toc: yes
+    toc_depth: '3'
+---
+
+# 1 Multilevel Models
+
+### 1.1 Multilevel Models
+
+Multilevel modeling is a generalization of regression methods.
+
+Used for a variety of purposes, including prediction, data reduction, and causal inference.
+
+From experiments and observational studies.
+
+### 1.2 Hierarchical Data
+
+Data structures are often hierarchical or "nested"
+
+Examples:
+
++ Children nested within classrooms
++ Data points nested within people
++ Employees nested within organizations
++ Patients nested within hospitals
++ Patients nested within doctors nested within clinics
+
+### 1.3 Multilevel Models
+
+Many names for similar models, analyses, and goals:
+
+Multi-level model 
+
+Random effects model
+
+Mixed model 
+
+Random coefficient model 
+
+Hierarchical model
+
+Multilevel models are extensions of regression.
+
+### 1.4 A Two-Level Hierarchy  
+
+
+|Level 2 |Class 1|Class 2|Class 3|Class 4|Class 5| Class 6|...|Class n|  
+|----|-----|-----|-----|-----|-----|------|--|----|  
+|Level 1 |Child 1|Child 9|Child 13|Child 20|Child 28|Child 33|...|Child a|  
+| |Child 2|Child 10|Child 14|Child 21|Child 29|Child 34|...|Child b|  
+| |Child 3|Child 11|Child 15|Child 22|Child 30|Child 35|...|Child c|  
+| |Child 4|Child 12|Child 16|Child 23|Child 31|Child 36|...|Child d|  
+| |Child 5| |Child 17|Child 24|Child 32|Child 37|...|Child e|  
+| |Child 6| |Child 18|Child 25| |Child 38|...| |  
+| |Child 7| |Child 19|Child 26| | |...| |  
+| |Child 8| | |Child 27| | |...| |   
+
+*Table 1.4.1*
+
+<Br>
+
+### 1.5 A Three-Level Hierarchy
+
+
+|Level 1|School 1|School 1|School 1|School 2|School 2|School 2|School n|School n|  
+|----|-----|-----|-----|-----|-----|------|--|----|  
+|Level 2|Class 1|Class 2|Class 3|Class 4|Class 5| Class 6|...|Class n|  
+|Level 1 |Child 1|Child 9|Child 13|Child 20|Child 28|Child 33|...|Child a|  
+| |Child 2|Child 10|Child 14|Child 21|Child 29|Child 34|...|Child b|  
+| |Child 3|Child 11|Child 15|Child 22|Child 30|Child 35|...|Child c|  
+| |Child 4|Child 12|Child 16|Child 23|Child 31|Child 36|...|Child d|  
+| |Child 5| |Child 17|Child 24|Child 32|Child 37|...|Child e|  
+| |Child 6| |Child 18|Child 25| |Child 38|...| |  
+| |Child 7| |Child 19|Child 26| | |...| |  
+| |Child 8| | |Child 27| | |...| |   
+
+*Table 1.4.2*
+
+<Br>
+
+### 1.6 Radon Example
+
+I use an example from Gelman's book: "Data Analysis Using Regression and Multilevel/Hierarchal Models"
+
+Document the strengths and limitations of multilevel modeling.
+
+### 1.7 Background
+
+Effect of city-level policies on enforcing child support payments from unmarried fathers.
+
+Treatment is at the group (city) level.
+
+Outcome is measured on the individual family label.
+
+### 1.8 Benefits of Multilevel Models
+
+Homogeneity of regression slopes
+
++ Model the variability in regression slopes
+
+Assumption of independence
+
++ You can model the relationships between cases
++ (Regression for repeated observations)
+
+Missing data
+
++ MLMs can cope with missing data
+
+### 1.9 An Example: Cosmetic Surgery
+
+Post_QoL
+
++ This is a measure of quality of life after the cosmetic surgery.
+
+Base_QoL
+
++ Quality of life before the surgery.
+
+Surgery
+
++ A dummy variable that specifies whether the person has undergone cosmetic surgery (1) or whether they are on the waiting list (0).
+
+Clinic
+
++ Which of 10 clinics the person attended to have their surgery.
+
+Age
+
++ The person's age in years.
+
+BDI
+
++ Natural levels of depression measured using the Beck Depression Inventory (BDI). 
+
+Reason
+
++ This dummy variable specifies whether the person had/is waiting to have surgery purely to change their appearance (0), or because of a physical reason (1).
+
+Gender
+
++ Whether the person was a man (1) or a woman (0).
+
+### 1.10 Fixed vs. Random Coefficients
+
+Intercepts and slopes can be fixed or random
+
++ In OLS regression they are fixed
+
+Fixed coefficients
+
++ Intercepts/slopes are assumed to be the same across different contexts
+
+Random coefficients
+
++ Intercepts/slopes are allowed to vary across different contexts
+
+### 1.11 Fixed Slope, Random Intercept
+
+```{r echo = F, message=FALSE}
+library(lme4)
+dat <- data.frame(SampleID = seq(1,22), Temp = c(rep("Warm", 8), rep("Room Temp", 6),rep("Cold", 8)), Swimspd = c(0,0,1,2,3,3,4,5,1,2,3,5,6,7,4,5,6,7,8,9,10,11), Metabolism = c(3,6,4,4,5,6,8,9,2,2,2,4,5,7,2,3,3,4,5,5,7,7))
+
+lm.mod <- lm(Metabolism ~ Swimspd, data = dat)
+lmsum <- summary(lm.mod)
+
+fsri <- lmer(Metabolism ~ Swimspd + (1|Temp), data = dat)
+fsri.sum <- summary(fsri)
+fittednorms<-ranef(fsri)$Temp[,1]
+
+plot(x = dat$Swimspd, y = dat$Metabolism, pch = 16, col = dat$Temp, xlab = "Swim speed", ylab = "Metabolism", main = "Fixed Slope, Random Intercept", ylim = c(0,12), xlim = c(0,12))
+abline(lmsum$coefficients[1],lmsum$coefficients[2], lty = 2)
+abline(fittednorms[1],fsri.sum$coefficients[2])
+abline(fittednorms[2],fsri.sum$coefficients[2])
+abline(fittednorms[3],fsri.sum$coefficients[2])
+legend("topleft", pch = c(16,16,16), col = c("green", "red", "black", "black"), legend = c("Warm", "Room Temp", "Cold", "Fit line for total"), bty = "n", lty = c(0,0,0,2))
+
+
+```
+
+*Figure 1.11.1*
+
+<Br>
+
+### 1.12 Random Slope, Fixed Intercept
+
+
+```{r echo = F}
+library(lme4)
+dat <- data.frame(SampleID = seq(1,22), Temp = c(rep("Warm", 8), rep("Room Temp", 6),rep("Cold", 8)), Swimspd = c(0,0,1,2,3,3,4,5,1,2,3,5,6,7,4,5,6,7,8,9,10,11), Metabolism = c(3,6,4,4,5,6,8,9,2,2,2,4,5,7,2,3,3,4,5,5,7,7))
+
+lm.mod <- lm(Metabolism ~ Swimspd, data = dat)
+lmsum <- summary(lm.mod)
+
+rsfi <- lmer(Metabolism ~ (0+Swimspd|Temp), data = dat)
+rsfi.sum <- summary(rsfi)
+fittednorms<-ranef(rsfi)$`Temp`[,1]
+
+plot(x = dat$Swimspd, y = dat$Metabolism, pch = 16, col = dat$Temp, xlab = "Swim speed", ylab = "Metabolism", main = "Random Slope, Fixed Intercept", ylim = c(0,12), xlim = c(0,12))
+abline(lmsum$coefficients[1],lmsum$coefficients[2], lty = 2)
+abline(rsfi.sum$coefficients[1],fittednorms[1])
+abline(rsfi.sum$coefficients[1],fittednorms[2])
+abline(rsfi.sum$coefficients[1],fittednorms[3])
+legend("topleft", pch = c(16,16,16), col = c("green", "red", "black", "black"), legend = c("Warm", "Room Temp", "Cold", "Fit line for total"), bty = "n", lty = c(0,0,0,2))
+
+
+```
+
+
+*Figure 1.12.1*
+
+<Br>
+
+### 1.13 Random Slope, Random Intercept
+
+```{r echo = F}
+library(lme4)
+dat <- data.frame(SampleID = seq(1,22), Temp = c(rep("Warm", 8), rep("Room Temp", 6),rep("Cold", 8)), Swimspd = c(0,0,1,2,3,3,4,5,1,2,3,5,6,7,4,5,6,7,8,9,10,11), Metabolism = c(3,6,4,4,5,6,8,9,2,2,2,4,5,7,2,3,3,4,5,5,7,7))
+
+lm.mod <- lm(Metabolism ~ Swimspd, data = dat)
+lmsum <- summary(lm.mod)
+
+rssi <- lmer(Metabolism ~ (1|Temp) + (0+Swimspd|Temp), data = dat)
+rssi.sum <- summary(rssi)
+fittednorms<-ranef(rssi)$`Temp`[,1:2]
+
+plot(x = dat$Swimspd, y = dat$Metabolism, pch = 16, col = dat$Temp, xlab = "Swim speed", ylab = "Metabolism", main = "Random Slope, Random Intercept", ylim = c(0,12), xlim = c(0,12))
+abline(lmsum$coefficients[1],lmsum$coefficients[2], lty = 2)
+abline(fittednorms[1,1],fittednorms[1,2])
+abline(fittednorms[2,1],fittednorms[2,2])
+abline(fittednorms[3,1],fittednorms[3,2])
+legend("topleft", pch = c(16,16,16), col = c("green", "red", "black", "black"), legend = c("Warm", "Room Temp", "Cold", "Fit line for total"), bty = "n", lty = c(0,0,0,2))
+
+
+```
+
+*Figure 1.13.1*
+
+<Br>
+
+### 1.14 How to Represent These Models
+
+Fixed intercepts and slopes
+
+QoL after Surgery~i~ =$b_0+b_1Sugery_i+\varepsilon_i$
+
+Random intercepts and fixed slopes
+
+$Y_{ij}=b_{0j}+b_1X_{ij}+\varepsilon_{ij}$
+
+$b_{0j}=b_0+u_{0j}$
+
+Fixed intercepts and random slopes
+
+$Y_{ij}=b_{oi}+b_{1j}X{ij}+\varepsilon{ij}$
+
+$b_{1j}=b_1+u_{1j}$
+
+Random intercepts and random slopes
+
+$Y_{ij}=b_{oi}+b_{1j}X{ij}+\varepsilon{ij}$
+
+$b_{0j}=b_0+u_{0j}$
+
+$b_{1j}=b_1+u_{1j}$
+
+<Br>
+
+### 1.15 The Surgery Example
+
+Fixed intercepts and slopes
+
+QoL after Surgery~i~ =$b_0+b_1Sugery_i+\varepsilon_i$
+
+Random intercepts and random slopes
+
+QoL After~ij~=$b_{0j}+b_{1j}Surgery_{ij}+b_2QoL \ Before_{ij}+\varepsilon_{ij}$
+
+$b_{0j}=b_0+u_{0j}$
+
+$b_{0j}=b_0+u_{0j}$
+
+<Br>
+      
+### 1.16 Comparing Models
+
+Models should be built up gradually
+
+
++ Start with fixed coefficients
++ Change one aspect of the model and compare to the previous with the change in the -2LL
+
+Assessing fit
+
++ AIC
++ BIC
+
+### 1.17 Covariance Structures
+
+Variance components
+
++ Random effects are independent with similar variances
+Diagonal
+
++ Random effects are independent with different variances
+
+AR(1)
+
++ Random effects are related with data points closer in time being more similar than those distant in time
++ Variances of random effects are similar
+
+Unstructured
+
++Covariances and variances of random effects are unpredictable
+
+### 1.18 Centering
+
+Grand mean centering
+
++ Take each score and subtract from it the mean of all scores (for that variable)
+
+Group mean centering
+
++ Take each score and subtract from it the mean of scores from the same group (for that variable)
+
+Effects of centering in multilevel models
+
++ The effects are complicated
++ Models using centred variables tend to be more stable
++ It can help with problems of multicollinearity
+
+### 1.19 Picturing the Data 
+
+```{r echo = F}
+set.seed(5432)
+library(ggplot2)
+
+dat <- data.frame(Clinic = rep(1:10,each = 19),  Surgery = rep(c("Cosmetic Surgery", "Waiting List"), 95), Pre = runif(190,50,90), Post = runif(190,40,90))
+
+ggplot(data = dat, mapping = aes(x = Pre, y = Post, color = Surgery)) + geom_point() + facet_wrap(~ Clinic) + geom_smooth(method = lm, se = F) + labs(title = "Quality of Life Pre-Post Surgery at 10 Clinics", x = "Quality of Life Pre Surgery (Baseline)", y = "Quality of Life Post Surgery")
+
+```
+
+*Figure 1.19.1*
+
+<Br>
+
+### 1.20 Compare Models
+
+We can have a look at how the fit of the models has improved using the anova() function that we used before; the following will compare all three models that we have so far fitted):
+
++ anova(randomInterceptOnly
++ randomInterceptSurgery
++ randomInterceptSurgeryQoL)
+
+<Br>
+
+|Model|df|AIC|BIC|LogLik|Test|L.Ratio|p-value|
+|---|---|---|---|---|---|---|---|
+|1  |3  |1911.473|1922.334|-952.7364|   |   |   |
+|2  |4  |1910.137|1924.619|-951.0686|1 vs 2   |3.33564   |0.0678   |
+|3  |5  |1847.490|1865.592|-918.7450|2 vs 3   |64.64721   |<.0001   |
+
+*Table 1.20.1: \ Comparing three models*
+
+<Br>
+
+### 1.21 An Example: The `Honeymoon Period'
+
+Speed dating event
+
++ After a speed dating event data were collected on all people who ended up in a relationship with the person that they met on the speed dating night.
++ None of the people measured were in the same relationship.
+
+Satisfaction_Baseline
+
++ A 10-point scale (0 = completely dissatisfied, 10 = completely satisfied)
+
+Satisfaction_6_Months
+
++ Life satisfaction at 6 months (0-10)
+
+Satisfaction_12_Months
+
++ Life satisfaction at 12 months (0-10)
+
+Satisfaction_18_Months
+
++ Life satisfaction at 18 months (0-10)
+
+Gender
+
+### 1.22 The Data
+
+```{r echo = F}
+set.seed(5432)
+df <- data.frame(time = rep(0:3,200), satistifaction = rnorm(200,6,4))
+
+plot(df$time, df$satistifaction, xlab = "Time (six-month intervals)", ylab = "Life Satisfaction")
+
+```
+
+*Figure 1.22.1*
+
+<Br>
+
+### 1.23 Restructuring Data
+
+Data entry for multilevel models .
+Need the variable Time to be represented by a single column. We refer to this format as the 'long' format. As such we need to restructure the data.
+
+But, in repeated measures designs we're used to entering data so that instances of the outcome appear in different columns.
+
+### 1.24 Introducing Random Slopes 
+
+We use the update() function to create a new model (called timeRS) which is identical to the previous model (timeRI) but updates the random part of the model to be random = ~Time|Person:
+
++ timeRS<-update(timeRI, random = ~Time|Person)
+
+### 1.25 To Sum Up 
+
+Data can be hierarchical and this hierarchical structure can be important.
+
++ Most of the tests that you learn simply ignore the hierarchy.
+
+Hierarchical models are just a fancy regression in which you can estimate the variability in the slopes and intercepts within entities.
+
++ Slopes and intercepts can be random variables (allowed to vary) rather than fixed (assumed to be equal in different situations).
+
+Start with a model that ignores the hierarchy and then add in random intercepts and slopes to see if they improve the fit of the model.
+
+Growth curves model trends in the data over time
+
++ These trends can also have variable intercepts and slopes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

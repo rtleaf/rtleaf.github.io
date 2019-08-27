@@ -1,14 +1,38 @@
 ---
+author: "Robert Leaf"
+date: "April 26, 2019"
 output:
   html_document:
-    toc: no
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
 ---
-# Robert Leaf, PhD 
+### Biometry for the Coastal Sciences (COA 606) 
 
-![](http://gcrl.usm.edu/cv/leaf.robert/leaf.robert.photo.source.jpg)
+**Credits**: 3 hours
 
-###  Biography
-Dr. Robert Leaf joined GCRL in September of 2012 and has expertise in quantitative methods and computer-intensive modeling approaches. The goals of these analyses are to understand population regulation and appropriate and effective conservation and management strategies. Dr. Leaf received his PhD in Fishery and Wildlife Sciences from the Virginia Polytechnic Institute and State University in 2010. There he studied how phenology of individuals in harvested populations were altered under size-selective fishing. As a post-doctoral researcher in NOAA’s “Fisheries and the Environment” program, Dr. Leaf examined how phytoplankton bloom phenology determined recruitment patterns in northeast Atlantic ground fishes. His current work involves assessment of fisheries in the Gulf of Mexico and worldwide
+**Course Description and Objectives**
 
-###  Research Interests
-My research is concerned with understanding and modeling biological systems at two levels: individual life-history patterns and processes and population dynamics. At the population level I am interested in understanding the environmental drivers that influence recruitment success of commercially harvested fishes and invertebrates. I use simulations models to explore how alternative harvest strategies impact resilience and sustainability and describe how life-history patterns can be altered by size-selective harvest.
+This course addresses basic approaches to experimental design, statistical analysis, and presentation of
+quantitative information. The broad topic areas of this course are the use of frequency distributions in
+statistics, understanding the properties of the normal model and other frequently encountered distributions,
+quantitative comparisons of the means, regression and correlation analysis, and basic statistical decision
+making. This course will provide graduate level understanding of statistical approaches and how to apply them
+in scientific endeavor. 
+
+**Course Materials**:
+
++ Statistical Analysis, by Sam Kachigan
++ Radius Press (1982)
++ ISBN-13: 978-0942154993
++ ISBN-10: 0942154991
+
++ Discovering Statistics Using R 1st edition, by Andy Field, Jeremy Miles, Zoe Field
++ SAGE Publications Ltd. (2012)
++ ISBN-10: 1446200469
++ ISBN-13: 978-1446200469
+
++ Biostatistical analysis 4th or 5th edition, by Jerrold Zar
++ Prentice Hall (1999)
++ ISBN-10: 0131008463
++ ISBN-13: 978-0131008465

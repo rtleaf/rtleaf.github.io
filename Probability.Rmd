@@ -1,0 +1,405 @@
+---
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+# 1 Probability 
+
+### 1.1 Probability
+
+Probability theory underlies the statistical hypothesis.
+
+### 1.2 Terminology
+
+Events are the number of possible outcome of a phenomenon such as the roll of a die or a fillip of a coin.
+
+"trials" are a coin flip or die roll
+
+### 1.3 Total Number of Outcomes
+
+We are interested in the probability of something happening relative to the total number of possible outcomes.
+
+Consider tossing a coin together with throwing a die.
+
+Two possible outcomes of the coin flip
+
+Six possible outcomes of the die toss
+
+Without regard for order, what are the total number of outcomes of the two events together?
+
+H1, H2, H3 .
+
+Number of events for each trial 
+
+k1 = 2, k2 = 6 
+
+So, in general: 
+
++ The number of events = k1 x k1 x k3 x kn
+
+### 1.4 Probability
+
+Most probability exercises focus on set notation.
+
+Simple understanding creates the foundation for advanced topics.
+
+```{r echo = F}
+x <- c(3,5,6)
+y <- c(3,5,4)
+plot(x = x, y = y, cex = c(15,10,17), xlim = c(1,8), ylim = c(0,7), xaxt = "n", yaxt = "n", xlab = "", ylab = "")
+text(x,y,labels = c("A", "B", "C"))
+```
+
+*Figure 1.4.1*
+
+<Br>
+
+### 1.5 Venn Diagram
+
+```{r echo = F}
+x <- c(3,5,6)
+y <- c(3,5,4)
+plot(x = x, y = y, cex = c(15,10,17), xlim = c(1,8), ylim = c(0,7), xaxt = "n", yaxt = "n", xlab = "", ylab = "")
+text(x,y,labels = c("A", "B", "C"))
+```
+
+*Figure 1.5.1*
+
+<Br>
+
+In any experiment there is a set of possible outcomes "outcome set"
+
+Intersect - the common elements in two sets
+
+Mutually exclusive - sets with no elements in common, null intersect
+
+Union - the combination of elements in two sets.
+
+Complement - the remainder of outcomes in a set that are not in a subset
+
++ Ex: if a set is defined as "even numbered die rolls" the complement are those rolls that are "odd numbered"
+
+### 1.6 Probability of an Event
+
+Define the relative frequency:
+
++ N is the total number of events
++ f is the number of times that outcomes in the subset were observed.
+
+$\mbox{relative frequency of an event}=\frac{\mbox{frequency of that event}}{\mbox{total number of all events}}=\frac{f}{n}$
+
+<Br>
+
+### 1.7 Some notation
+
+Note on notation:
+
++ Trial~1~ the subscript is for the trial
+
+P(Trial~1~ = 1) = 1/6
+P(Trial~1~ = "H") = 0.5
+So if we have three trials:
+
++ P(Trial~1~ = "H"), P(Trial~2~= "H"), P(Trial~3~= "T")
+
+### 1.8 Mutually Exclusive Events
+
+If two events are mutually exclusive "A" and "B" then the probability of either event is the sum of the probabilities:
+
+P(A or B) = P(A) + P(B)
+
+P("HRC win" or "DJT win") = P("HRC win") + "DJT win"
+
+These are disjoint sets - both outcomes cannot be realized.
+
+### 1.9 Non-Mutually Exclusive Events
+
+If events are not mutually exclusive:
+
++ i.e.. both outcomes can be realized
+
+Sets "Mammals" and "flying vertebrates" are not disjoint.
+
+P(A or B) = P(A) + P(B) - P(A and B)
+
+```{r echo = F}
+
+x <- c(5,6)
+y <- c(6,6)
+plot(x = x, y = y, cex = c(25,25), xlim = c(4,8), ylim = c(4,7), xaxt = "n", yaxt = "n", xlab = "", ylab = "", pch = c(16,1), bty = "n")
+
+
+```
+
+*Figure 1.9.1*
+
+<Br>
+
+### 1.10 Example 1
+
+Probability of non-mutually exclusive events
+
++ P(A or B) = P(A) + P(B) - P(A and B)
+
+Using a single die:
+
+P("odd number" or "number < 4")
+
+Figure 78
+
+P("odd number") = P(1) + P(3) + P(5) = ?
+
+P("number < 4") = P(1) + P(2) + P(3) = ?
+
+P("odd number" and "number < 4") = P(1) + P(3) = 1/3
+
+### 1.11 Probability of Events
+
+Mutually exclusive:
+
++ P(A or B) = P(A) + P(B)
+
+```{r echo = F}
+x <- c(4,6)
+y <- c(6,6)
+plot(x = x, y = y, cex = c(25,25), xlim = c(3,8), ylim = c(4,7), xaxt = "n", yaxt = "n", xlab = "", ylab = "", pch = c(16,1), bty = "n")
+
+```
+
+*Figure 1.11.1*
+
+<Br>
+
+Non-mutually exclusive:
+
++ P(A or B) = P(A) + P(B) - P(A and B)
+
+```{r echo = F}
+
+x <- c(5,6)
+y <- c(6,6)
+plot(x = x, y = y, cex = c(25,25), xlim = c(4,8), ylim = c(4,7), xaxt = "n", yaxt = "n", xlab = "", ylab = "", pch = c(16,1), bty = "n")
+
+
+```
+
+*Figure 1.11.2*
+
+<Br>
+
+### 1.12 Example 2: P(A or B) = P(A) + P(B) - P(A and B)
+
+Deck of cards
+
+13 in each suit (4 suits)
+
+Cards in each suit: 2 to 10, J, Q, K, A
+
+P("Diamond") = 
+
+P("King") = 
+
+P("Diamond" or "King") =
+
+### 1.13 Non-Mutually Exclusive Events
+
+P(A or B or C) = 
+
+```{r echo = F}
+x <- c(4,4.5,5)
+y <- c(6,7,6)
+x2 <- c(3.5,4.5,5.5)
+y2 <- c(6,7.5,6)
+plot(x = x, y = y, cex = 25, xlim = c(3,8), ylim = c(5,8), xaxt = "n", yaxt = "n", xlab = "", ylab = "", bty = "n")
+points(x2, y2, cex = 10, pch = 16, col = "grey80")
+text(x2,y2, labels= c("A", "B", "C"))
+```
+
+*Figure 1.13.1: P(A) +, P(B) +, P(C) -*
+
+<Br>
+
+
+```{r echo = F}
+x <- c(4,4.5,5)
+y <- c(6,7,6)
+x2 <- c(4,4.5,5.1)
+y2 <- c(6.6,5.7,6.6)
+plot(x = x, y = y, cex = 25, xlim = c(3,8), ylim = c(5,8), xaxt = "n", yaxt = "n", xlab = "", ylab = "", bty = "n")
+points(x2, y2, cex = 10, pch = 16, col = "grey80")
+text(x,y, labels= c("A", "B", "C"))
+```
+
+*Figure 1.13.2: P(A and B) -, P(A and C) -,  P(B and C) +*
+
+<Br>
+
+
+```{r echo = F}
+x <- c(4,4.5,5)
+y <- c(6,7,6)
+x2 <- c(4.5)
+y2 <- c(6.4)
+plot(x = x, y = y, cex = 25, xlim = c(3,8), ylim = c(5,8), xaxt = "n", yaxt = "n", xlab = "", ylab = "", bty = "n")
+points(x2, y2, cex = 10, pch = 16, col = "grey80")
+text(x,y, labels= c("A", "B", "C"))
+```
+
+*Figure 1.13.3: P(A and B and C)*
+
+<Br>
+
+
+### 1.14 Intersecting Probabilities
+
+If two or more events intersect the probability associated with that intersection is the probabilities of the individual events.
+
+P(A an B) = P(A) * P(B) 
+
+P(A an B and C) = P(A) * P(B) * P(C)
+
+### 1.15 Conditional Probability
+
+Probability of one event with the stipulation that another event also occurs.
+
+Ex. Probability of selecting a "queen" given that the card is a "spade"
+
++ We know we have a spade
+
+P(Event A, given event B) = P(A and B, jointly)/P(B)
+
+P(queen | spade) = P(queen of spades) / P(spade)
+
+P(queen | spade) = frequency of queen of spades/frequency of spades
+
+Note that this conditional probability is quite different from the probability of selecting a spade, given that the card is a queen. 
+
+P(spade | queen) = 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
