@@ -2,16 +2,14 @@
 output:
   html_document:
     toc: no
-    toc_depth: 3
-    toc_float: yes
 ---
 # Information about Dr. Leaf's Lab for Prospective Students
 
 Thanks for your interest in the Leaf Lab. I am interested in recruiting strong Masters and Ph.D. candidates with an interest and enthusiasm for using quantitative methods for understanding the natural world. We are engaged in a range of fisheries and ecological research and a survey of the recent and current research projects conducted in the lab will give you a sense of our research foci. 
 
-I generally accept students only when I have funding available, and advertise these available positions on the AFS job opportunities website. The Division of Coastal Sciences does offerCOA Graduate Fellowship Opportunities for exceptional students.
+I generally accept students only when I have funding available, and advertise these available positions on the AFS job opportunities website. The Division of Coastal Sciences does offer COA Graduate Fellowship Opportunities for exceptional students.
 
-If you are interested in learning more about the work done in my lab your first step is to spend some time on this website and the Division of Coastal Sciences and USM Graduate School’s website to learn more about graduate study at USM.
+If you are interested in learning more about the work done in my lab your first step is to spend some time on this website and the Division of Coastal Sciences and USM Graduate School's website to learn more about graduate study at USM.
 
 The application process:
 
@@ -19,11 +17,11 @@ The application process:
 + If you are interested please submit the requested single PDF file containing your cover letter, CV, and transcripts. Give me an opportunity to look at your packet (this is detailed below. Please follow the instructions).
 + We should work together to determine if the program is right for you and to identify whether it is appropriate for you to apply to the graduate school at USM. Your prepared application packet will help me guide you.
 + If you are a good fit then we can arrange a visit to USM.
-+ Faculty at USM’s Div. of Coastal Sciences will generally not admit students to the program without arranging sponsorship by an advisor – applying to the Div. of Coastal Sciences without talking with an advisor and also understanding the availability of funding is a waste of your valuable time and energy.
++ Faculty at USM's division of Coastal Sciences will generally not admit students to the program without arranging sponsorship by an advisor. Applying to the Div. of Coastal Sciences without talking with an advisor and also understanding the availability of funding is a waste of your valuable time and energy.
 
 If you are interested in applying for a position in my lab, contact me by email (robert.leaf@usm.edu) and send:
 
 + Cover letter (one page that details relevant and specific information about your experiences and abilities beyond those itemized in your CV).
-+ CV –include your GRE scores (unofficial are fine but percentile scores must be included for each) and contact info
-+ Legible copies of transcripts (Unofficial or Official).
-+ Include these in a single PDF file labeled with your last and first name; example: “Leaf_Robert_application_packet.PDF”. Sending a file titled “CV.doc” or “research statement.PDF” is a guarantee that it will be lost or overwritten.
++ CV, include your GRE scores (unofficial are fine but percentile scores must be included for each) and contact info
++ Legible copies of transcripts (Unofficial or Official, either is fine but class names should be obvious).
++ Include these in a single PDF file labeled with your last and first name; example: Leaf_Robert_application_packet.PDF. Sending a file titled CV.doc or research statement.PDF is a guarantee that it will be lost or overwritten.
