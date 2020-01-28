@@ -29,7 +29,7 @@ This course addresses basic and advanced quantitative approaches to methods of f
 
 This course is a first class in the R programming language focusing on basic syntax and plotting using base functions.
 
-[Course Website](https://rtleaf.github.io/Biometry-COA-606/)
+[Course Website](https://rtleaf.github.io/R-shortcourse)
 
 ###  Professional Skills
 

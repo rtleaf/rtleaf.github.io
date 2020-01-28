@@ -9,6 +9,30 @@ Data from the Leaf Lab that are made publicly available has migrated to an OpenD
 
 The DPM portal is designed to show interested users the scope of the available data (headers are public). Email Robert Leaf if you are interested in accessing these data after you have explored the meta data and headers.
 
-We strive to make our tax payer supported data open and available when possible. To access the data follow the link here:
+We strive to make our taxpayer supported data open and available when possible. To access the data follow the link here:
 
 [OpenDataSoft portal](https://robertleaf.my.opendatasoft.com/explore/?sort=modified)
+
+# 2019-Bonnet-Carre-Monitoring
+
+This repository serves to organize and describe the products derived from environmental and biological sampling performed by USM researchers about the extent and impacts of freshwater in the Mississippi Sound, 2019 associated with the opening of the Bonnet Carre spillway. Data, Meta Data, and a Data and Meta Data Summary directories are located in a Google Drive Repository that can be accessed here:
+
+https://drive.google.com/open?id=1cKUzfGNFURqCZlmyQ4ux9Hp6qERfHsKn
+
+The .md file is a living document to describe the structure of the repository.
+
++ [Data](https://drive.google.com/open?id=1n8lHUhrLVZA-hFnV3S2uY-N-GgnLxVhb):
+  - Living Marine Resources (Fishes and Invertebrates)
+  - Secchi
+  - Sonde/YSI Envrionmental Sampling
+  - Vibrio and Bacterial DNA
+  - Nutrient and Isotopes
+  - Phytoplankton
+  - Shape Files directory includes high resolution .shp files for the region
+  - Station list "BC_STATIONS.csv" contains the decimal degree locations for all fixed sampling stations
+  
++ [Meta Data](https://drive.google.com/open?id=1mQgwByIFQ3WX8w6f0Uvhks65q8voBBZT):
+  - .xlsx files that describe the structure of the data collected during the project
+  
++ [Data and Meta Data Summary](https://drive.google.com/open?id=1wWP_qha0Y2ENYcSMB_KAFF2DCaNGwVOK):
+  - .html files that sumamrize in tables and figures the station-, spatial-, and temporal-specific patterns in the collected data. 

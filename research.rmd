@@ -10,6 +10,43 @@ output:
 ---
 # RShiny App development
 
+### Traffic Light Assessment Model
+
+The effort initiated at the April, 2019 Crab Task Force at the Biennial Gulf States Marine Fisheries commission meeting identified:
+
+1) The general desire of the panel members to explore the utility of alternative assessment models.
+
+2)	Understand the strengths and weaknesses of alternative assessment models to address the needs of individual states.
+
+3)	Consider that each states’ regulatory and management priorities superseded the desire for another gulf-wide assessment. There was a stated reservation by some state agency representatives that a gulf-wide assessment effort would hinder their efforts to manage their state’s resources.
+
+Given the desire to explore models that could be used by the states and conscious that a full assessment effort was not desired, Vanderkooy (Steve Vanderkooy, GSMFC) and Leaf (Robert Leaf, University of Southern Mississippi) derived a set of terms of reference that could be accomplished. Vanderkooy’s role was to organize and coordinate the effort and Leaf’s role was to synthesize the states data, derive indices and time series where appropriate, guide the development of the modeling approach with state agency representatives, and provide a summary document.
+
+The terms of reference for the 2019 Blue Crab Assessment Effort are provided at the end of the document.
+
+The primary deliverables of the work:
+1)	Created a catalog of the Commercial, Recreational, and Fishery Independent data that could be used in a quantitative assessment. Additionally socio-economic data, and other data describing the state of the stock and fishery for inclusion into the model.
+
+2)	Evaluated alternative models and concluded that a traffic light model would best serve the needs of the Gulf State’s resource management agencies.
+
+1)	Conducted a preliminary modeling exercise using the traffic light. Participants with experience using this model from North Carolina’s state resource agency were critical in this effort.
+
+3)	Developed:
+
+a.	An online modeling platform for use by the states to understand what data sources, at what spatial scales, are most informative for their needs.
+The modeling framework can be found in the link below.
+
+b.	An input data template such that the modeling platform can be used in the future.
+
+4)	Understand based on the above deliverables what future research and data collection activities need to be undertaken to continue to improve stock sustainability.
+
+This report summarizes the proceeding from the October 15 Blue Crab workshop convened by GSMFC, specifically the work performed by contractor Robert Leaf to address the terms of reference outlined in the “Gulf of Mexico Blue Crab Population Modeling” effort. Following the previous workshop, the state representatives decided that the “Traffic Light Model” was the preferred assessment approach. The scope of work for Leaf was limited to evaluation and conducting preliminary analysis of the candidate models, in partnership with the state management agency representatives.
+
+
+[Traffic Light Model](https://robe.shinyapps.io/Blue_Crab_Traffic_Light_v01/)
+
+The model imports a .csv file "template" that can be found [here](https://drive.google.com/open?id=14I0bItmwQvkKeWbfYGMGSdw-H4pEOpXuv6XvXhNefU0)
+
 ### Parameterization of Red Snapper Individual-Based Simulation Model
 
 To understand the feasiblity of performing large-scale tag-recapture in the Gulf of Mexico. To understand the challenges we distributed this survey to scientists and those knowledgable in Red Snapper ecology:
