@@ -1,0 +1,4019 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Linear_Models.utf8</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="syllabus.html">Course Syllabus</a>
+</li>
+<li>
+  <a href="Fundamentals_of_Statistics.html">Fundamentals</a>
+</li>
+<li>
+  <a href="Linear_Models.html">Linear Models</a>
+</li>
+<li>
+  <a href="Maximum_Likelihood.html">Maximum Liklihood</a>
+</li>
+<li>
+  <a href="Multilevel_Models.html">Multilevel Models</a>
+</li>
+<li>
+  <a href="Comp_Intensive_Approaches.html">Resampling Methods</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div id="linear-regression" class="section level1">
+<h1><span class="header-section-number">1</span> Linear Regression</h1>
+<p>“Simple” linear regression with has a single predictor variable</p>
+<p>A critical need is for us to understand the fit of a regression model, to do this we will evaluate the following quantities:</p>
+<ul>
+<li>Total sum of squares</li>
+<li>Model sum of squares</li>
+<li>Residual sum of squares</li>
+<li>R<sup>2</sup></li>
+</ul>
+<p>We will use these quantities to understand two things:</p>
+<ol style="list-style-type: decimal">
+<li><p>Is <span class="math inline">\(\beta_1 = 0\)</span> (using the confidence intervals)? We would like to know if <em>X</em> is a good predictor of <em>Y</em> and this is determined by evaluating the null hypothesis, <span class="math inline">\(\beta_1 = 0\)</span>.</p></li>
+<li><p>Is the model significant (using an <em>F</em>-test)? We would like to know: Does the regression model fit the data better than the null model (more on this below).</p></li>
+</ol>
+<div id="what-is-regression" class="section level2">
+<h2><span class="header-section-number">1.1</span> What is Regression?</h2>
+<ul>
+<li><p>A way of predicting the value of one variable from another.</p></li>
+<li><p>It is a model of the relationship between two variables.</p></li>
+<li><p>The modeled relationship is linear</p></li>
+<li><p>Therefore, we describe the relationship using the equation of a straight line.</p></li>
+</ul>
+</div>
+<div id="assumptions-of-simple-linear-regression" class="section level2">
+<h2><span class="header-section-number">1.2</span> Assumptions of Simple Linear Regression</h2>
+<ul>
+<li><p>For each value of <em>X</em>, <em>Y</em> are randomly sampled and independent.</p></li>
+<li><p>For any value of <em>X</em> in the pop’l there exists a normal distribution of Y values</p></li>
+<li><p>There is homogeneity of variance in the population. i.e. the variance of the normal distribution of <em>Y</em> values in population are equal for all of values of <em>X</em>.</p></li>
+<li><p>X is measured without error</p></li>
+</ul>
+</div>
+<div id="model-for-linear-relationship" class="section level2">
+<h2><span class="header-section-number">1.3</span> Model for Linear Relationship</h2>
+<p><span class="math inline">\(Y_i=\beta_0 + \beta_1X_i + \varepsilon_i\)</span></p>
+<p><span class="math inline">\(\beta_1\)</span></p>
+<ul>
+<li><p>Regression coefficient for the predictor</p></li>
+<li><p>Gradient (slope) of the regression line</p></li>
+<li><p>Direction/strength of relationship</p></li>
+</ul>
+<p><span class="math inline">\(\beta_0\)</span></p>
+<ul>
+<li><p>Intercept (value of <em>Y</em> when <em>X</em> = 0)</p></li>
+<li><p>Point at which the regression line crosses the <em>Y</em>-axis (ordinate)</p></li>
+</ul>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="intercepts-and-gradients" class="section level2">
+<h2><span class="header-section-number">1.4</span> Intercepts and Gradients</h2>
+<p><span class="math inline">\(Y_i=\beta_0 + \beta_1X_i + \varepsilon_i\)</span></p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="the-method-of-least-squares" class="section level2">
+<h2><span class="header-section-number">1.5</span> The Method of Least Squares</h2>
+<p>This is the approach we will use for parameter estimation and inference in this course.</p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>This figure shows a scatterplot of some data with a line representing the general trend. The vertical lines (dotted) represent the differences (or residuals) between the line (predictions) and the observations.</p>
+</div>
+<div id="sums-of-squares-components" class="section level2">
+<h2><span class="header-section-number">1.6</span> Sums of Squares Components</h2>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="total-ss-sst-sst" class="section level2">
+<h2><span class="header-section-number">1.7</span> Total SS (SS<sub>T</sub>, SST)</h2>
+<ul>
+<li><p>Total variability (variability between scores and the mean).</p></li>
+<li><p>TSS is the sum of the squared residuals when the most basic model is applied to the data.</p></li>
+<li><p>How good is the mean as a model to the observed data?</p></li>
+<li><p>Lets consider the mean of <em>Y</em> to be the null model:</p></li>
+<li><p>SS<sub>T</sub> uses the differences between the observed data and the mean value of <em>Y</em> (the null model)</p></li>
+<li><p>Total SS <span class="math inline">\(=\sum(Y_i - \bar{Y})^2\)</span></p></li>
+</ul>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="residual-ss-or-error-ss-ssr" class="section level2">
+<h2><span class="header-section-number">1.8</span> Residual SS or Error SS (SS<sub>R</sub>)</h2>
+<ul>
+<li><p>SS<sub>R</sub></p></li>
+<li><p>Residual/error variability (variability between the regression model and the actual data).</p></li>
+<li><p>Difference between the observed data and the model</p></li>
+<li><p>Represents the degree of inaccuracy when fitting the <em>best fit</em> model to the data.</p></li>
+<li><p>Residual/error variability (variability between the regression model and the actual data).</p></li>
+<li><p>RSS <span class="math inline">\(=\sum(Y_i - \hat{Y})^2\)</span></p></li>
+</ul>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="model-ss-or-regression-ss-ssm" class="section level2">
+<h2><span class="header-section-number">1.9</span> Model SS or Regression SS (SS<sub>M</sub>)</h2>
+<ul>
+<li><p>SS<sub>M</sub></p></li>
+<li><p>Model variability (difference in variability between the model and the mean).</p></li>
+<li><p>This is the improvement we get from fitting the model to the data relative to the null model.</p></li>
+<li><p>regression SS <span class="math inline">\(=\sum(\hat{Y}_i - \bar{Y})^2\)</span></p></li>
+<li><p>How do we get large SSM?</p></li>
+</ul>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="sst-ssr-ssm" class="section level2">
+<h2><span class="header-section-number">1.10</span> SST = SSR + SSM</h2>
+<ul>
+<li><p>So, we can calculate the proportion of improvement due to the model.</p></li>
+<li><p>SSM/SST, percentage of variation explained by the model.</p></li>
+</ul>
+</div>
+<div id="evaluating-the-quality-of-the-model-r2" class="section level2">
+<h2><span class="header-section-number">1.11</span> Evaluating the Quality of the Model: R<sup>2</sup></h2>
+<p>R<sup>2</sup></p>
+<ul>
+<li><p>The proportion of variance accounted for by the regression model</p></li>
+<li><p>The Pearson Correlation Coefficient Squared</p></li>
+</ul>
+<p><span class="math inline">\(R^2=\frac{SS_M}{SS_T}\)</span></p>
+</div>
+<div id="ss-for-model-testing" class="section level2">
+<h2><span class="header-section-number">1.12</span> SS for Model Testing</h2>
+<p>Evaluate the amount of systematic variance (regression/model) divided by the amount of unsystematic (residual) variance.</p>
+<p><em>F</em> test - “termed variance ratio test”</p>
+<ol style="list-style-type: decimal">
+<li><p>Calculate quantities “mean squares”</p></li>
+<li><p>Use the SSM and SSR</p></li>
+<li><p>Divide the SSM and SSR by their respective degrees of freedom (DF). These terms can be expressed as averages, divided by DF terms.</p></li>
+</ol>
+<ul>
+<li><p>DF for SSM (The number of parameters in the model - 1)</p></li>
+<li><p>DF for SSR (number of obs - number of parameters in the model)</p></li>
+</ul>
+<p>These are called mean squares, MS: MS <em>Model</em> and MS <em>Residual</em></p>
+<ul>
+<li>MS<sub>M</sub> = SS<sub>M</sub>/DF<sub>M</sub></li>
+<li>MS<sub>R</sub> = SS<sub>R</sub>/DF<sub>R</sub></li>
+</ul>
+<p><em>F</em>-test is termed the “variance ratio test”</p>
+<p><span class="math inline">\(F=\frac{MS_M}{MS_R}\)</span></p>
+</div>
+<div id="test-beta_1-0" class="section level2">
+<h2><span class="header-section-number">1.13</span> Test <span class="math inline">\(\beta_1 = 0\)</span></h2>
+<p>To test whether <span class="math inline">\(\beta_1 = 0\)</span> we will use the t-distribution.</p>
+<p>After determining the model parameters values we can estimate the standard error of the slope.</p>
+<p>The approach is to determine the confidence interval of the slope for a given value of alpha.</p>
+<p>Look at the following equation, what values will we need?</p>
+<p><span class="math inline">\(SE_{\beta_1}=\frac {\sqrt{(\sum{{Y_i - \hat{Y_i}}})^2/(n - 2)}}{\sqrt{\sum{(X_i - \bar{X})^2}}}\)</span></p>
+<p>Degrees of freedom. For simple linear regression (one independent and one dependent variable), the degrees of freedom (DF) is equal to, n - 2.</p>
+<p>Our calculated test statistic is:</p>
+<p><span class="math inline">\(t = \frac{\beta_1}{SE_{\beta_1}}\)</span></p>
+<p>We will compare this to the critical value:</p>
+<p><span class="math inline">\(t_{\alpha, tailed, d.f.}\)</span></p>
+</div>
+<div id="worked-example" class="section level2">
+<h2><span class="header-section-number">1.14</span> Worked Example</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Age (days) (X)</th>
+<th>Wing Length (cm) (Y)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3.0</td>
+<td>1.4</td>
+</tr>
+<tr class="even">
+<td>4.0</td>
+<td>1.5</td>
+</tr>
+<tr class="odd">
+<td>5.0</td>
+<td>2.2</td>
+</tr>
+<tr class="even">
+<td>6.0</td>
+<td>2.4</td>
+</tr>
+<tr class="odd">
+<td>8.0</td>
+<td>3.1</td>
+</tr>
+<tr class="even">
+<td>9.0</td>
+<td>3.2</td>
+</tr>
+<tr class="odd">
+<td>10.0</td>
+<td>3.2</td>
+</tr>
+<tr class="even">
+<td>11.0</td>
+<td>3.9</td>
+</tr>
+<tr class="odd">
+<td>12.0</td>
+<td>4.1</td>
+</tr>
+<tr class="even">
+<td>14.0</td>
+<td>4.7</td>
+</tr>
+<tr class="odd">
+<td>15.0</td>
+<td>4.5</td>
+</tr>
+<tr class="even">
+<td>16.0</td>
+<td>5.2</td>
+</tr>
+<tr class="odd">
+<td>17.0</td>
+<td>5.0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>We find that the TSS is = 19.65</p>
+<p>We find that the Model SS = 19.13</p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Source of Variation</th>
+<th>Sum of Squares (SS)</th>
+<th>DF</th>
+<th>Mean Squares (MS)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Total</td>
+<td><span class="math inline">\(\sum(Y_i-\bar{Y})^2\)</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Model (or Regression)</td>
+<td><span class="math inline">\(\sum(\hat{Y}_i-\bar{Y})^2\)</span></td>
+<td>The number of parameters in the model - 1</td>
+<td>SS<sub>M</sub>/DF<sub>M</sub></td>
+</tr>
+<tr class="odd">
+<td>Residual (or Error)</td>
+<td><span class="math inline">\(\sum(Y_i-\hat{Y})^2\)</span></td>
+<td>The number of obs - the number of parameters in the model</td>
+<td>SS<sub>R</sub>/DF<sub>R</sub></td>
+</tr>
+</tbody>
+</table>
+<div id="summary-of-the-calculations-for-model-fit" class="section level3">
+<h3><span class="header-section-number">1.14.1</span> Summary of the Calculations for Model Fit</h3>
+<p>We are falsifying the null hypothesis: <span class="math inline">\(H_0\)</span>: There is no statistically significant relationship between variables x and y.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Source of Variance</th>
+<th>SS</th>
+<th>DF</th>
+<th>MS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Total</td>
+<td>19.65</td>
+<td>12</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Model (or Regression)</td>
+<td>19.13</td>
+<td>1</td>
+<td>19.13</td>
+</tr>
+<tr class="odd">
+<td>Residual (or Error)</td>
+<td>0.52</td>
+<td>11</td>
+<td>0.047</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(F=\frac{19.132214}{0.047701}=401.1\)</span></p>
+<p><span class="math inline">\(F_{0.05(1),1.11} = 4.84\)</span></p>
+<p>Therefore, reject H<sub>0</sub></p>
+<p>P &lt; 0.0005</p>
+</div>
+</div>
+<div id="regression-an-example" class="section level2">
+<h2><span class="header-section-number">1.15</span> Regression: An Example</h2>
+<p>A record company boss was interested in predicting record sales from advertising.</p>
+<p>Data</p>
+<ul>
+<li>200 different album releases</li>
+</ul>
+<p>Outcome variable:</p>
+<ul>
+<li>Sales (CDs and downloads) in the week after release</li>
+</ul>
+<p>Predictor variable:</p>
+<ul>
+<li>The amount (in units of ?1000) spent promoting the record before release.</li>
+</ul>
+</div>
+<div id="output-of-a-simple-regression" class="section level2">
+<h2><span class="header-section-number">1.16</span> Output of a Simple Regression</h2>
+<p>In R:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Coefficients:</th>
+<th>Estimate</th>
+<th>Std. Error</th>
+<th>t value</th>
+<th>Pr(&gt;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(intercept)</td>
+<td>1.341e+02</td>
+<td>7.537e+00</td>
+<td>17.799</td>
+<td>&lt;2e-16 ***</td>
+</tr>
+<tr class="even">
+<td>Adverts</td>
+<td>9.612e-02</td>
+<td>9.632e-03</td>
+<td>9.979</td>
+<td>&lt;2e-16 ***</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Signif. codes: 0 ‘<em><strong>’ 0.001 ’</strong>’ 0.01 ’</em>’ 0.05 ‘.’ 0.1 ’ ’ 1</li>
+<li>Residual standard error: 65.99 on 198 degrees of freedom</li>
+<li>Multiple R-squared: 0.3346, Adjusted R-squared: 0.3313</li>
+<li>F-statistic: 99.59 on 1 and 198 DF, p-value: &lt; 2.2e-16</li>
+</ul>
+</div>
+<div id="using-the-model" class="section level2">
+<h2><span class="header-section-number">1.17</span> Using the Model</h2>
+<p><span class="math display">\[\begin{align}
+Record \: Sales_i&amp;=b_0+b_1Advertising \: Budget_i\\
+
+&amp;=134.14+(0.09612\times Advertising \: Budget_i)
+\end{align}\]</span></p>
+<p><Br> <Br></p>
+<p>Record Sales<sub>i</sub> = 134.14 + (0.09612 x Advertising Budget<sub>i</sub>)</p>
+<p>= 134.14 + (0.09612 x 100)</p>
+<p>= 143.75</p>
+</div>
+</div>
+<div id="multiple-linear-regression" class="section level1">
+<h1><span class="header-section-number">2</span> Multiple Linear Regression</h1>
+<p>Model is fit by minimizing the sum of squared differences between the line and the actual data points - method of least squares.</p>
+<p>We still use our base equation:</p>
+<p><span class="math inline">\(outcome_i=model_i+error_i\)</span></p>
+<p>But this time the model it is a bit more complicated.</p>
+<p>When we add predictors, we add coefficients (<span class="math inline">\(\beta\)</span> terms).</p>
+<p>So each predictor variable has its own coefficient and the outcome variable is predicted from a combination of all variables multiplied by their respective coefficients plus a residual term.</p>
+<div id="multiple-predictors" class="section level2">
+<h2><span class="header-section-number">2.1</span> Multiple Predictors</h2>
+<p><em>Y</em> is the outcome variable, <span class="math inline">\(\beta_1\)</span> is the coefficient of X1,<span class="math inline">\(\beta_n\)</span> is the coefficient of <span class="math inline">\(X_n\)</span>.</p>
+<p>We seek to find combinations of <span class="math inline">\(\beta\)</span> values (paramteers).</p>
+<p><span class="math inline">\(outcome_i=model_i+error_i\)</span></p>
+<p><span class="math inline">\(Y_i=(b_0 + b_1X_{1i}+b_2X_{2i}+\ldots+b_nX_{ni})+\varepsilon_i\)</span></p>
+</div>
+<div id="album-sales-model" class="section level2">
+<h2><span class="header-section-number">2.2</span> Album Sales Model</h2>
+<p>From our record sales data we know that advertising accounts for 33% of the variation in album sales.</p>
+<p>Remember:</p>
+<p><span class="math inline">\(R^2=\frac{SS_M}{SS_T}\)</span></p>
+<p><span class="math inline">\(R^2=0.3313\)</span></p>
+<p>Therefore a large proportion of variation remains unexplained.</p>
+<p>Lets bring a new predictor variable into the mix:</p>
+<ul>
+<li>How many times the song was played on the radio during the week prior to its release.</li>
+</ul>
+</div>
+<div id="multiple-predictors-model" class="section level2">
+<h2><span class="header-section-number">2.3</span> Multiple Predictors Model</h2>
+<p>Incorporate “airplay”</p>
+<p>So we have a model with three parameters and two slope coefficients. Because there are two predictors, so we can view the model in two dimensions:</p>
+<p><span class="math inline">\(Album \:Sales_i=(b_0+b_1advertising \: budget_i+b_2 airplay_i)+\varepsilon_i\)</span></p>
+<p><Br></p>
+</div>
+<div id="regression-plane" class="section level2">
+<h2><span class="header-section-number">2.4</span> Regression “Plane”</h2>
+<pre><code>## Warning: package &#39;scatterplot3d&#39; was built under R version 4.0.3</code></pre>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="multiple-linear-regression-1" class="section level2">
+<h2><span class="header-section-number">2.5</span> 2.6 Multiple Linear Regression</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Cities</th>
+<th>Y</th>
+<th>X<sub>1</sub></th>
+<th>X<sub>2</sub></th>
+<th>X<sub>3</sub></th>
+<th>X<sub>4</sub></th>
+<th>X<sub>5</sub></th>
+<th>X<sub>6</sub></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pheonix</td>
+<td>10</td>
+<td>70.3</td>
+<td>213</td>
+<td>582</td>
+<td>6.0</td>
+<td>7.05</td>
+<td>36</td>
+</tr>
+<tr class="even">
+<td>Little Rock</td>
+<td>13</td>
+<td>61.0</td>
+<td>91</td>
+<td>132</td>
+<td>8.2</td>
+<td>48.52</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>San Francisco</td>
+<td>12</td>
+<td>56.7</td>
+<td>453</td>
+<td>716</td>
+<td>8.7</td>
+<td>20.66</td>
+<td>67</td>
+</tr>
+<tr class="even">
+<td>Denver</td>
+<td>17</td>
+<td>51.9</td>
+<td>454</td>
+<td>515</td>
+<td>9.0</td>
+<td>12.95</td>
+<td>86</td>
+</tr>
+<tr class="odd">
+<td>Hartford</td>
+<td>56</td>
+<td>49.1</td>
+<td>412</td>
+<td>158</td>
+<td>9.0</td>
+<td>43.37</td>
+<td>127</td>
+</tr>
+<tr class="even">
+<td>Wilmington</td>
+<td>36</td>
+<td>54.0</td>
+<td>80</td>
+<td>80</td>
+<td>9.0</td>
+<td>40.25</td>
+<td>114</td>
+</tr>
+<tr class="odd">
+<td>Washington</td>
+<td>29</td>
+<td>57.3</td>
+<td>434</td>
+<td>757</td>
+<td>9.3</td>
+<td>38.89</td>
+<td>111</td>
+</tr>
+<tr class="even">
+<td>Jacksonville</td>
+<td>14</td>
+<td>68.4</td>
+<td>136</td>
+<td>529</td>
+<td>8.8</td>
+<td>54.57</td>
+<td>116</td>
+</tr>
+<tr class="odd">
+<td>Miami</td>
+<td>10</td>
+<td>75.5</td>
+<td>207</td>
+<td>335</td>
+<td>9.0</td>
+<td>59.80</td>
+<td>128</td>
+</tr>
+<tr class="even">
+<td>Atlanta</td>
+<td>24</td>
+<td>61.5</td>
+<td>368</td>
+<td>497</td>
+<td>9.1</td>
+<td>48.34</td>
+<td>115</td>
+</tr>
+<tr class="odd">
+<td>Chicago</td>
+<td>110</td>
+<td>50.6</td>
+<td>3344</td>
+<td>3369</td>
+<td>10.4</td>
+<td>34.44</td>
+<td>122</td>
+</tr>
+<tr class="even">
+<td>Indianapolis</td>
+<td>28</td>
+<td>52.3</td>
+<td>361</td>
+<td>746</td>
+<td>9.7</td>
+<td>38.74</td>
+<td>121</td>
+</tr>
+<tr class="odd">
+<td>Des Moines</td>
+<td>17</td>
+<td>49.0</td>
+<td>104</td>
+<td>201</td>
+<td>11.2</td>
+<td>30.85</td>
+<td>103</td>
+</tr>
+<tr class="even">
+<td>Wichita</td>
+<td>8</td>
+<td>56.6</td>
+<td>125</td>
+<td>277</td>
+<td>12.7</td>
+<td>30.58</td>
+<td>82</td>
+</tr>
+<tr class="odd">
+<td>Louisville</td>
+<td>30</td>
+<td>55.6</td>
+<td>291</td>
+<td>593</td>
+<td>8.3</td>
+<td>43.11</td>
+<td>123</td>
+</tr>
+<tr class="even">
+<td>New Orleans</td>
+<td>9</td>
+<td>68.3</td>
+<td>204</td>
+<td>361</td>
+<td>8.4</td>
+<td>56.77</td>
+<td>113</td>
+</tr>
+<tr class="odd">
+<td>Baltimore</td>
+<td>47</td>
+<td>55.0</td>
+<td>625</td>
+<td>905</td>
+<td>9.6</td>
+<td>41.31</td>
+<td>111</td>
+</tr>
+<tr class="even">
+<td>Detroit</td>
+<td>35</td>
+<td>49.9</td>
+<td>1064</td>
+<td>1513</td>
+<td>10.1</td>
+<td>30.96</td>
+<td>129</td>
+</tr>
+<tr class="odd">
+<td>Minneapolis- St. Paul</td>
+<td>29</td>
+<td>43.5</td>
+<td>699</td>
+<td>744</td>
+<td>10.6</td>
+<td>25.94</td>
+<td>137</td>
+</tr>
+<tr class="even">
+<td>Kansas City</td>
+<td>14</td>
+<td>54.5</td>
+<td>381</td>
+<td>507</td>
+<td>10.0</td>
+<td>37.00</td>
+<td>99</td>
+</tr>
+<tr class="odd">
+<td>St. Louis</td>
+<td>56</td>
+<td>55.9</td>
+<td>775</td>
+<td>622</td>
+<td>9.5</td>
+<td>35.89</td>
+<td>105</td>
+</tr>
+<tr class="even">
+<td>Omaha</td>
+<td>14</td>
+<td>51.5</td>
+<td>181</td>
+<td>347</td>
+<td>10.9</td>
+<td>30.18</td>
+<td>98</td>
+</tr>
+<tr class="odd">
+<td>Alburquerque</td>
+<td>11</td>
+<td>56.8</td>
+<td>46</td>
+<td>244</td>
+<td>8.9</td>
+<td>7.77</td>
+<td>58</td>
+</tr>
+<tr class="even">
+<td>Albany</td>
+<td>46</td>
+<td>47.6</td>
+<td>44</td>
+<td>116</td>
+<td>8.8</td>
+<td>33.36</td>
+<td>135</td>
+</tr>
+<tr class="odd">
+<td>Buffalo</td>
+<td>11</td>
+<td>47.1</td>
+<td>391</td>
+<td>463</td>
+<td>12.4</td>
+<td>36.11</td>
+<td>166</td>
+</tr>
+<tr class="even">
+<td>Cincinnati</td>
+<td>23</td>
+<td>54.0</td>
+<td>462</td>
+<td>453</td>
+<td>7.1</td>
+<td>39.04</td>
+<td>132</td>
+</tr>
+</tbody>
+</table>
+<p><em>Table 2.6.1:  Air pollution in 41 U.S. cities associatied with six environmental vairables</em></p>
+<p><Br></p>
+</div>
+<div id="model-interpretation" class="section level2">
+<h2><span class="header-section-number">2.6</span> Model Interpretation</h2>
+<p>We regress SO<sub>2</sub> content in the air on average temperature X<sub>1</sub> and the number of manufacturing enterprises, X<sub>2</sub></p>
+<p><span class="math inline">\(\bar{y} = 77.231 + 1.0480X_1 + 0.02431X_2\)</span></p>
+<p>A one unit change in X2 results in a 0.02431 increase in Y</p>
+<p>A one unit change in X1 results in a 1.048 increase in Y</p>
+</div>
+<div id="test-of-null-hypothesis" class="section level2">
+<h2><span class="header-section-number">2.7</span> Test of Null Hypothesis</h2>
+<p>We can analyze the null hypothesis that all of the regression coefficients are equal to zero using an ANOVA analysis</p>
+<ul>
+<li>analogous to that of the simple linear regression.</li>
+</ul>
+</div>
+<div id="significance-testing" class="section level2">
+<h2><span class="header-section-number">2.8</span> Significance Testing</h2>
+<p>In general, a significant <em>F</em> value will be associated with the rejection of the null hypothesis for some regression coefficients.</p>
+<ul>
+<li><p>Sometimes it is possible to have a significant <em>F</em> without significant regression coefficients - this situation occurs when there is multicollinearity among variables.</p></li>
+<li><p>This happens when two variables are highly correlated.</p></li>
+<li><p>Singularity is an extreme amount of multicollinearity: there is perfect correlation between two or more variables.</p></li>
+</ul>
+</div>
+<div id="multicollinearity" class="section level2">
+<h2><span class="header-section-number">2.9</span> Multicollinearity</h2>
+<p>Result in untrustworthy coefficients - serves to increase the variance of the estimate of the mean coefficient value.</p>
+<p>Limits the magnitude of the coefficient of determination -</p>
+<ul>
+<li>Example: inclusion of one predictor results in R2 = 0.80.</li>
+<li>When you add a highly correlated variable, the variance it accounts for is already described by the first variable - it does not account for unique variance.</li>
+<li>So we only get a slight increase in our <em>R</em> value.</li>
+</ul>
+<p>Importance of predictors - Difficult to discern which predictor is the most important.</p>
+<ul>
+<li><p>We can deal with this by evaluating the variables prior to inclusion into the model.</p></li>
+<li><p>Use stepwise inclusion or exclusion approaches.</p></li>
+</ul>
+</div>
+<div id="determination-of-predictors-to-include" class="section level2">
+<h2><span class="header-section-number">2.10</span> Determination of Predictors to Include?</h2>
+<p>One of the most widespread ways is to use “stepwise” methods, you specify a direction either forward or backward.</p>
+<p>Forward style:</p>
+<ul>
+<li>Initial model with only the constant b0 is made</li>
+<li>Add single predictor that best predicts the outcome by selecting the one with the greatest correlation with the outcome</li>
+<li>If fit is improved, then the predictor is retained</li>
+<li>Repeat</li>
+</ul>
+<p>Backward selection.</p>
+<ul>
+<li>As above but remove coefficients one at a time.</li>
+</ul>
+<p>Computer intensive - simultaneous backward and forward.</p>
+<p>In these approaches parsimony is generally ignored.</p>
+</div>
+<div id="model-design-considerations-1" class="section level2">
+<h2><span class="header-section-number">2.11</span> Model Design Considerations 1</h2>
+<ul>
+<li><p>Predictor variables must be quantitative (continuous, unbounded, interval data) or categorical.</p></li>
+<li><p>Predictors should have non-zero variance.</p></li>
+<li><p>Predictors should not be highly correlated.</p></li>
+<li><p>Predictors should not be correlated with external variables.</p></li>
+<li><p>Avoid proxy variables and make direct and explicit relationships</p></li>
+</ul>
+</div>
+<div id="model-design-considerations-2" class="section level2">
+<h2><span class="header-section-number">2.12</span> Model Design Considerations 2</h2>
+<p>It is desirable to employ a regression that is parsimonious - as few as necessary but as many as needed.</p>
+<p>What strategies are available to get the best regression:</p>
+<ul>
+<li>Fit all possible subsets - choose the one resulting in the lowest coefficient of determination.</li>
+<li>Forward, backward, or “both” variable selection.</li>
+<li>Use an independent inclusion criteria.</li>
+</ul>
+</div>
+</div>
+<div id="comparing-two-means" class="section level1">
+<h1><span class="header-section-number">3</span> Comparing Two Means</h1>
+<p><em>t</em>-tests:</p>
+<p>A common situation is the comparison of the means of two populations.</p>
+<p>An example of a two sample <em>t</em>-test for the two tailed hypothesis is to evaluate the population of mean blood clotting times administered with drug B the same as the population mean for blood-clotting times of specimens given drug G.</p>
+<ul>
+<li>Null hypothesis: <span class="math inline">\(\mu_B = \mu_G\)</span>, where <span class="math inline">\(\mu\)</span> is the blood clotting time (minutes, hours)</li>
+</ul>
+<div id="t-test" class="section level2">
+<h2><span class="header-section-number">3.1</span> <em>t</em>-test</h2>
+<p>If the two samples came from two normally distributed populations and the variances of the populations are equal we can use a two sample <em>t</em>-test.</p>
+<ul>
+<li><p>Null hypothesis: <span class="math inline">\(\mu_1 = \mu_2\)</span>.</p></li>
+<li><p>Two samples of data are collected and the sample means calculated.</p></li>
+<li><p>These means might differ by either a little or a lot.</p></li>
+<li><p>If the samples come from the same population, then we expect their means to be roughly equal.</p></li>
+<li><p>Although it is possible (even likely) for their means to differ by chance alone, we would expect large differences between sample means to occur very infrequently.</p></li>
+<li><p>We are interested in understanding the difference between the sample means that we would expect to obtain if there were no effect (i.e. if the null hypothesis were true).</p></li>
+<li><p>We use the standard error as a gauge of the variability between sample means.</p></li>
+</ul>
+</div>
+<div id="large-differences-in-mean-values" class="section level2">
+<h2><span class="header-section-number">3.2</span> Large differences in mean values</h2>
+<p>If the difference between the samples we have collected is larger than what we would expect based on the standard error then we can infer one of two things:</p>
+<ul>
+<li><p>There is no effect and sample means in our population fluctuate a lot (sampling error).</p></li>
+<li><p>By chance, collected two samples that are atypical of the population from which they came.</p></li>
+<li><p>The two samples come from different populations but are typical of their respective parent population.</p></li>
+<li><p>In this scenario, the difference between samples represents a genuine difference between the samples (and so the null hypothesis is incorrect).</p></li>
+</ul>
+<p>We are trying to infer - did the samples come from the same population?</p>
+<p>If the observed difference between the sample means is large: The more confident we become that the second explanation is correct (i.e. that the null hypothesis should be rejected).</p>
+</div>
+<div id="example" class="section level2">
+<h2><span class="header-section-number">3.3</span> Example</h2>
+<ul>
+<li><p>Is arachnophobia (fear of spiders) specific to real spiders or is a picture enough?</p></li>
+<li><p>24 arachnophobic individuals</p></li>
+</ul>
+<p>Manipulation:</p>
+<ul>
+<li><p>12 participants were exposed to a real spider</p></li>
+<li><p>12 were exposed to a picture of the same spider</p></li>
+<li><p>Outcome is the anxiety produced</p></li>
+</ul>
+</div>
+<div id="the-t-test-as-a-glm" class="section level2">
+<h2><span class="header-section-number">3.4</span> The <em>t</em>-test as a GLM</h2>
+<p>Outcome = model + error</p>
+<p>Consider an experiment where Groups were exposed to a “Picture of a Spider” and an “Actual Spider”</p>
+<p>The response variable is the level of Anxiety (A)</p>
+<p><span class="math inline">\(A_i=b_0+b_1G_i+\varepsilon_i\)</span></p>
+<p><span class="math inline">\(Anxiety_i+=b_0+b_1group_i+\varepsilon_i\)</span></p>
+<p>The independent variable <em>G</em> has only two values “Group 1” and “Group 2” ie. The “real” and “picture” groups.</p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="picture-group" class="section level2">
+<h2><span class="header-section-number">3.5</span> Picture Group</h2>
+<p>We can code the “dummy” variable, <em>G</em></p>
+<p>The group variable = 0</p>
+<p>Intercept = mean of baseline group</p>
+<p><span class="math inline">\(\bar{X}_{Picture}=b_0+(b_1\times0)\)</span></p>
+<p><span class="math inline">\(b_0=\bar{X}_{Picture}\)</span></p>
+<p><span class="math inline">\(b_0=40\)</span></p>
+<p><Br></p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="real-spider-group" class="section level2">
+<h2><span class="header-section-number">3.6</span> Real Spider Group</h2>
+<p>The group variable = 1</p>
+<p><span class="math inline">\(b_1\)</span> = Difference between means</p>
+<p><span class="math inline">\(b_1 =\bar{Y}_{Real}=b_0+(b_1\times1)\)</span></p>
+<p><span class="math inline">\(b_1=\bar{Y}_{Real}=\bar{Y}_{Picture}+b_1\)</span></p>
+<p><span class="math inline">\(b_1=\bar{Y}_{Real}-\bar{Y}_{Picture}\)</span></p>
+<p><span class="math inline">\(b_1=47-40\)</span></p>
+<p><span class="math inline">\(b_1=7\)</span></p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="output-from-a-regression" class="section level2">
+<h2><span class="header-section-number">3.7</span> Output from a Regression</h2>
+<pre><code>## 
+## Call:
+## lm(formula = df.$Anxiety ~ df.$Group)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -13.764  -9.572   0.426   6.172  14.797 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)            39.511      2.849  13.868 2.36e-12 ***
+## df.$GroupReal Spider    7.000      4.029   1.737   0.0963 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 9.87 on 22 degrees of freedom
+## Multiple R-squared:  0.1206, Adjusted R-squared:  0.08067 
+## F-statistic: 3.018 on 1 and 22 DF,  p-value: 0.09632</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: df.$Anxiety
+##           Df Sum Sq Mean Sq F value  Pr(&gt;F)  
+## df.$Group  1    294  294.00  3.0182 0.09632 .
+## Residuals 22   2143   97.41                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="the-independent-t" class="section level2">
+<h2><span class="header-section-number">3.8</span> The Independent <em>t</em></h2>
+<p><em>Note: I am using the variable Y as the observation values - this is a departure from Zar’s presentation</em></p>
+<p><span class="math inline">\(t=\frac{\bar{Y}_1-\bar{Y}_2}{\sqrt{\frac{S^2_p}{n_1}+\frac{S^2_p}{n_2}}}\)</span></p>
+<p>The numerator is the difference between sample means</p>
+<p>Denominator is the standard error of the difference between the sample means</p>
+<ul>
+<li>This quanitty is a measure of the variability of the data within the two samples.</li>
+</ul>
+</div>
+<div id="the-independent-t-test-3" class="section level2">
+<h2><span class="header-section-number">3.9</span> The Independent <em>t</em>-test 3</h2>
+<p><span class="math inline">\(S^2_p=\frac{(n_1-1)S^2_1+(n_2-1)S^2_2}{n_1+n_2-2}\)</span></p>
+<p><span class="math inline">\(S^2_p=\frac{SS_1+SS_2}{v_1+v_2}\)</span></p>
+<p>Where v<sub>1</sub> and v<sub>2</sub> are the degrees of freedom, v<sub>1</sub> = n<sub>1</sub> - 1 and v<sub>2</sub> = n<sub>2</sub> -1</p>
+<p>The test value is compared to the critical value at a given <span class="math inline">\(\alpha\)</span></p>
+<p><span class="math inline">\(t_\alpha(2),(v_1+v_2)\)</span></p>
+<ul>
+<li>Need to set Alpha vaule</li>
+<li>(2): One or two-tailed test?</li>
+<li>v<sub>1</sub> = n<sub>1</sub> - 1 and v<sub>2</sub> = n<sub>2</sub> - 1</li>
+</ul>
+</div>
+<div id="zar-example" class="section level2">
+<h2><span class="header-section-number">3.10</span> Zar Example</h2>
+<p><span class="math inline">\(H_0: \mu_1 = \mu_2\)</span> <span class="math inline">\(H_A: \mu_1\ne\mu_2\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>Given drug B</th>
+<th>Given drug G</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>8.8</td>
+<td>9.9</td>
+</tr>
+<tr class="even">
+<td>8.4</td>
+<td>9.0</td>
+</tr>
+<tr class="odd">
+<td>7.9</td>
+<td>11.1</td>
+</tr>
+<tr class="even">
+<td>8.7</td>
+<td>9.6</td>
+</tr>
+<tr class="odd">
+<td>9.1</td>
+<td>8.7</td>
+</tr>
+<tr class="even">
+<td>9.6</td>
+<td>10.4</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>9.5</td>
+</tr>
+<tr class="even">
+<td>——</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(n_1=6\)</span></td>
+<td><span class="math inline">\(n_2=7\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\nu_1=5\)</span></td>
+<td><span class="math inline">\(\nu_2=6\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\bar{Y}_1=\)</span> 8.75 min</td>
+<td><span class="math inline">\(\bar{Y}_2=\)</span> 9.74 min</td>
+</tr>
+<tr class="even">
+<td>SS<sub>1</sub> = 1.6950 min<sup>2</sup></td>
+<td> SS<sub>2</sub> = 4.0171 min<sup>2</sup></td>
+</tr>
+</tbody>
+</table>
+<p><em>Table 3.18.1:  Zar example</em></p>
+<p><Br></p>
+<p><span class="math inline">\(S^2_p=\frac{SS_1+SS_2}{v_1+v_2}=\frac{1.6950+4.0171}{5+6}=\frac{5.7121}{11}=0.5193 \: \mbox{min}^2\)</span></p>
+<p><Br></p>
+<p><span class="math inline">\(s_{\bar{Y_1}-\bar{Y}_2}=\sqrt{\frac{S^2_p}{n_1}+\frac{S^2_p}{n_2}}=\sqrt{\frac{0.5193}{6}+\frac{0.5193}{7}}=\sqrt{0.0866+0.0742}\)</span></p>
+<p><Br></p>
+<p><span class="math inline">\(=\sqrt{0.1608}=0.40\mbox{min}\)</span></p>
+<p><Br></p>
+<p><span class="math inline">\(t=\frac{\bar{Y}_1-\bar{Y}_2}{s_{\bar{Y}_1-\bar{Y}_2}}\)</span></p>
+<p><Br></p>
+</div>
+<div id="determine-test-value" class="section level2">
+<h2><span class="header-section-number">3.11</span> Determine test value</h2>
+<p><span class="math inline">\(t=\frac{\bar{Y}_1-\bar{Y}_2}{s_{\bar{Y}_1-\bar{Y}_2}}=\frac{8.75-9.74}{0.40}=\frac{-0.99}{0.40}=-2.475\)</span></p>
+<p><span class="math inline">\(t_{0.05(2),v}=t_{0.05(2),11}=2.201\)</span></p>
+<ul>
+<li>Determine critical value</li>
+</ul>
+<p>Therefore, reject H<sub>0</sub></p>
+<ul>
+<li><span class="math inline">\(0.02&lt;P(|t|\ge2.175)&lt;0.05 \: \: [P=0.031]\)</span></li>
+</ul>
+</div>
+<div id="when-assumptions-are-broken" class="section level2">
+<h2><span class="header-section-number">3.12</span> When Assumptions are Broken</h2>
+<ul>
+<li>Non-parameteric <em>t</em>-test Mann-Whitney “U” Test</li>
+</ul>
+<p>+Do not require estimation of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>.</p>
+<p>+No assumptions about distributions.</p>
+<ul>
+<li><p>Convert data to RANKS of data.</p></li>
+<li><p>Two sample rank test</p></li>
+<li><p>Rank from highest to lowest, the greatest value in either group is given a one, second given a two..</p></li>
+</ul>
+<p><span class="math inline">\(U=n_1n_2+\frac{n_1(n_1+1)}{2}-R_1\)</span></p>
+<ul>
+<li>n<sub>1</sub> and n<sub>2</sub> are the number of observation sin samples 1 and 2.</li>
+<li>R<sub>1</sub> is the sum of the ranks in sample 1</li>
+</ul>
+<p>H<sub>0</sub>: Male and female students are the same height. H<sub>A</sub>: Male and female students are not the same height.</p>
+<p><span class="math inline">\(\alpha=0.05\)</span></p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Height of males</th>
+<th>Height of females</th>
+<th>Ranks of male heights</th>
+<th>Ranks of female heights</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>193 cm</td>
+<td>178 cm</td>
+<td>1</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>188</td>
+<td>173</td>
+<td>2</td>
+<td>8</td>
+</tr>
+<tr class="odd">
+<td>185</td>
+<td>168</td>
+<td>3</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>183</td>
+<td>165</td>
+<td>4</td>
+<td>11</td>
+</tr>
+<tr class="odd">
+<td>180</td>
+<td>163</td>
+<td>5</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td>175</td>
+<td></td>
+<td>7</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>170</td>
+<td></td>
+<td>9</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>—</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(n_1=7\)</span></td>
+<td><span class="math inline">\(n_2=5\)</span></td>
+<td><span class="math inline">\(R_1=31\)</span></td>
+<td><span class="math inline">\(R_2=47\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(U=n_1n_2+\frac{n_1(n_1+1)}{2}-R_1\)</span></p>
+<p><span class="math inline">\((7)(5)+\frac{(7)(8)}{2}-31\)</span></p>
+<p><span class="math inline">\(35+28-31\)</span></p>
+<p><span class="math inline">\(32\)</span></p>
+<p><span class="math inline">\(U^1=n_1n_2-U\)</span></p>
+<p><span class="math inline">\((7)(5)-32\)</span></p>
+<p><span class="math inline">\(=3\)</span></p>
+<p><span class="math inline">\(U_{0.05(2),5,7}=30\)</span></p>
+<p>As 32&gt;30, H<sub>0</sub> is rejected.</p>
+<p>Therefore, we conclude that height is different for male and female students.</p>
+<p><Br></p>
+</div>
+</div>
+<div id="comparing-several-means-one-way-anova" class="section level1">
+<h1><span class="header-section-number">4</span> Comparing Several Means: One-Way ANOVA</h1>
+<p>Understand the basic principles of ANOVA</p>
+<div id="when-and-why-to-use-anova-designs" class="section level2">
+<h2><span class="header-section-number">4.1</span> When and why to use ANOVA designs</h2>
+<p>When we want to compare means we can use a <em>t</em>-test. This test has limitations:</p>
+<ul>
+<li>You can test the equality of two mean values: often we would like to compare means from three or more groups.</li>
+<li>It can be used only with one predictor/independent variable.</li>
+</ul>
+<p>The ANOVA is an innovation that allows:</p>
+<ul>
+<li>Compares several means</li>
+<li>Can be used when you have manipulated more than one independent variable</li>
+<li>It is an extension of regression (and hence is a general linear model)</li>
+</ul>
+</div>
+<div id="anova" class="section level2">
+<h2><span class="header-section-number">4.2</span> 5.3 ANOVA</h2>
+<p><span class="math inline">\(H_0: \mu_1=\mu_2=\mu_3\)</span></p>
+<p>Fisher: British statistician and geneticists. Introduced this analysis</p>
+<p>Let us assume that we test four different feeds and want to see if it impacted the mean body weights in pigs.</p>
+<p>We are going to test the effect of one factor - feed type. The analysis is termed a one-factor test or one-way ANOVA (Only a single thing, the factor, is different amont the groups).</p>
+<p>A population of pigs is assigned, at random, to each of the four treatments (treatments are levels of the factor).</p>
+<p>Parametric test</p>
+</div>
+<div id="why-not-use-lots-of-t-tests" class="section level2">
+<h2><span class="header-section-number">4.3</span> Why Not Use Lots of <em>t</em>-tests?</h2>
+<p>If we want to compare several means why don’t we compare pairs of means with <em>t</em>-tests?</p>
+<ul>
+<li>Inflates the Type I error rate</li>
+<li>Type one error rate = 1 - 0.95<sup>n</sup></li>
+</ul>
+</div>
+<div id="what-does-anova-tell-us" class="section level2">
+<h2><span class="header-section-number">4.4</span> What Does ANOVA Tell Us?</h2>
+<p>Null hypothesis:</p>
+<ul>
+<li>Like a <em>t</em>-test, ANOVA tests the null hypothesis that the means are the same.</li>
+</ul>
+<p>Experimental (alternative) hypothesis:</p>
+<ul>
+<li>The means differ.</li>
+</ul>
+<p>ANOVA is an omnibus test</p>
+<ul>
+<li>It test for an overall test for evaluating the equality of means among groups.</li>
+<li>It tells us that the group means are different.</li>
+<li>It doesn’t tell us which mean(s) differ.</li>
+</ul>
+<p><span class="math inline">\(H_0: \mu_1=\mu_2=\mu_3=\mu_4\)</span></p>
+<p>H<sub>A</sub>: The mean weights of pigs on the four diets are not all equal</p>
+<p>If H<sub>0</sub> is rejected, there is at least one difference among the four means.</p>
+</div>
+<div id="anova-as-regression" class="section level2">
+<h2><span class="header-section-number">4.5</span> ANOVA as Regression</h2>
+<p><span class="math inline">\(\mbox{outcome}_i = (\mbox{model})+\mbox{error}_i\)</span></p>
+<p><span class="math inline">\(\mbox{illness}_i=b_0+b_2\mbox{high}_i+b_1\mbox{low}_i+\varepsilon_i\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Dummy variable 1 (High)</th>
+<th>Dummy variable 2 (Low)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Placebo</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>Low dose medicine</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>High dose medicine</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="placebo-group" class="section level2">
+<h2><span class="header-section-number">4.6</span> Placebo Group</h2>
+<p><span class="math inline">\(\mbox{illness}_i=b_0+b_2\mbox{high}_i+b_1\mbox{low}_i+\varepsilon_i\)</span></p>
+<p><span class="math inline">\(\mbox{illness}_i=b_0+(b_2\times 0)+(b_1\times 0)\)</span></p>
+<p><span class="math inline">\(\mbox{illness}_i=b_0\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{placebo}=b_0\)</span></p>
+</div>
+<div id="high-dose-group" class="section level2">
+<h2><span class="header-section-number">4.7</span> High Dose Group</h2>
+<p><span class="math inline">\(\mbox{illness}_i=b_0+b_2\mbox{high}_i+b_1\mbox{low}_i+\varepsilon_i\)</span></p>
+<p><span class="math inline">\(\mbox{illness}_i=b_0+(b_2\times 1)+(b_1\times 0)\)</span></p>
+<p><span class="math inline">\(\mbox{illness}_i=b_0+b_2\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{high}= \bar{Y}_{placebo}+b_2\)</span></p>
+<p><span class="math inline">\(b_2=\bar{Y}_{high}-\bar{Y}_{placebo}\)</span></p>
+</div>
+<div id="low-dose-group" class="section level2">
+<h2><span class="header-section-number">4.8</span> Low Dose Group</h2>
+<p><span class="math inline">\(\mbox{illness}_i=b_0+b_2\mbox{high}_i+b_1\mbox{low}_i+\varepsilon_i\)</span></p>
+<p><span class="math inline">\(\mbox{illness}_i=b_0+(b_2\times 0)+(b_1\times 1)\)</span></p>
+<p><span class="math inline">\(\mbox{illness}_i=b_0+b_1\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{low}=\bar{Y}_{placebo}+b_1\)</span></p>
+<p><span class="math inline">\(b_1=\bar{Y}_{low}-\bar{Y}_{placebo}\)</span></p>
+</div>
+<div id="output-from-regression" class="section level2">
+<h2><span class="header-section-number">4.9</span> Output from Regression</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Coefficients:</th>
+<th>Estimate</th>
+<th>Std. Error</th>
+<th>t value</th>
+<th>Pr(&gt;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(intercept)</td>
+<td>2.2000</td>
+<td>0.6272</td>
+<td>3.508</td>
+<td>0.00432 **</td>
+</tr>
+<tr class="even">
+<td>dummy 1</td>
+<td>2.8000</td>
+<td>0.8869</td>
+<td>3.157</td>
+<td>0.00827 **</td>
+</tr>
+<tr class="odd">
+<td>dummy 2</td>
+<td>1.0000</td>
+<td>0.8869</td>
+<td>1.127</td>
+<td>0.28158</td>
+</tr>
+</tbody>
+</table>
+<p>Signif. Codes:  0 ‘<em><strong>’ 0.001 ’</strong>’ 0.01 ’</em>’ 0.05’.’ 0.1 ’’ 1</p>
+<ul>
+<li>residual standard error:  1.402 on 12 degrees of freedom.</li>
+<li>Multiple R-squared:  0.4604, Adjusted R-squared:  0.3704</li>
+<li><em>F</em>-statistic:  5.119 on 2 and 12 DF, p-value:  0.02469</li>
+</ul>
+</div>
+<div id="theory-of-anova" class="section level2">
+<h2><span class="header-section-number">4.10</span> Theory of ANOVA</h2>
+<p>We calculate how much variability there is between scores</p>
+<ul>
+<li>Total sum of squares (SS<sub>T</sub>).</li>
+</ul>
+<p>We then calculate how much of this variability can be explained by the model we fit to the data</p>
+<ul>
+<li><p>How much variability is due to the experimental manipulation? This is evaluated using the model sum of squares (SS<sub>M</sub>)</p></li>
+<li><p>How much variability is due to individual differences in performance, residual sum of squares (SS<sub>R</sub>).</p></li>
+<li><p>We compare the amount of variability explained by the model (experiment), to the error in the model (individual differences)</p></li>
+<li><p>This ratio is called the <em>F</em>-ratio.</p></li>
+</ul>
+<p>If the model explains a lot more variability than it can’t explain, then the experimental manipulation has had a significant effect on the outcome.</p>
+<ul>
+<li>SS<sub>M</sub> will be greater than SS<sub>R</sub></li>
+</ul>
+</div>
+<div id="anova-by-hand" class="section level2">
+<h2><span class="header-section-number">4.11</span> ANOVA by Hand</h2>
+<p>Testing the effects of medicine on illness using three groups:</p>
+<ul>
+<li>Placebo (sugar pill)</li>
+<li>Low dose medicine</li>
+<li>High dose medicine</li>
+</ul>
+<p>The outcome/dependent variable (DV) was an objective measure of illness.</p>
+</div>
+<div id="the-data" class="section level2">
+<h2><span class="header-section-number">4.12</span> The Data</h2>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Placebo</th>
+<th>Low Dose</th>
+<th>High Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>3</td>
+<td>5</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>4</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\bar{Y}\)</span></td>
+<td>2.20</td>
+<td>3.20</td>
+<td>5.00</td>
+</tr>
+<tr class="odd">
+<td><em>s</em></td>
+<td>1.30</td>
+<td>1.30</td>
+<td>1.58</td>
+</tr>
+<tr class="even">
+<td><em>s</em><sup>2</sup></td>
+<td>1.70</td>
+<td>1.70</td>
+<td>2.50</td>
+</tr>
+</tbody>
+</table>
+<p>Grand Mean = 3.467, Grand <em>s</em> = 1.767, Grand <em>s</em><sup>2</sup> = 3.124</p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="step-1-calculate-sst" class="section level2">
+<h2><span class="header-section-number">4.13</span> Step 1: Calculate SS<sub>T</sub></h2>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><em>SS<sub>T</sub> uses the differences between the observed data and the mean value of Y. Where the mean is the grand mean</em></p>
+</div>
+<div id="total-sum-of-squares-sst" class="section level2">
+<h2><span class="header-section-number">4.14</span> Total Sum of Squares (SS<sub>T</sub>)</h2>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Placebo</th>
+<th>Low Dose</th>
+<th>High Dose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>3</td>
+<td>5</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>4</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\bar{Y}\)</span></td>
+<td>2.20</td>
+<td>3.20</td>
+<td>5.00</td>
+</tr>
+<tr class="odd">
+<td><em>s</em></td>
+<td>1.30</td>
+<td>1.30</td>
+<td>1.58</td>
+</tr>
+<tr class="even">
+<td><em>s</em><sup>2</sup></td>
+<td>1.70</td>
+<td>1.70</td>
+<td>2.50</td>
+</tr>
+</tbody>
+</table>
+<p>Grand Mean = 3.467, Grand <em>s</em> = 1.767, Grand <em>s</em><sup>2</sup> = 3.124</p>
+<p>SS<sub>T</sub> = sum((observed - Grand mean)<sup>2</sup>)</p>
+<p>SS<sub>T</sub> =S<sup>2</sup>(N-1)</p>
+</div>
+<div id="degrees-of-freedom" class="section level2">
+<h2><span class="header-section-number">4.15</span> Degrees of Freedom</h2>
+<p>Degrees of freedom (df) are the number of values that are free to vary.</p>
+<p>In general, the df are one less than the number of values used to calculate the SS.</p>
+<p>DF<sub>Total</sub> = N - 1</p>
+</div>
+<div id="model-sum-of-squares-ssm" class="section level2">
+<h2><span class="header-section-number">4.16</span> Model Sum of Squares (SS<sub>M</sub>)</h2>
+<p>Difference between the model estimate and the mean (or “Grand Mean”)</p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+<div id="step-2-calculate-ssm" class="section level2">
+<h2><span class="header-section-number">4.17</span> Step 2: Calculate SS<sub>M</sub></h2>
+<p><span class="math inline">\(SS_M=\sum n_i(\bar{x}_i - \bar{x}_{grand})^2\)</span></p>
+<p>to</p>
+<p><span class="math inline">\(SS_M=5(2.2-3.467)^2+5(3.2-3.467)^2+5(5.0-3.467)^2\)</span></p>
+<p><span class="math inline">\(SS_M=5(-1.267)^2+5(-0.267)^2+5(1.533)^2\)</span></p>
+<p><span class="math inline">\(SS_M=8.025+0.355+11.755\)</span></p>
+<p><span class="math inline">\(SS_M=20.135\)</span></p>
+</div>
+<div id="model-degrees-of-freedom" class="section level2">
+<h2><span class="header-section-number">4.18</span> Model Degrees of Freedom</h2>
+<p>How many values did we use to calculate SS<sub>M</sub>?</p>
+<ul>
+<li>We used the 3 means.</li>
+</ul>
+<p><span class="math inline">\(df_M=k-1=3-1=2\)</span></p>
+</div>
+<div id="residual-sum-of-squares-ssr" class="section level2">
+<h2><span class="header-section-number">4.19</span> Residual Sum of Squares (SS<sub>R</sub>)</h2>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+<div id="step-3-calculate-ssr" class="section level2">
+<h2><span class="header-section-number">4.20</span> Step 3: Calculate SS<sub>R</sub></h2>
+<p><span class="math inline">\(SS_R=\mbox{sum}([x_i-\bar{x}_i]^2)\)</span></p>
+<p><span class="math inline">\(SS_R=S^2_{group1}(n_1-1)+S^2_{group2}(n_2-1)+S^2_{group3}(n_3-1)\)</span></p>
+<p><span class="math inline">\(SS_R=1.70(5-1)+1.70(5-1)+2.5(5-1)\)</span></p>
+<p><span class="math inline">\(SS_R=(1.70\times4)+(1.70\times4)+(2.50\times4)\)</span></p>
+<p><span class="math inline">\(SS_R=6.8+6.8+10\)</span></p>
+<p><span class="math inline">\(SS_R=23.60\)</span></p>
+</div>
+<div id="residual-degrees-of-freedom" class="section level2">
+<h2><span class="header-section-number">4.21</span> Residual Degrees of Freedom</h2>
+<ul>
+<li><p>How many values did we use to calculate SS<sub>R</sub>?</p></li>
+<li><p>We used the 5 scores for each of the SS for each group.</p></li>
+</ul>
+<p><span class="math inline">\(df_R=df_{group1}+df_{group2}+df_{group3}\)</span></p>
+<p><span class="math inline">\(df_R=(n_1-1)+(n_2-1)+(n_3-1)\)</span></p>
+<p><span class="math inline">\(df_R=(5-1)+(5-1)+(5-1)\)</span></p>
+<p><span class="math inline">\(df_R=12\)</span></p>
+</div>
+<div id="double-check" class="section level2">
+<h2><span class="header-section-number">4.22</span> Double Check</h2>
+<p><span class="math inline">\(SS_T=SS_R+SS_M\)</span></p>
+<p><span class="math inline">\(43.74=20.14+23.60\)</span></p>
+<p><span class="math inline">\(DF_T=DF_R+DF_M\)</span></p>
+<p><span class="math inline">\(14=2+12\)</span></p>
+</div>
+<div id="step-4-calculate-the-mean-squared-error" class="section level2">
+<h2><span class="header-section-number">4.23</span> Step 4: Calculate the Mean Squared Error</h2>
+<p><span class="math inline">\(MS_M=\frac{SS_M}{df_M}=\frac{20.135}{2}=10.067\)</span></p>
+<p><span class="math inline">\(MS_R=\frac{SS_R}[df_R]=\frac{23.60}{12}=1.967\)</span></p>
+</div>
+<div id="step-5-calculate-the-f-ratio" class="section level2">
+<h2><span class="header-section-number">4.24</span> Step 5: Calculate the <em>F</em>-Ratio</h2>
+<p><span class="math inline">\(F=\frac{MS_M}{MS_R}\)</span></p>
+<p><span class="math inline">\(F=\frac{MS_M}{MS_R}=\frac{10.067}{1.967}=5.12\)</span></p>
+</div>
+<div id="step-6-construct-a-summary-table" class="section level2">
+<h2><span class="header-section-number">4.25</span> Step 6: Construct a Summary Table</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>SS</th>
+<th>df</th>
+<th>MS</th>
+<th>F</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model</td>
+<td>20.14</td>
+<td>2</td>
+<td>10.067</td>
+<td>5.12*</td>
+</tr>
+<tr class="even">
+<td>Residual</td>
+<td>23.60</td>
+<td>12</td>
+<td>1.967</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td>43.74</td>
+<td>14</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="multiple-comparison-tests" class="section level2">
+<h2><span class="header-section-number">4.26</span> Multiple-Comparison Tests</h2>
+<p>The ANOVA that you examined is used to test the hypothesis that there is no difference in the sample means among k treatment levels</p>
+<p>However we cannot conclude, after doing the test, which of the mean values are different from one-another.</p>
+</div>
+<div id="tukey-test" class="section level2">
+<h2><span class="header-section-number">4.27</span> Tukey Test</h2>
+<p>Tukey test - balanced, orthogonal designs</p>
+<p>Step 1: is to arrange and number all five sample means in order of increasing magnitude</p>
+<p>Calculate the pairwise difference in sample means.</p>
+<p>We use a <em>t</em>-test “analog” to calculate a q-statistic</p>
+<p><em>S</em><sup>2</sup> is the error mean sqare by anova computation</p>
+<p><em>n</em> is the of data in each of groups B and A</p>
+<p>Remember this is a completely balanced design.</p>
+<p><span class="math inline">\(SE=\sqrt{\frac{s^2}{n}}\)</span></p>
+<p><span class="math inline">\(q=\frac{\bar{Y}_B-\bar{Y}_A}{SE}\)</span></p>
+<p>Start with the largest mean, vs. the smallest mean. Then when the first largest mean has been compared with increasingly large second means, use the second largest mean.</p>
+<p>If the null hypothesis is accepted between two means then all other means within that range cannot be different.</p>
+</div>
+</div>
+<div id="two-way-independent-anova" class="section level1">
+<h1><span class="header-section-number">5</span> Two-Way Independent ANOVA</h1>
+<ul>
+<li>Rationale of factorial ANOVA</li>
+<li>Partitioning variance</li>
+<li>Interaction effects</li>
+<li>Interaction graphs and their interpretation</li>
+</ul>
+<div id="what-is-two-way-independent-anova" class="section level2">
+<h2><span class="header-section-number">5.1</span> What is Two-Way Independent ANOVA?</h2>
+<p>Two independent variables</p>
+<ul>
+<li>Two-way = 2 Independent variables</li>
+<li>Three-way = 3 Independent variables</li>
+</ul>
+<p>Several independent variables is known as a factorial design.</p>
+</div>
+<div id="benefit-of-factorial-designs" class="section level2">
+<h2><span class="header-section-number">5.2</span> Benefit of Factorial Designs</h2>
+<p>We can look at how variables interact.</p>
+<p>Interactions</p>
+<ul>
+<li>Show how the effects that one I.V. might depend on the effects of another</li>
+<li>Are often more interesting than main effects.</li>
+</ul>
+<p>Examples</p>
+<ul>
+<li><p>Interaction between hangover and lecture topic on sleeping during lectures.</p></li>
+<li><p>A hangover might have more effect on sleepiness during a stats lecture than during an ecology lecture.</p></li>
+</ul>
+</div>
+<div id="an-example" class="section level2">
+<h2><span class="header-section-number">5.3</span> An Example</h2>
+<p>Field (2009): Testing the effects of the pH of soil and amount of sunlight exposure (full or partial) on plant height:</p>
+<ul>
+<li>IV 1 (pH): 6, 7, 8</li>
+<li>IV 2 (Sun): full, partial</li>
+</ul>
+<p>Dependent variable (DV) was the height of the plant at the end of the experiment.</p>
+<p>Data for the plant height (cm)</p>
+<p><Br></p>
+<table>
+<thead>
+<tr class="header">
+<th>pH</th>
+<th>6</th>
+<th>6</th>
+<th>7</th>
+<th>7</th>
+<th>8</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sun</td>
+<td>Full</td>
+<td>Partial</td>
+<td>Full</td>
+<td>Partial</td>
+<td>Full</td>
+<td>Partial</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>65</td>
+<td>50</td>
+<td>70</td>
+<td>45</td>
+<td>55</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>70</td>
+<td>55</td>
+<td>65</td>
+<td>60</td>
+<td>65</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>60</td>
+<td>80</td>
+<td>60</td>
+<td>85</td>
+<td>70</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>60</td>
+<td>65</td>
+<td>70</td>
+<td>65</td>
+<td>55</td>
+<td>55</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>60</td>
+<td>70</td>
+<td>65</td>
+<td>70</td>
+<td>55</td>
+<td>35</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>55</td>
+<td>75</td>
+<td>60</td>
+<td>70</td>
+<td>60</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>60</td>
+<td>75</td>
+<td>60</td>
+<td>80</td>
+<td>50</td>
+<td>45</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>55</td>
+<td>65</td>
+<td>50</td>
+<td>60</td>
+<td>50</td>
+<td>40</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td>485</td>
+<td>535</td>
+<td>500</td>
+<td>535</td>
+<td>460</td>
+<td>285</td>
+</tr>
+<tr class="odd">
+<td>Mean</td>
+<td>60.625</td>
+<td>66.875</td>
+<td>62.50</td>
+<td>66.875</td>
+<td>57.50</td>
+<td>35.625</td>
+</tr>
+<tr class="even">
+<td>Variance</td>
+<td>24.55</td>
+<td>106.70</td>
+<td>42.86</td>
+<td>156.70</td>
+<td>50.00</td>
+<td>117.41</td>
+</tr>
+</tbody>
+</table>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+<div id="step-1-calculate-sst-1" class="section level2">
+<h2><span class="header-section-number">5.4</span> Step 1: Calculate SS<sub>T</sub></h2>
+<table>
+<thead>
+<tr class="header">
+<th>SS<sub>T</sub></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>65</td>
+<td>50</td>
+<td>70</td>
+<td>45</td>
+<td>55</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>55</td>
+<td>65</td>
+<td>60</td>
+<td>65</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td>70</td>
+<td>80</td>
+<td>60</td>
+<td>85</td>
+<td>70</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>45</td>
+<td>65</td>
+<td>70</td>
+<td>65</td>
+<td>55</td>
+<td>55</td>
+</tr>
+<tr class="odd">
+<td>55</td>
+<td>70</td>
+<td>65</td>
+<td>70</td>
+<td>55</td>
+<td>35</td>
+</tr>
+<tr class="even">
+<td>30</td>
+<td>75</td>
+<td>60</td>
+<td>70</td>
+<td>60</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td>70</td>
+<td>75</td>
+<td>60</td>
+<td>80</td>
+<td>50</td>
+<td>45</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>65</td>
+<td>50</td>
+<td>60</td>
+<td>50</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(Grand \: Mean = 58.33\)</span></p>
+<p><span class="math inline">\(SS_T=\sum({observations_i}-\bar{observations})^2\)</span></p>
+<p><span class="math inline">\(SS_T=\sum({Y_i}-\bar{Y})^2\)</span></p>
+<p><span class="math inline">\(SS_T=8966.66\)</span></p>
+</div>
+<div id="step-2-calculate-ssm-1" class="section level2">
+<h2><span class="header-section-number">5.5</span> Step 2: Calculate SS<sub>M</sub></h2>
+<p><span class="math inline">\(\mbox{SS}_\mbox{M}=\sum(\bar{Y}-\bar{Y}_{grand})^2\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{M}=8(60.625-58.33)^2+8(66.875-58.33)^2+8(62.5-58.33)^2+8(66.875-58.33)^2+8(57.5-58.33)^2+8(35.625-58.33)^2\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{M}=8(2.295)^2+8(8.545)^2+8(4.17)^2+8(8.545)^2+8(-0.83)^2+8(-22.705)^2\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{M}=42.1362+584.1362+139.1112+584.1362+5.5112+4124.1362\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{M}=5479.167\)</span></p>
+</div>
+<div id="step-2a-calculate-ssa" class="section level2">
+<h2><span class="header-section-number">5.6</span> Step 2a: Calculate SS<sub>A</sub></h2>
+<p>Mean “Full Sun”: 60.21</p>
+<table>
+<thead>
+<tr class="header">
+<th>SS<sub>A</sub></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>65</td>
+<td>70</td>
+<td>55</td>
+</tr>
+<tr class="even">
+<td>70</td>
+<td>65</td>
+<td>65</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>60</td>
+<td>70</td>
+</tr>
+<tr class="even">
+<td>60</td>
+<td>70</td>
+<td>55</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>65</td>
+<td>55</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>60</td>
+<td>60</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>60</td>
+<td>50</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>50</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p>Mean “Partial Sun”: 56.46</p>
+<table>
+<thead>
+<tr class="header">
+<th>SS<sub>A</sub></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>50</td>
+<td>45</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>60</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td>80</td>
+<td>85</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>65</td>
+<td>65</td>
+<td>55</td>
+</tr>
+<tr class="odd">
+<td>70</td>
+<td>70</td>
+<td>35</td>
+</tr>
+<tr class="even">
+<td>75</td>
+<td>70</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td>75</td>
+<td>80</td>
+<td>45</td>
+</tr>
+<tr class="even">
+<td>65</td>
+<td>60</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(\mbox{SS}_\mbox{Sun}=\sum^k_1(\bar{Y}_k-\bar{Y}_{Grand})^2n_k\)</span></p>
+<ul>
+<li>Where <em>k</em> is the number of levels of factor A (Sun)</li>
+</ul>
+<p><span class="math inline">\(\mbox{SS}_\mbox{Sun}=24(60.21-58.33)^2+24(56.46-58.33)^2\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{Sun}=24(1.88)^2+24(-1.87)^2\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{Sun}=84.8256+83.9256\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{Sun}=168.75\)</span></p>
+</div>
+<div id="step-2b-calculate-ssb" class="section level2">
+<h2><span class="header-section-number">5.7</span> Step 2b: Calculate SS<sub>B</sub></h2>
+<p><span class="math inline">\(\mbox{SS}_\mbox{B}=\sum^k_1(\bar{Y}_k-\bar{Y}_{Grand})n_k\)</span></p>
+<ul>
+<li><p>Where <em>k</em> is the number of levels of factor B</p></li>
+<li><p>Factor B is pH.</p></li>
+</ul>
+<p>pH = 6</p>
+<p>Mean <span class="math inline">\(\mbox{pH}_6\)</span> = 63.75</p>
+<table>
+<thead>
+<tr class="header">
+<th>SS<sub>B</sub></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>65</td>
+<td>50</td>
+</tr>
+<tr class="even">
+<td>70</td>
+<td>55</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>80</td>
+</tr>
+<tr class="even">
+<td>60</td>
+<td>65</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>70</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>75</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>75</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>65</td>
+</tr>
+</tbody>
+</table>
+<p>pH = 7</p>
+<p>Mean <span class="math inline">\(\mbox{pH}_7\)</span> = 64.6875</p>
+<table>
+<thead>
+<tr class="header">
+<th>SS<sub>B</sub></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>70</td>
+<td>45</td>
+</tr>
+<tr class="even">
+<td>65</td>
+<td>60</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>85</td>
+</tr>
+<tr class="even">
+<td>70</td>
+<td>65</td>
+</tr>
+<tr class="odd">
+<td>65</td>
+<td>70</td>
+</tr>
+<tr class="even">
+<td>60</td>
+<td>70</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>80</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>60</td>
+</tr>
+</tbody>
+</table>
+<p>pH = 8</p>
+<p>Mean <span class="math inline">\(\mbox{pH}_8\)</span> = 46.5625</p>
+<table>
+<thead>
+<tr class="header">
+<th>SS<sub>B</sub></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>55</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>65</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td>70</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>55</td>
+</tr>
+<tr class="odd">
+<td>55</td>
+<td>35</td>
+</tr>
+<tr class="even">
+<td>60</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td>50</td>
+<td>45</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(\mbox{SS}_\mbox{pH}=16(63.75-58.33)^2+16(64.6875-58.33)^2+16(46.5625-58.33)^2\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{pH}=16(5.42)^2+16(6.3575)^2+16(-11.7675)^2\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{pH}=470.0224+646.6849+2215.5849\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{pH}=3332.292\)</span></p>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+<div id="step-2c-calculate-ssaxb" class="section level2">
+<h2><span class="header-section-number">5.8</span> Step 2c: Calculate SS<sub>(AxB)</sub></h2>
+<p><span class="math inline">\(\mbox{SS}_\mbox{M}=\mbox{SS}_{\mbox{A}{\times}\mbox{B}} + \mbox{SS}_\mbox{A}+\mbox{SS}_\mbox{B}\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_{\mbox{A}{\times}\mbox{B}}=\mbox{SS}_\mbox{M}-\mbox{SS}_\mbox{A}-\mbox{SS}_\mbox{B}\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_{\mbox{Sun}{\times}\mbox{pH}}=\mbox{SS}_\mbox{M}-\mbox{SS}_\mbox{Sun}-\mbox{SS}_\mbox{pH}\)</span></p>
+<p><span class="math inline">\(=5479.167-168.75-3332.292\)</span></p>
+<p><span class="math inline">\(=1978.125\)</span></p>
+</div>
+<div id="step-3-calculate-ssr-1" class="section level2">
+<h2><span class="header-section-number">5.9</span> Step 3: Calculate SS<sub>R</sub></h2>
+<p>The residual sum of squares is calculated in the same way as for one-way ANOVA</p>
+<p>Represents individual differences in performance or the variance that can’t be explained by factors that were systematically manipulated.</p>
+<p>We saw in one-way ANOVA that the value is calculated by taking the squared error between each data point and its corresponding group mean.</p>
+<p>So, we use the individual variances of each group and multiply them by one less than the number of people within the group (n).</p>
+<p>We have the individual group variances: there were eight people in each group (therefore, n = 8).</p>
+<p>The degrees of freedom for each group will be one less than the number of scores per group (i.e. 7). Therefore, if we add the sums of squares for each group, we get a total of 6 X 7 = 42.</p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{R}=s^2_{group1}(n_1-1)+s^2_{group2}(n_2-1)+s^2_{group3}(n_3-1)+s^2_{group \: n}(n_n-1)\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{R}=s^2_{group1}(n_1-1)+s^2_{group2}(n_2-1)+s^2_{group3}(n_3-1)+s^2_{group4}(n_4-1)+s^2_{group5}(n_5-1)+s^2_{group6}(n_6-1)\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{R}=(24.55\times7)+(106.7\times7)+(42.86\times7)+(156.7\times7)+(50\times7)+(117.41\times7)\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{R}=171.85+746.9+300+1096.9+350+821.87\)</span></p>
+<p><span class="math inline">\(\mbox{SS}_\mbox{R}=3487.52\)</span></p>
+</div>
+<div id="interpreting-factorial-anova" class="section level2">
+<h2><span class="header-section-number">5.10</span> Interpreting Factorial ANOVA</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Response</th>
+<th>Attractiveness</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>Sum Sq</td>
+<td>Df</td>
+<td><em>F</em> value</td>
+<td>Pr(&gt;<em>F</em>)</td>
+</tr>
+<tr class="even">
+<td>Sunlight</td>
+<td>169</td>
+<td>1</td>
+<td>2.0323</td>
+<td>0.1614</td>
+</tr>
+<tr class="odd">
+<td>pH</td>
+<td>3332</td>
+<td>2</td>
+<td>20.0654</td>
+<td>7.649e-07</td>
+</tr>
+<tr class="even">
+<td>Gender:pH</td>
+<td>1978</td>
+<td>2</td>
+<td>11.9113</td>
+<td>7.987e-05</td>
+</tr>
+<tr class="odd">
+<td>residuals</td>
+<td>3488</td>
+<td>42</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="interpretation-main-effect-ph" class="section level2">
+<h2><span class="header-section-number">5.11</span> Interpretation: Main Effect pH</h2>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<ul>
+<li>There was a significant main effect of the amount of pH in the soil on the height of the plant, F(2, 42) = 20.07, p &lt; 0.001</li>
+</ul>
+</div>
+<div id="interpretation-main-effect-sun" class="section level2">
+<h2><span class="header-section-number">5.12</span> Interpretation: Main Effect Sun</h2>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<ul>
+<li>There was a non-significant main effect of sunlight exposure on the plant height, F(1, 42) = 2.03, p = .161.</li>
+</ul>
+</div>
+<div id="interpretation-interaction-effects" class="section level2">
+<h2><span class="header-section-number">5.13</span> Interpretation: Interaction Effects</h2>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<ul>
+<li>There was a significant interaction between the amount of pH in the soil and the amount of sunlight exposure, on the height of the plant, F(2, 42) = 11.91, p &lt; .001.</li>
+<li>Non-parallel lines indicate such an interaction: For low pH full and partial sunlight, scores do not change much.</li>
+<li>At a high pH, partial sunlight scores plummet but full sunlight scores remain fairly high. So, the interaction is caused by a difference between sunlight exposure in the height of plants.</li>
+</ul>
+</div>
+</div>
+<div id="anova-part-ii" class="section level1">
+<h1><span class="header-section-number">6</span> ANOVA Part II</h1>
+<div id="comparison-of-means-test" class="section level2">
+<h2><span class="header-section-number">6.1</span> Comparison of Means Test</h2>
+<ul>
+<li><p>Multi-factorial ANOVA as a linear model</p></li>
+<li><p>Hypotheses being tested</p></li>
+<li><p>Interaction effects</p></li>
+<li><p>Post-hoc tests</p></li>
+<li><p>Non-parametric</p></li>
+</ul>
+</div>
+<div id="factorial-anova-as-regression" class="section level2">
+<h2><span class="header-section-number">6.2</span> Factorial ANOVA as Regression</h2>
+<table>
+<thead>
+<tr class="header">
+<th>pH</th>
+<th>6</th>
+<th>6</th>
+<th>7</th>
+<th>7</th>
+<th>8</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunlight</td>
+<td>Full</td>
+<td>Partial</td>
+<td>Full</td>
+<td>Partial</td>
+<td>Full</td>
+<td>Partial</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>65</td>
+<td>50</td>
+<td>70</td>
+<td>45</td>
+<td>55</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>70</td>
+<td>55</td>
+<td>65</td>
+<td>60</td>
+<td>65</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>60</td>
+<td>80</td>
+<td>60</td>
+<td>85</td>
+<td>70</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>60</td>
+<td>65</td>
+<td>70</td>
+<td>65</td>
+<td>55</td>
+<td>55</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>60</td>
+<td>70</td>
+<td>65</td>
+<td>70</td>
+<td>55</td>
+<td>35</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>55</td>
+<td>75</td>
+<td>60</td>
+<td>70</td>
+<td>60</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>60</td>
+<td>75</td>
+<td>60</td>
+<td>80</td>
+<td>50</td>
+<td>45</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>55</td>
+<td>65</td>
+<td>50</td>
+<td>60</td>
+<td>50</td>
+<td>40</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td>485</td>
+<td>535</td>
+<td>500</td>
+<td>535</td>
+<td>460</td>
+<td>285</td>
+</tr>
+<tr class="odd">
+<td>Mean</td>
+<td>60.625</td>
+<td>66.875</td>
+<td>62.50</td>
+<td>66.875</td>
+<td>57.50</td>
+<td>35.625</td>
+</tr>
+<tr class="even">
+<td>Variance</td>
+<td>24.55</td>
+<td>106.70</td>
+<td>42.86</td>
+<td>156.70</td>
+<td>50.00</td>
+<td>117.41</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(outcome_i = (\mbox{model})+\mbox{error}_i\)</span></p>
+<p><span class="math inline">\(plant height_i=(b_0+b_{1}\mbox{Sunlight}_i+b_2\mbox{pH}_i)+\varepsilon_i\)</span></p>
+<p><span class="math inline">\(plant height_i=(b_0+b_1A_i+b_2B_i+b_3AB_i)+\varepsilon_i\)</span></p>
+<p><span class="math inline">\(plant height_i=(b_0+b_1Sunlight_i+b_2pH_i+b_3interaction_i)+\varepsilon_i\)</span></p>
+<ul>
+<li><p>How do we code the interaction term?</p></li>
+<li><p>Multiply the variables</p></li>
+<li><p><em>A</em> x <em>B</em></p></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Sunlight</th>
+<th>pH</th>
+<th>Dummy (Sunlight)</th>
+<th>Dummy (pH)</th>
+<th>Interaction</th>
+<th>Mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Partial</td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>66.875</td>
+</tr>
+<tr class="even">
+<td>Partial</td>
+<td>8</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>35.625</td>
+</tr>
+<tr class="odd">
+<td>Full</td>
+<td>6</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>60.625</td>
+</tr>
+<tr class="even">
+<td>Full</td>
+<td>8</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>57.500</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(plant height_i=(b_0+b_1Sunlight_i+b_2pH_i+b_3interaction_i)+\varepsilon_i\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{partial,6}=b_0+(b_1\times0)+(b_2\times0)+(b_3\times0)\)</span></p>
+<p><span class="math inline">\(b_0=\bar{Y}_{partial,6}\)</span></p>
+<p><span class="math inline">\(b_0=66.875\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>Sunlight</th>
+<th>pH</th>
+<th>Dummy (Sunlight)</th>
+<th>Dummy (pH)</th>
+<th>Interaction</th>
+<th>Mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Partial</td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>66.875</td>
+</tr>
+<tr class="even">
+<td>Partial</td>
+<td>8</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>35.625</td>
+</tr>
+<tr class="odd">
+<td>Full</td>
+<td>6</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>60.625</td>
+</tr>
+<tr class="even">
+<td>Full</td>
+<td>8</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>57.500</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(\bar{Y}_{Full,6}=b_0+(b_1\times1)+(b_2\times0)+(b_3\times0)\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{Full,6}=b_0+b_1\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{Full,6}=\bar{Y}_{partial,6}+b_1\)</span></p>
+<p><span class="math inline">\(b_1=\bar{Y}_{Full,6}-\bar{Y}_{partial,6}\)</span></p>
+<p><span class="math inline">\(b_1=60.625-66.875\)</span></p>
+<p><span class="math inline">\(b_1=-6.25\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>Sunlight</th>
+<th>pH</th>
+<th>Dummy (Sunlight)</th>
+<th>Dummy (pH)</th>
+<th>Interaction</th>
+<th>Mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Partial</td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>66.875</td>
+</tr>
+<tr class="even">
+<td>Partial</td>
+<td>8</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>35.625</td>
+</tr>
+<tr class="odd">
+<td>Full</td>
+<td>6</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>60.625</td>
+</tr>
+<tr class="even">
+<td>Full</td>
+<td>8</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>57.500</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(\bar{Y}_{partial,4 \: pH}=b_0+(b_1\times0)+(b_2\times1)+(b_3\times0)\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{partial,4 \: pH}=b_0+b_2\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{partial,4 \: pH}=\bar{Y}_{partial,6}+b_2\)</span></p>
+<p><span class="math inline">\(b_2=\bar{Y}_{partial,4 \: pH}-\bar{Y}_{partial,6}\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>Sunlight</th>
+<th>pH</th>
+<th>Dummy (Sunlight)</th>
+<th>Dummy (pH)</th>
+<th>Interaction</th>
+<th>Mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Partial</td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>66.875</td>
+</tr>
+<tr class="even">
+<td>Partial</td>
+<td>8</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>35.625</td>
+</tr>
+<tr class="odd">
+<td>Full</td>
+<td>6</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>60.625</td>
+</tr>
+<tr class="even">
+<td>Full</td>
+<td>8</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>57.500</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(\bar{Y}_{Full,4 \: pH}=b_0+(b_1\times1)+(b_2\times1)+(b_3\times1)\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{Full,4 \: pH}=b_0+b_1+b_2+b_3\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{Full,4 \: pH}=\bar{Y}_{partial,6}+(\bar{Y}_{Full,6}-\bar{Y}_{partial,6})+(\bar{Y}_{partial,4 \: pH}-\bar{Y}_{partial,6})+b_3\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{Full,4 \: pH}=\bar{Y}_{Full,6}+\bar{Y}_{partial,4 \: pH}-\bar{Y}_{partial,6}+b_3\)</span></p>
+<p><span class="math inline">\(b_3=\bar{Y}_{partial,6}-\bar{Y}_{Full,6}+\bar{Y}_{Full,4 \: pH}-\bar{Y}_{partial,4 \: pH}\)</span></p>
+<p><span class="math inline">\(b_3=66.875-60.625+57.500-35.625\)</span></p>
+<p><span class="math inline">\(b_3=28.125\)</span></p>
+</div>
+<div id="two-factor-analysis-of-variance-hypotheses-being-tested" class="section level2">
+<h2><span class="header-section-number">6.3</span> Two-Factor Analysis of Variance Hypotheses Being Tested</h2>
+<p>Simultaneous analysis of two factors and measurement of mean response</p>
+<p>Case. 1: equal replication</p>
+<p>Terminology:</p>
+<p>One <em>factor</em> termed A and one <em>factor</em> termed B</p>
+<p><em>b</em> is the number of levels in B</p>
+<p>Researchers have sought to examine the effects of various types of music on agitation levels in patients in early and middle stages of Alzheimer’s disease.</p>
+<p>Patients were selected based on their form of Alzheimer’s disease. Three forms of music were tested: easy listening, Mozart, and piano interludes. The response variable agitation level was scored.</p>
+<p>What is (are) the null hypothesis(ese) being tested?</p>
+<table>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Piano Interlude</th>
+<th>Mozart</th>
+<th>Easy Listening</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Early Stage ALzheimer’s</td>
+<td>21</td>
+<td>9</td>
+<td>29</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>24</td>
+<td>12</td>
+<td>26</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>22</td>
+<td>10</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>18</td>
+<td>5</td>
+<td>24</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>20</td>
+<td>9</td>
+<td>26</td>
+</tr>
+<tr class="even">
+<td>Middle Stage Alzheimer’s</td>
+<td>22</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>20</td>
+<td>18</td>
+<td>18</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>25</td>
+<td>11</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>18</td>
+<td>9</td>
+<td>13</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>20</td>
+<td>13</td>
+<td>19</td>
+</tr>
+</tbody>
+</table>
+<p>Plot these data (means) on a single figure such that cell-level means can be evaluated.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Piano Interlude</th>
+<th>Mozart</th>
+<th>Easy Listening</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Early Stage ALzheimer’s</td>
+<td>21</td>
+<td>9</td>
+<td>29</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>24</td>
+<td>12</td>
+<td>26</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>22</td>
+<td>10</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>18</td>
+<td>5</td>
+<td>24</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>20</td>
+<td>9</td>
+<td>26</td>
+</tr>
+<tr class="even">
+<td>Middle Stage Alzheimer’s</td>
+<td>22</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>20</td>
+<td>18</td>
+<td>18</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>25</td>
+<td>11</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>18</td>
+<td>9</td>
+<td>13</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>20</td>
+<td>13</td>
+<td>19</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="three-factor-analysis-of-variance" class="section level2">
+<h2><span class="header-section-number">6.4</span> Three-Factor Analysis of Variance</h2>
+<p>What hypotheses are being tested?</p>
+<p>Evaluate respiratory rate of crabs (ml O2 hr-1)</p>
+<p>Factors:</p>
+<ul>
+<li>Sex</li>
+<li>Species</li>
+<li>Temperature</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Species 1</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Low Temp</td>
+<td></td>
+<td>Med Temp</td>
+<td></td>
+<td>High Temp</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Male</td>
+<td>Female</td>
+<td>Male</td>
+<td>Female</td>
+<td>Male</td>
+<td>Female</td>
+</tr>
+<tr class="odd">
+<td>1.9</td>
+<td>1.8</td>
+<td>2.3</td>
+<td>2.4</td>
+<td>2.9</td>
+<td>3.0</td>
+</tr>
+<tr class="even">
+<td>1.8</td>
+<td>1.7</td>
+<td>2.1</td>
+<td>2.7</td>
+<td>2.8</td>
+<td>3.1</td>
+</tr>
+<tr class="odd">
+<td>1.6</td>
+<td>1.4</td>
+<td>2.0</td>
+<td>2.4</td>
+<td>3.4</td>
+<td>3.0</td>
+</tr>
+<tr class="even">
+<td>1.4</td>
+<td>1.5</td>
+<td>2.6</td>
+<td>2.6</td>
+<td>3.2</td>
+<td>2.7</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>Species 2</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Low Temp</td>
+<td></td>
+<td>Med Temp</td>
+<td></td>
+<td>High Temp</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Male</td>
+<td>Female</td>
+<td>Male</td>
+<td>Female</td>
+<td>Male</td>
+<td>Female</td>
+</tr>
+<tr class="odd">
+<td>2.1</td>
+<td>2.3</td>
+<td>2.4</td>
+<td>2.0</td>
+<td>3.6</td>
+<td>3.1</td>
+</tr>
+<tr class="even">
+<td>2.0</td>
+<td>2.0</td>
+<td>2.6</td>
+<td>2.3</td>
+<td>3.1</td>
+<td>3.0</td>
+</tr>
+<tr class="odd">
+<td>1.8</td>
+<td>1.9</td>
+<td>2.7</td>
+<td>2.1</td>
+<td>3.4</td>
+<td>2.8</td>
+</tr>
+<tr class="even">
+<td>2.2</td>
+<td>1.7</td>
+<td>2.3</td>
+<td>2.4</td>
+<td>3.2</td>
+<td>3.2</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>Species 3</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Low Temp</td>
+<td></td>
+<td>Med Temp</td>
+<td></td>
+<td>High Temp</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Male</td>
+<td>Female</td>
+<td>Male</td>
+<td>Female</td>
+<td>Male</td>
+<td>Female</td>
+</tr>
+<tr class="odd">
+<td>1.1</td>
+<td>1.4</td>
+<td>2.0</td>
+<td>2.4</td>
+<td>2.9</td>
+<td>3.2</td>
+</tr>
+<tr class="even">
+<td>1.2</td>
+<td>1.0</td>
+<td>2.1</td>
+<td>2.6</td>
+<td>2.8</td>
+<td>2.9</td>
+</tr>
+<tr class="odd">
+<td>1.0</td>
+<td>1.3</td>
+<td>1.9</td>
+<td>2.3</td>
+<td>3.0</td>
+<td>2.8</td>
+</tr>
+<tr class="even">
+<td>1.4</td>
+<td>1.2</td>
+<td>2.2</td>
+<td>2.2</td>
+<td>3.1</td>
+<td>2.9</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="multiway-factorial-anova-hypotheses-being-tested" class="section level2">
+<h2><span class="header-section-number">6.5</span> Multiway Factorial ANOVA Hypotheses Being Tested</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Popcorn</th>
+<th>Oil Amt.</th>
+<th>Batch</th>
+<th>Yeild</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Plain</td>
+<td>Little</td>
+<td>Large</td>
+<td>8.2</td>
+</tr>
+<tr class="even">
+<td>Gourmet</td>
+<td>Little</td>
+<td>Large</td>
+<td>8.6</td>
+</tr>
+<tr class="odd">
+<td>Plain</td>
+<td>Lots</td>
+<td>Large</td>
+<td>10.4</td>
+</tr>
+<tr class="even">
+<td>Gourmet</td>
+<td>Lots</td>
+<td>Large</td>
+<td>9.2</td>
+</tr>
+<tr class="odd">
+<td>Plain</td>
+<td>Little</td>
+<td>Small</td>
+<td>9.9</td>
+</tr>
+<tr class="even">
+<td>Gourmet</td>
+<td>Little</td>
+<td>Small</td>
+<td>12.1</td>
+</tr>
+<tr class="odd">
+<td>Plain</td>
+<td>Lots</td>
+<td>Small</td>
+<td>10.6</td>
+</tr>
+<tr class="even">
+<td>Gourmet</td>
+<td>Lots</td>
+<td>Small</td>
+<td>18.0</td>
+</tr>
+<tr class="odd">
+<td>Plain</td>
+<td>Little</td>
+<td>Large</td>
+<td>8.8</td>
+</tr>
+<tr class="even">
+<td>Gourmet</td>
+<td>Little</td>
+<td>Large</td>
+<td>8.2</td>
+</tr>
+<tr class="odd">
+<td>Plain</td>
+<td>Lots</td>
+<td>Large</td>
+<td>8.8</td>
+</tr>
+<tr class="even">
+<td>Gourmet</td>
+<td>Lots</td>
+<td>Large</td>
+<td>9.8</td>
+</tr>
+<tr class="odd">
+<td>Plain</td>
+<td>Little</td>
+<td>Small</td>
+<td>10.1</td>
+</tr>
+<tr class="even">
+<td>Gourmet</td>
+<td>Little</td>
+<td>Small</td>
+<td>15.9</td>
+</tr>
+<tr class="odd">
+<td>Plain</td>
+<td>Lots</td>
+<td>Small</td>
+<td>7.4</td>
+</tr>
+<tr class="even">
+<td>Gourmet</td>
+<td>Lots</td>
+<td>Small</td>
+<td>16.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="hypotheses-being-tested" class="section level2">
+<h2><span class="header-section-number">6.6</span> Hypotheses Being Tested</h2>
+<p>Three factor ANOVA:</p>
+<ul>
+<li>H<sub>O</sub>: Yield is the same in all three Batch sizes</li>
+<li>H<sub>O</sub> : Yield is the same in all three Oil amounts</li>
+<li>H<sub>O</sub> : Yield is the same in all three Popcorn types</li>
+<li>H<sub>O</sub> : The mean yield is the same for all levels of batch, independent of oil amount (Batch X Oil)</li>
+<li>H<sub>O</sub> : The mean yield is the same for all levels of Oil amount, independent of popcorn type (Oil X Type)</li>
+<li>H<sub>O</sub> : The mean yield is the same for all levels of batch, independent of popcorn type (Batch X Type)</li>
+<li>H<sub>O</sub> : Differences in mean Yield among the batch, oil amount, and popcorn type are independent of the other factors + (Batch X Type X Oil)</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Df</th>
+<th>Sum Sq</th>
+<th>Mean Sq</th>
+<th>F value</th>
+<th>Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>popcorn type</td>
+<td>1</td>
+<td>3.062</td>
+<td>3.062</td>
+<td>0.1731</td>
+<td>0.6883</td>
+</tr>
+<tr class="even">
+<td>oil amount</td>
+<td>1</td>
+<td>0.062</td>
+<td>0.062</td>
+<td>0.0035</td>
+<td>0.9541</td>
+</tr>
+<tr class="odd">
+<td>batch size</td>
+<td>1</td>
+<td>52.562</td>
+<td>52.562</td>
+<td>2.9717</td>
+<td>0.1230</td>
+</tr>
+<tr class="even">
+<td>popcorn type:oil amount</td>
+<td>1</td>
+<td>27.562</td>
+<td>27.562</td>
+<td>1.5583</td>
+<td>0.2472</td>
+</tr>
+<tr class="odd">
+<td>popcorn type:batch size</td>
+<td>1</td>
+<td>14.062</td>
+<td>14.062</td>
+<td>0.7951</td>
+<td>0.3986</td>
+</tr>
+<tr class="even">
+<td>oil amount:batch size</td>
+<td>1</td>
+<td>0.063</td>
+<td>0.063</td>
+<td>0.0035</td>
+<td>0.9541</td>
+</tr>
+<tr class="odd">
+<td>popcorn type:oil amount:batch size</td>
+<td>1</td>
+<td>1.563</td>
+<td>1.563</td>
+<td>0.0883</td>
+<td>0.7739</td>
+</tr>
+<tr class="even">
+<td>Residuals</td>
+<td>8</td>
+<td>141.500</td>
+<td>17.687</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="interaction-effects" class="section level2">
+<h2><span class="header-section-number">6.7</span> Interaction Effects</h2>
+<p>Experiment: we are interested in oxygen consumption of two species of limpets in different concentration of seawater.</p>
+<ul>
+<li>Factor A is the species of limpet (levels, a)</li>
+<li>Factor B is the concentration of SW as a function of maximum salinity - 100, 75, and 50 % (levels, b)</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Completed anova</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Source of variation</td>
+<td>df</td>
+<td>SS</td>
+<td>MS</td>
+</tr>
+<tr class="even">
+<td>Species</td>
+<td>1</td>
+<td>16.6380</td>
+<td>16.638 ns</td>
+</tr>
+<tr class="odd">
+<td>salinities</td>
+<td>2</td>
+<td>10.3566</td>
+<td>5.178 ns</td>
+</tr>
+<tr class="even">
+<td>Sp X Sal</td>
+<td>2</td>
+<td>194.8907</td>
+<td>97.445 **</td>
+</tr>
+<tr class="odd">
+<td>Error</td>
+<td>42</td>
+<td>401.5213</td>
+<td>9.560</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td>47</td>
+<td>623.4066</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>When the two factors are identified as A and B, the interaction is identified as the A X B interaction.</p>
+<p>Variability not accounted for by A and B alone.</p>
+<p>Interaction: The effect of one factor in the presence of a particular level of another factor.</p>
+<p>There is an interaction between two factors if the effect of one factor depends on the levels of the second factor.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Species</th>
+<th>Species</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Seawater Concentration</td>
+<td>A. scabra</td>
+<td>A. digitalis</td>
+<td>Mean</td>
+</tr>
+<tr class="even">
+<td>100%</td>
+<td>10.56</td>
+<td>7.43</td>
+<td>9.00</td>
+</tr>
+<tr class="odd">
+<td>75%</td>
+<td>7.89</td>
+<td>7.34</td>
+<td>10.11</td>
+</tr>
+<tr class="even">
+<td>50%</td>
+<td>12.17</td>
+<td>12.33</td>
+<td>9.76</td>
+</tr>
+<tr class="odd">
+<td>Mean</td>
+<td>10.21</td>
+<td>9.03</td>
+<td>9.62</td>
+</tr>
+</tbody>
+</table>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<ul>
+<li><p>The response to salinity differs between the two species</p></li>
+<li><p>At 75% salinity A. scabra consumes the least oxygen and A. digitalis consumes the most.</p></li>
+<li><p>Therefore a simple statement about the species response to salinity is not clear; all we can really say is:</p></li>
+<li><p>The pattern of response to changes in salinity differed in the two species.</p></li>
+<li><p>The difference among levels of one factor is not constant at all levels of the second factor</p></li>
+<li><p>“It is generally not useful to speak of an individual factor effect - even if its <em>F</em> is significant - if there is a significant interaction effect” - Zar</p></li>
+</ul>
+</div>
+<div id="post-hoc-tests" class="section level2">
+<h2><span class="header-section-number">6.8</span> Post-hoc Tests</h2>
+<p>Tukey test - balanced, orthogonal designs</p>
+<ul>
+<li>Step one: is to arrange and number all five sample means in order of increasing magnitude</li>
+<li>Calculate the pairwise difference in sample means.</li>
+</ul>
+<p>We use a <em>t</em>-test “analog” to calculate a q-statistic</p>
+<p>Scheffe’s test</p>
+<p>Examine multiple contrasts:</p>
+<ul>
+<li>ideas is to compare combinations of samples to each other instead of the comparison among individual k levels.</li>
+</ul>
+<p>Compare the mean outflow volume of four different rivers: 5 vs 1,2,3,4</p>
+<p><span class="math inline">\(H_0:\mu_2/3+\mu_4/3+\mu_3/3-\mu_5=0\)</span></p>
+<p><span class="math inline">\(H_0:(\mu_2+\mu_4+\mu_3)/3=\mu_5\)</span></p>
+<p><span class="math inline">\(c_2=\frac{1}{3}, \: c_4=\frac{1}{3}, \: c_3=\frac{1}{3}, \: and \: c_5=-1\)</span></p>
+<p><Br></p>
+<p>Alternatives multiple contrasts:</p>
+<p><span class="math inline">\(H_0:(\mu_1+\mu_5)/2-(\mu_2+\mu_4+\mu_3)/3=0\)</span></p>
+<p><span class="math inline">\(H_0:\mu_1-(\mu_2+\mu_4+\mu_3)/3\)</span></p>
+<p>Test Statistic:</p>
+<p><span class="math inline">\(s=\frac{|\sum c_i\bar{Y}_i|}{SE}\)</span></p>
+<ul>
+<li>Where</li>
+</ul>
+<p><span class="math inline">\(SE=\sqrt{s^2(\sum \frac{c^2_i}{n_i})}\)</span></p>
+<ul>
+<li>and the critical value of the test is</li>
+</ul>
+<p><span class="math inline">\(S_{\alpha}=\sqrt{(k-1)F_{\alpha(1),k-1,N-k}}\)</span></p>
+</div>
+<div id="non-parametric-tests" class="section level2">
+<h2><span class="header-section-number">6.9</span> Non-Parametric Tests</h2>
+<p>Violations of the assumptions</p>
+<p>We assume equality of variance - ANOVA is a robust test.</p>
+<p>Robust to unbalanced design.</p>
+<p>How to deal with outliers:</p>
+<ul>
+<li>use in analysis if they are valid data.</li>
+</ul>
+<p>Test of normality: Shapiro Wilks</p>
+<p>Test of equality of variance: Bartletts test.</p>
+<p>Nonparametric analysis of variance.</p>
+<p>If k &gt; 2</p>
+<p>Kruskal-Wallis test - analysis of variance by rank</p>
+<p>Power increases with sample size.</p>
+<p>If k = 2 the Kruskal-Wallis is equivalent to the Mann-Whitney test.</p>
+<p><span class="math inline">\(H=\frac{12}{N(N+1)}\sum ^k_{i=1}\frac{R^2_i}{n_i}-3(N+1)\)</span></p>
+<p>If there are tied ranks</p>
+<ul>
+<li>H needs to be corrected using a correction factor C.</li>
+</ul>
+<p><span class="math inline">\(C=1-\frac{\sum t}{N^3-N}\)</span></p>
+<p><span class="math inline">\(H_c=\frac{H}{C}\)</span></p>
+<p><span class="math inline">\(\sum t=\sum (t^3_i-t_i)\)</span></p>
+<ul>
+<li>t<sub>i</sub> is the number of tied ranks.</li>
+</ul>
+<p>A limnologist obtained eight containers of water from each of four ponds. The pH of each water sample was measured. The data are arranged in ascending order within each pond. (One of the containers from pond 3 was lost, so n<sub>3</sub> = 7, instead of 8; but the test procedure does not require equal numbers of data in each group.) The rank of each datum is shown parenthetically.</p>
+<ul>
+<li>H<sub>0</sub>: pH is the same in all four ponds.</li>
+<li>H<sub>A</sub>: pH is not the same in all four ponds.</li>
+</ul>
+<p><Br></p>
+<table>
+<thead>
+<tr class="header">
+<th>Pond 1</th>
+<th>Pond 2</th>
+<th>Pond 3</th>
+<th>Pond 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>7.68 (1)</td>
+<td>7.71 (6*)</td>
+<td>7.74 (13.5*)</td>
+<td>7.71 (6*)</td>
+</tr>
+<tr class="even">
+<td>7.69 (2)</td>
+<td>7.73 (10)</td>
+<td>7.75 (16)</td>
+<td>7.71 (6*)</td>
+</tr>
+<tr class="odd">
+<td>7.70 (3.5*)</td>
+<td>7.74 (13.5*)</td>
+<td>7.77 (18)</td>
+<td>7.74 (13.5)</td>
+</tr>
+<tr class="even">
+<td>7.70 (3.5*)</td>
+<td>7.74 (13.5*)</td>
+<td>7.78 (20*)</td>
+<td>7.79 (22)</td>
+</tr>
+<tr class="odd">
+<td>7.72 (8)</td>
+<td>7.78 (20*)</td>
+<td>7.80 (23.5*)</td>
+<td>7.81 (26*)</td>
+</tr>
+<tr class="even">
+<td>7.73 (10*)</td>
+<td>7.78 (20*)</td>
+<td>7.81 (26*)</td>
+<td>7.85 (29)</td>
+</tr>
+<tr class="odd">
+<td>7.73 (10*)</td>
+<td>7.80(23.5*)</td>
+<td>7.84 (28)</td>
+<td>7.87 (30)</td>
+</tr>
+<tr class="even">
+<td>7.76 (17)</td>
+<td>7.81 (26*)</td>
+<td></td>
+<td>7.91 (31)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>n<sub>1</sub> =8</th>
+<th>n<sub>2</sub> =8</th>
+<th>n<sub>3</sub> =7</th>
+<th>n<sub>4</sub> =8</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>R<sub>1</sub> =55</td>
+<td>R<sub>2</sub> =132.5</td>
+<td>R<sub>3</sub> =145</td>
+<td>R<sub>4</sub> =163.5</td>
+</tr>
+</tbody>
+</table>
+<p>*tied ranks</p>
+<p><span class="math inline">\(H=\frac{12}{N(N+1)}\sum ^k_{i=1}\frac{R^2_i}{n_i}-3(N+1)\)</span></p>
+<p><span class="math inline">\(=\frac{12}{32(32)}[\frac{55^2}{8}+\frac{132.5^2}{8}+\frac{145^2}{7}+\frac{163.5^2}{8}]-3(32)\)</span></p>
+<p><span class="math inline">\(=11.876\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>Pond 1</th>
+<th>Pond 2</th>
+<th>Pond 3</th>
+<th>Pond 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>7.68 (1)</td>
+<td>7.71 (6*)</td>
+<td>7.74 (13.5*)</td>
+<td>7.71 (6*)</td>
+</tr>
+<tr class="even">
+<td>7.69 (2)</td>
+<td>7.73 (10)</td>
+<td>7.75 (16)</td>
+<td>7.71 (6*)</td>
+</tr>
+<tr class="odd">
+<td>7.70 (3.5*)</td>
+<td>7.74 (13.5*)</td>
+<td>7.77 (18)</td>
+<td>7.74 (13.5)</td>
+</tr>
+<tr class="even">
+<td>7.70 (3.5*)</td>
+<td>7.74 (13.5*)</td>
+<td>7.78 (20*)</td>
+<td>7.79 (22)</td>
+</tr>
+<tr class="odd">
+<td>7.72 (8)</td>
+<td>7.78 (20*)</td>
+<td>7.80 (23.5*)</td>
+<td>7.81 (26*)</td>
+</tr>
+<tr class="even">
+<td>7.73 (10*)</td>
+<td>7.78 (20*)</td>
+<td>7.81 (26*)</td>
+<td>7.85 (29)</td>
+</tr>
+<tr class="odd">
+<td>7.73 (10*)</td>
+<td>7.80(23.5*)</td>
+<td>7.84 (28)</td>
+<td>7.87 (30)</td>
+</tr>
+<tr class="even">
+<td>7.76 (17)</td>
+<td>7.81 (26*)</td>
+<td></td>
+<td>7.91 (31)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>n<sub>1</sub> =8</th>
+<th>n<sub>2</sub> =8</th>
+<th>n<sub>3</sub> =7</th>
+<th>n<sub>4</sub> =8</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>R<sub>1</sub> =55</td>
+<td>R<sub>2</sub> =132.5</td>
+<td>R<sub>3</sub> =145</td>
+<td>R<sub>4</sub> =163.5</td>
+</tr>
+</tbody>
+</table>
+<p>*tied ranks</p>
+<p><span class="math inline">\(\sum t=\sum (t^3_i-t_i)\)</span></p>
+<p><span class="math inline">\(\sum t=(2^3-2)+(3^3-3)+(3^3-3)+(4^3-4)+(3^3-3)+(2^3-2)+(3^3-)\)</span></p>
+<p><span class="math inline">\(\sum t=168\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>Pond 1</th>
+<th>Pond 2</th>
+<th>Pond 3</th>
+<th>Pond 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>7.68 (1)</td>
+<td>7.71 (6*)</td>
+<td>7.74 (13.5*)</td>
+<td>7.71 (6*)</td>
+</tr>
+<tr class="even">
+<td>7.69 (2)</td>
+<td>7.73 (10)</td>
+<td>7.75 (16)</td>
+<td>7.71 (6*)</td>
+</tr>
+<tr class="odd">
+<td>7.70 (3.5*)</td>
+<td>7.74 (13.5*)</td>
+<td>7.77 (18)</td>
+<td>7.74 (13.5)</td>
+</tr>
+<tr class="even">
+<td>7.70 (3.5*)</td>
+<td>7.74 (13.5*)</td>
+<td>7.78 (20*)</td>
+<td>7.79 (22)</td>
+</tr>
+<tr class="odd">
+<td>7.72 (8)</td>
+<td>7.78 (20*)</td>
+<td>7.80 (23.5*)</td>
+<td>7.81 (26*)</td>
+</tr>
+<tr class="even">
+<td>7.73 (10*)</td>
+<td>7.78 (20*)</td>
+<td>7.81 (26*)</td>
+<td>7.85 (29)</td>
+</tr>
+<tr class="odd">
+<td>7.73 (10*)</td>
+<td>7.80(23.5*)</td>
+<td>7.84 (28)</td>
+<td>7.87 (30)</td>
+</tr>
+<tr class="even">
+<td>7.76 (17)</td>
+<td>7.81 (26*)</td>
+<td></td>
+<td>7.91 (31)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>n<sub>1</sub> =8</th>
+<th>n<sub>2</sub> =8</th>
+<th>n<sub>3</sub> =7</th>
+<th>n<sub>4</sub> =8</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>R<sub>1</sub> =55</td>
+<td>R<sub>2</sub> =132.5</td>
+<td>R<sub>3</sub> =145</td>
+<td>R<sub>4</sub> =163.5</td>
+</tr>
+</tbody>
+</table>
+<p>*tied ranks</p>
+<p><span class="math inline">\(\sum t=\sum (t^3_i-t_i)\)</span></p>
+<p><span class="math inline">\(\sum t=(2^3-2)+(3^3-3)+(3^3-3)+(4^3-4)+(3^3-3)+(2^3-2)+(3^3-)\)</span></p>
+<p><span class="math inline">\(\sum t=168\)</span></p>
+<p><span class="math inline">\(C=1-\frac{\sum t}{N^3-N}=1-\frac{168}{31^3-31}=1-\frac{168}{29760}=0.9944\)</span></p>
+<p><span class="math inline">\(H_c=\frac{H}{C}=\frac{11.876}{0.9944}=11.943\)</span></p>
+<p><span class="math inline">\(\nu=k-1=3\)</span></p>
+<p><span class="math inline">\(F=\frac{(N-k)H_c}{(k-1)(N-1-H_c)}=\frac{(31-4)(11.943)}{(4-1)(31-1-11.943)}=5.95\)</span></p>
+<p><span class="math inline">\(F_{0.05(1),3,26}=2.98\)</span></p>
+<p>Reject H<sub>0</sub></p>
+</div>
+</div>
+<div id="logistic-regression" class="section level1">
+<h1><span class="header-section-number">7</span> Logistic Regression</h1>
+<p>When and why do we use logistic regression?</p>
+<ul>
+<li>Binary</li>
+<li>Multinomial</li>
+</ul>
+<p>Theory behind logistic regression</p>
+<p>Interpreting logistic regression</p>
+<div id="when-and-why" class="section level2">
+<h2><span class="header-section-number">7.1</span> When and Why?</h2>
+<p>To predict an outcome variable that is categorical from one or more categorical or continuous predictor variables.</p>
+<p>Used because having a categorical outcome variable violates the assumption of linearity in normal regression.</p>
+</div>
+<div id="we-will-focus-on-regression-with-one-predictor" class="section level2">
+<h2><span class="header-section-number">7.2</span> We will focus on regression with one predictor</h2>
+<p><span class="math inline">\(P(Y)=\frac{1}{1+e^{-(b_0+b_1X_1+\varepsilon_i)}}\)</span></p>
+<p>Outcome</p>
+<ul>
+<li>We predict the probability of the outcome occurring</li>
+</ul>
+<p>b<sub>0</sub> and b<sub>1</sub></p>
+<ul>
+<li>Can be thought of in much the same way as multiple regression</li>
+<li>Note the normal regression equation forms part of the logistic regression equation</li>
+</ul>
+</div>
+<div id="assessing-the-model" class="section level2">
+<h2><span class="header-section-number">7.3</span> Assessing the Model</h2>
+<p>log - likelihood <span class="math inline">\(=\sum^N_{i=1}[\Upsilon_iln(P(\Upsilon_i))+(1-\Upsilon_1)ln(1-P(\Upsilon_i))]\)</span></p>
+<p>The log-likelihood statistic</p>
+<ul>
+<li>Analogous to the residual sum of squares in multiple regression</li>
+<li>It is an indicator of how much unexplained information there is after the model has been fitted.</li>
+<li>Large values indicate poorly fitting statistical models.</li>
+</ul>
+</div>
+<div id="assessing-changes-in-models" class="section level2">
+<h2><span class="header-section-number">7.4</span> Assessing Changes in Models</h2>
+<p>It’s possible to calculate a log-likelihood for different models and to compare these models by looking at the difference between their log-likelihoods.</p>
+<p><span class="math inline">\(\chi^2=2[LL(new)-LL(baseline)]\)</span></p>
+<p><span class="math inline">\((df=k_{new}-k_{baseline})\)</span></p>
+</div>
+<div id="assessing-predictors-the-odds-ratio" class="section level2">
+<h2><span class="header-section-number">7.5</span> Assessing Predictors: The Odds Ratio</h2>
+<p><span class="math inline">\(\mbox{odss ratio}=\frac{\mbox{odds after a unit change in the predictor}}{\mbox{odds before a unit change in the predictor}}\)</span></p>
+<p>Indicates the change in odds resulting from a unit change in the predictor.</p>
+</div>
+<div id="things-that-can-go-wrong" class="section level2">
+<h2><span class="header-section-number">7.6</span> Things That Can Go Wrong</h2>
+<p>Assumptions from linear regression:</p>
+<ul>
+<li>Linearity</li>
+<li>Independence of errors</li>
+<li>Multicollinearity - we will spend time on this in multiple linear regression.</li>
+</ul>
+</div>
+<div id="complete-separation" class="section level2">
+<h2><span class="header-section-number">7.7</span> Complete Separation</h2>
+<p>When the outcome variable can be perfectly predicted.</p>
+<ul>
+<li>E.g. predicting whether someone is a burglar, your teenage son or your cat based on weight.</li>
+<li>Weight is a perfect predictor of cat/burglar unless you have a very fat cat indeed!</li>
+</ul>
+<p><img src="Linear_Models_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><Br></p>
+</div>
+<div id="over-dispersion" class="section level2">
+<h2><span class="header-section-number">7.8</span> Over Dispersion</h2>
+<p>Over dispersion is where the variance is larger than expected from the model.</p>
+<p>This can be caused by violating the assumption of independence.</p>
+<p>This problem makes the standard errors too small!</p>
+</div>
+<div id="an-example-1" class="section level2">
+<h2><span class="header-section-number">7.9</span> An Example</h2>
+<p>Predictors of a treatment intervention.</p>
+<p>Participants</p>
+<ul>
+<li>113 adults with a medical problem</li>
+</ul>
+<p>Outcome:</p>
+<ul>
+<li>Cured (1) or not cured (0).</li>
+</ul>
+<p>Predictors:</p>
+<ul>
+<li>Intervention: intervention or no treatment.</li>
+</ul>
+<p><Br></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
