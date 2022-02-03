@@ -5,8 +5,6 @@ output:
 ---
 # Robert Leaf, PhD 
 
-![](http://gcrl.usm.edu/cv/leaf.robert/leaf.robert.photo.source.jpg)
-
 # Biography: 
 
 Dr. Robert Leaf joined the Division of Coastal Sciences in the School of Ocean Science and Engineering in 2012. His research interests lie in fishery science and computer-intensive modeling approaches for management and conservation of living marine resources. The goals of these analyses are to understand the biological and ecosystem processes that determine population dynamics and to incorporate this understanding for effective conservation and management strategies.   
