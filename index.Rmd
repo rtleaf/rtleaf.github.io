@@ -9,11 +9,10 @@ output:
 
 # Biography: 
 
-Dr. Robert Leaf joined the Division of Coastal Sciences in the School of Ocean Science and Engineering in 2012. His research interests lie in fishery science and computer-intensive modeling approaches. The goals of these analyses are to understand the biological and ecosystem processes that determine population dynamics and to incorporate this understanding for effective conservation and management strategies. He received a PhD in Fishery and Wildlife Sciences from the Virginia Polytechnic Institute and State University in 2010. There he studied how life history characteristics of individuals in harvested populations are altered under size-selective exploitation. As a post-doctoral researcher at NOAA Fisheries, Dr. Leaf examined how phytoplankton bloom phenology determines recruitment patterns in the Haddock stock. His current work involves assessment of fisheries and populations, primarily in the Gulf of Mexico but also in the northeastern and mid-Atlantic regions of the United States.
- 
-Dr. Leaf’s research is concerned with understanding and modeling biological systems at two levels: individual life-history and population dynamics. At the population level he is interested in understanding the environmental drivers that influence population dynamics of commercially harvested fishes and invertebrates. He uses simulation and statistical models to explore how alternative harvest strategies impact resilience and sustainability. He has overseen the thesis research of 14 master's and doctoral students and currently supervises two doctoral students, one masters student, and two NSF-funded undergraduates working on state and federally managed fish stocks.
- 
- 
+Dr. Robert Leaf joined the Division of Coastal Sciences in the School of Ocean Science and Engineering in 2012. His research interests lie in fishery science and computer-intensive modeling approaches for management and conservation of living marine resources. The goals of these analyses are to understand the biological and ecosystem processes that determine population dynamics and to incorporate this understanding for effective conservation and management strategies.   
+
+He received a PhD in Fishery and Wildlife Sciences from the Virginia Polytechnic Institute and State University in 2010. There he studied how life history characteristics of individuals in harvested populations are altered under size-selective exploitation. As a post-doctoral researcher at NOAA Fisheries, Dr. Leaf examined how phytoplankton bloom phenology determines recruitment patterns in the Haddock stock. His current work involves assessment of fisheries and populations, primarily in the Gulf of Mexico but also in the northeastern and mid-Atlantic regions of the United States.
+
 # Current Projects: 
  
 “Understanding the utility of archived tag-recapture data for evaluation of movement and mortality estimation”

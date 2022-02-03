@@ -25,13 +25,11 @@ This course addresses basic and advanced quantitative approaches to methods of f
    * Expose students to current primary literature related to fisheries management. 
    * Promote an interest and understanding of scientific research related to fisheries management, including critical thinking skills.
    
-
-
 ###  R Programming and Data Analysis
 
 This course is a first class in the R programming language focusing on basic syntax and plotting using base functions.
 
-[Course Website](https://rtleaf.github.io/R-shortcourse)
+[Course Website](https://rtleaf.github.io/Data-Analysis-in-R/)
 
 ###  Professional Skills
 
