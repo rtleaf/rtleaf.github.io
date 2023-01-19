@@ -24,6 +24,8 @@ This course addresses basic and advanced quantitative approaches to methods of f
    * Introduce quantitative methods of fisheries assessment. 
    * Expose students to current primary literature related to fisheries management. 
    * Promote an interest and understanding of scientific research related to fisheries management, including critical thinking skills.
+
+[Course Website](https://rtleaf.github.io/Quantitative-Fishery/)   
    
 ###  R Programming and Data Analysis
 

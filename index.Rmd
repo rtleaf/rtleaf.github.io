@@ -7,9 +7,7 @@ output:
 
 # Biography: 
 
-Dr. Robert Leaf joined the Division of Coastal Sciences in the School of Ocean Science and Engineering in 2012. His research interests lie in fishery science and computer-intensive modeling approaches for management and conservation of living marine resources. The goals of these analyses are to understand the biological and ecosystem processes that determine population dynamics and to incorporate this understanding for effective conservation and management strategies.   
-
-He received a PhD in Fishery and Wildlife Sciences from the Virginia Polytechnic Institute and State University in 2010. There he studied how life history characteristics of individuals in harvested populations are altered under size-selective exploitation. As a post-doctoral researcher at NOAA Fisheries, Dr. Leaf examined how phytoplankton bloom phenology determines recruitment patterns in the Haddock stock. His current work involves assessment of fisheries and populations, primarily in the Gulf of Mexico but also in the northeastern and mid-Atlantic regions of the United States.
+Dr. Robert Leaf joined the Division of Coastal Sciences in the School of Ocean Science and Engineering in 2012. He currently serves as the Interim Associate Director of School of Ocean Science and Engineering, Coastal Sciences. His research interests lie in fishery science and computer-intensive modeling approaches for the management and conservation of living marine resources. The goals of these analyses are to understand the biological and ecosystem processes that determine population dynamics and to incorporate this understanding for effective conservation and management strategies. He received a BA and MS in Biology and Marine Science respectively. He received a Ph.D. in Fishery and Wildlife Sciences from the Virginia Polytechnic Institute and State University in 2010. There he studied how life history characteristics of individuals in harvested populations are altered under size-selective exploitation. As a post-doctoral researcher at NOAA Fisheries, Dr. Leaf examined how phytoplankton bloom phenology determines recruitment patterns in the Haddock stock. His current work involves the assessment of fisheries and populations, primarily in the Gulf of Mexico but also in the northeastern and mid-Atlantic regions of the United States. He is the author or co-author on a total of 46 peer-reviewed publications, has taught 21 graduate-level courses (primarily focused on statistics, fishery science, and ecological modeling), and has led or co-led grants totaling 2.7 million dollars while at USM. 
 
 # Current Projects: 
  
@@ -20,6 +18,8 @@ This project is focused on performing exploratory analysis to understand the fea
 “Evaluation of Discard Patterns in Mid-Atlantic Groundfish and Pelagic Fisheries”
  
 This project has two primary aspects. The first is to perform statistical predictive analysis to understand what constitutes a directed trip in selected groundfish fisheries. The work will primarily employ a machine learning algorithm called “random forest” which is a classification approach. In the analysis we focus on identifying the gears, fleet characteristics, temporal and spatial characteristics, and sectors that lead to high discards. The second approach used in the study will be a qualitative analysis. We will create a dashboard will provide graphical summary (in space and time) to understand the discard patterns with respect to gear types, fleet characteristics, temporal and spatial characteristics.
+
+[Link to project website](https://rriedel.shinyapps.io/MainBycatch/)
  
 “Evaluating the impact of plus group definition on the Gulf and Atlantic Menhaden stock assessments”
  
