@@ -28,3 +28,9 @@ This project examines the impact of the plus group definition on population esti
 “Assessment and monitoring of Mississippi's fishery resources”
 
 The goals of the proposed work are to identify stocks in need of assessment (termed "stock under consideration"), in collaboration with the Commission and agency representatives for the MDMR and to evaluate the scientific data available and identify data gaps in the understanding of relative abundance and life-history information needed to complete a robust and defensible (peer reviewed) stock assessment. Based on the availability of data and the needs of the Mississippi Department of Marine Resources, we will conduct a state-of-the-art assessment for the stock(s) under consideration and present the results to the Commission. Thus far this work has resulted in 5 peer reviewed stock assessment products used for managing our state’s coastal fisheries. 
+
+“Investigation of Trophic Dynamics in the northern Gulf of Mexico using EcoDiet”
+
+The northern Gulf of Mexico is a taxonomically rich ecosystem; however, the trophic dynamics of the region are not well understood. This project seeks to explore the trophic dynamics of the northern Gulf of Mexico. To do so, an extensive source of stomach content and stable isotope data will be tidied and reformatted in order to be implemented into a newly developed model, EcoDiet.
+
+[Link to project website](leaf.lab.html)
