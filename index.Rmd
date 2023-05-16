@@ -33,4 +33,4 @@ The goals of the proposed work are to identify stocks in need of assessment (ter
 
 The northern Gulf of Mexico is a taxonomically rich ecosystem; however, the trophic dynamics of the region are not well understood. This project seeks to explore the trophic dynamics of the northern Gulf of Mexico. To do so, an extensive source of stomach content and stable isotope data will be tidied and reformatted in order to be implemented into a newly developed model, EcoDiet.
 
-[Link to project website](leaf.lab.html)
+[Link to project website](Chee.Proj.Prop.html)
