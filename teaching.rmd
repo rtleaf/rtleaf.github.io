@@ -14,7 +14,7 @@ output:
 
 This course addresses basic approaches to experimental design, statistical analysis, and presentation of quantitative information. The broad topic areas of this course are the use of frequency distributions in statistics, understanding the properties of the normal model and other frequently encountered distributions, quantitative comparisons of the means, regression and correlation analysis, and basic statistical decision making. This course will provide graduate level understanding of statistical approaches and how to apply them in scientific endeavor.  
 
-[Course Website](https://rtleaf.github.io/coa-606-statistics-for-scientists-and-engineers/syllabus.html)
+[Course Website](https://rtleaf.github.io/coa-606-statistics-for-scientists-and-engineers/)
 
 ###  Quantitative Fisheries Managment
 
