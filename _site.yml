@@ -7,9 +7,7 @@ navbar:
       href: teaching.html
     - text: "Research"
       href: research.html
-    - text: "Data"
-      href: data.html
-    - text: "Leaf Laboratory"
+    - text: "Join Us"
       href: leaf.lab.html 
   right:
     - icon: fa-envelope
@@ -17,11 +15,11 @@ navbar:
     - icon: fa-graduation-cap
       href: https://scholar.google.com/citations?hl=en&user=psmasQUAAAAJ
     - icon: fa-university
-      href: https://gcrl.usm.edu/cv/leaf.robert/cv.leaf.robert.php
+      href: https://www.usm.edu/ocean-science-engineering/
     - icon: fa-github
       href: https://github.com/rtleaf
     - icon: fa-paperclip
-      href: leaf_full_cv.html
+      href: https://www.dropbox.com/scl/fi/grz3yide90qg8xw9vol68/Leaf_Full_CV_v02_readxl.pdf?rlkey=7cyohptqnjk7erxi1m4oki7w9&dl=0
 output:
   html_document:
     theme: united
